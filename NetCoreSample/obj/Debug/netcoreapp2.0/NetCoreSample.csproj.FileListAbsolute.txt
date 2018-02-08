@@ -1,0 +1,10 @@
+C:\Users\imoho\Documents\IrobataKettouhu03\NetCoreSample\bin\Debug\netcoreapp2.0\NetCoreSample.deps.json
+C:\Users\imoho\Documents\IrobataKettouhu03\NetCoreSample\bin\Debug\netcoreapp2.0\NetCoreSample.runtimeconfig.json
+C:\Users\imoho\Documents\IrobataKettouhu03\NetCoreSample\bin\Debug\netcoreapp2.0\NetCoreSample.runtimeconfig.dev.json
+C:\Users\imoho\Documents\IrobataKettouhu03\NetCoreSample\bin\Debug\netcoreapp2.0\NetCoreSample.dll
+C:\Users\imoho\Documents\IrobataKettouhu03\NetCoreSample\bin\Debug\netcoreapp2.0\NetCoreSample.pdb
+C:\Users\imoho\Documents\IrobataKettouhu03\NetCoreSample\obj\Debug\netcoreapp2.0\NetCoreSample.csproj.CoreCompileInputs.cache
+C:\Users\imoho\Documents\IrobataKettouhu03\NetCoreSample\obj\Debug\netcoreapp2.0\NetCoreSample.AssemblyInfoInputs.cache
+C:\Users\imoho\Documents\IrobataKettouhu03\NetCoreSample\obj\Debug\netcoreapp2.0\NetCoreSample.AssemblyInfo.cs
+C:\Users\imoho\Documents\IrobataKettouhu03\NetCoreSample\obj\Debug\netcoreapp2.0\NetCoreSample.dll
+C:\Users\imoho\Documents\IrobataKettouhu03\NetCoreSample\obj\Debug\netcoreapp2.0\NetCoreSample.pdb
