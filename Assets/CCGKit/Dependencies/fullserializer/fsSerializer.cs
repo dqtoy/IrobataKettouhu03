@@ -713,7 +713,8 @@ namespace FullSerializer {
 
         /// <summary>
         /// Attempts to deserialize a value from a serialized state.
-        /// 直列化された状態から値を逆シリアル化しようとします。
+        /// シリアライズされた状態から値を逆シリアライズしようとします。
+        /// *シリアライズとは、stringとかbyte[](テキストかバイナリ形式)みたいな形にしてテキスト保存出来る状態にすること。
         /// </summary>
         public fsResult TryDeserialize(fsData data, Type storageType, ref object result) {
             return TryDeserialize(data, storageType, null, ref result);
@@ -721,7 +722,8 @@ namespace FullSerializer {
 
         /// <summary>
         /// Attempts to deserialize a value from a serialized state.
-        /// 直列化された状態から値を逆シリアル化しようとします。
+        /// シリアライズされた状態から値を逆シリアライズしようとします。
+        ///  *シリアライズとは、stringとかbyte[](テキストかバイナリ形式)みたいな形にしてテキスト保存出来る状態にすること。
         /// </summary>
         public fsResult TryDeserialize(fsData data, Type storageType, Type overrideConverterType, ref object result) {
             if (data.IsNull) {

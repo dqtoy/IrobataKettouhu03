@@ -39,6 +39,7 @@ namespace CCGKit
         /// <summary>
         /// The entries of this deck.
         /// デッキの入り口
+        /// デッキに含まれるカードの固有IDとその所持枚数
         /// </summary>
         public List<DeckEntry> cards = new List<DeckEntry>();
 
@@ -87,8 +88,10 @@ namespace CCGKit
 
         /// <summary>
         /// Adds the specified card to this deck.
+        /// 指定されたカードをこのデッキに追加します。
         /// </summary>
         /// <param name="card">The card to add to this deck.</param>
+        /// このデッキに追加するカード。
         public void AddCard(Card card)
         {
             var existingCard = cards.Find(x => x.id == card.id);
@@ -104,6 +107,7 @@ namespace CCGKit
 
         /// <summary>
         /// Removes this card from this deck.
+        /// このカードをこのデッキから取り外す。
         /// </summary>
         /// <param name="card">The card to remove from this deck.</param>
         public void RemoveCards(Card card)

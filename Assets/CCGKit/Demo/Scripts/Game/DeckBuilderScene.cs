@@ -1,8 +1,4 @@
-﻿// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 
 using UnityEngine;
@@ -25,6 +21,7 @@ public class DeckBuilderScene : BaseScene
     [SerializeField]
     private GameObject spellCardViewPrefab;
 
+    //デッキの新規作成ボタン(ScrollViewDeckList内の+ボタン)
     [SerializeField]
     private GameObject deckListContent;
 
@@ -49,6 +46,7 @@ public class DeckBuilderScene : BaseScene
     [SerializeField]
     private TextMeshProUGUI numCardsText;
 
+    //新規デッキ作成ボタン
     private GameObject createDeckItem;
 
     private DeckButton currentDeckButton;
@@ -83,24 +81,35 @@ public class DeckBuilderScene : BaseScene
     	SoundController.Instance.ChangeVolume (0.2F,0.2F);
 
 
-
+        //createDeckItem(新規デッキ作成ボタン)をprefab化してsecneと紐付ける
+        // CreateDeckButton.sceneは新規にデッキ作成の機能を持ってる
         createDeckItem = Instantiate(deckListAddItemPrefab) as GameObject;
         createDeckItem.transform.SetParent(deckListContent.transform, false);
         createDeckItem.GetComponent<CreateDeckButton>().scene = this;
 
+        //「0ページ目のカードを読み込む」だが、実態は初期化処理。
+        //ページに何枚表示するか、全てのカードの総数、カード種別の一覧を読み込んでいる
         LoadCards(0);
+        //CeilToIntは小数点切り上げ＆整数化
+        //ページ数の算出。カードの数をCardPlaceholderの数(8)で割る
+        //8はCountプロパティで取得
         numPages = Mathf.CeilToInt(GameManager.Instance.config.GetNumCards() / (float)cardPositions.Count);
         pageText.text = "Page " + (currentPage + 1) + "/" + numPages;
 
+        //List(playerDecks)(プレイヤーが既に構築しているデッキ)の要素全てを対象に処理する
+        //foreach(変数宣言 in 配列名)配列中の各要素に対して1回ずつ処理が行われる。
         foreach (var deck in GameManager.Instance.playerDecks)
         {
+            //deckListItemPrefabをコピー(prefab(インスタンス)化)
             var go = Instantiate(deckListItemPrefab) as GameObject;
             go.transform.SetParent(deckListContent.transform, false);
             createDeckItem.transform.SetAsLastSibling();
+            //secneと紐付ける
             go.GetComponent<DeckButton>().scene = this;
+            //プレイヤーが既に構築しているデッキを現在のデッキとしてセットする
             go.GetComponent<DeckButton>().SetDeck(deck);
         }
-
+        //ゲームオブジェクト(DeckButton型deckListContentオブジェクト(デッキ一覧の+のとこ))の参照
         var firstDeckButton = deckListContent.GetComponentInChildren<DeckButton>();
         if (firstDeckButton != null)
         {
@@ -119,11 +128,14 @@ public class DeckBuilderScene : BaseScene
         CreateNewDeck();
         SceneManager.LoadScene("SelectTeam");
     }
-
+    /// <summary>
+    /// 新しいデッキを作成する
+    /// </summary>
     public void CreateNewDeck()
     {
         var go = Instantiate(deckListItemPrefab) as GameObject;
         go.transform.SetParent(deckListContent.transform, false);
+        //createDeckItemの表示を最前面にする
         createDeckItem.transform.SetAsLastSibling();
         go.GetComponent<DeckButton>().scene = this;
 
@@ -139,6 +151,10 @@ public class DeckBuilderScene : BaseScene
         currentDeckButton.SetDeckName(deckNameInputField.text);
     }
 
+    /// <summary>
+    /// デッキ一覧の中から指定したデッキを現在のデッキに表示する
+    /// </summary>
+    /// <param name="button"></param>
     public void SetActiveDeck(DeckButton button)
     {
         if (currentDeckButton != null)
@@ -146,25 +162,36 @@ public class DeckBuilderScene : BaseScene
             currentDeckButton.SetActive(false);
         }
         currentDeckButton = button;
+        //ボタンの見た目を活性化する
         currentDeckButton.SetActive(true);
 
+        //デッキの名前を既存のデッキ名に設定
         deckNameInputField.text = currentDeckButton.deck.name;
 
+        //foreach(変数宣言 in 配列名)CardListItem中の各要素に対して1回ずつ処理が行われる。
         foreach (var item in cardListContent.GetComponentsInChildren<CardListItem>())
         {
             Destroy(item.gameObject);
         }
-
+        //デッキ内のカード全てに対して実行
         foreach (var card in currentDeckButton.deck.cards)
         {
+            //全てのカードデータを読み込む
             var libraryCard = GameManager.Instance.config.GetCard(card.id);
+            //↓以下2行、Instantiate(cardListItemPrefab,cardListContent.transform, false)と同義
             var go = Instantiate(cardListItemPrefab) as GameObject;
             go.transform.SetParent(cardListContent.transform, false);
+            //↑ここまで↑
+
+            //全てのGameObjectの中からCardListItemを検索し、それぞれの変数に代入する
+            //現在のデッキボタン情報を取得
             go.GetComponent<CardListItem>().deckButton = currentDeckButton;
+            //構築中のデッキを表現する
             go.GetComponent<CardListItem>().card = libraryCard;
             go.GetComponent<CardListItem>().cardNameText.text = libraryCard.name;
             go.GetComponent<CardListItem>().cardAmountText.text = "x" + card.amount.ToString();
             go.GetComponent<CardListItem>().count = card.amount;
+            //costに対し全検索をかけて、最初にPayResourceCost型に一致したx(マナの値)を返す
             var cost = libraryCard.costs.Find(x => x is PayResourceCost);
             if (cost != null)
             {
@@ -173,10 +200,12 @@ public class DeckBuilderScene : BaseScene
                 go.GetComponent<CardListItem>().cardCostText.text = manaCost.ToString();
             }
         }
-
+        //カードの枚数を表示
         UpdateNumCardsText();
     }
-
+    /// <summary>
+    /// 前のページに戻る
+    /// </summary>
     public void OnPrevPageButtonPressed()
     {
         --currentPage;
@@ -187,7 +216,9 @@ public class DeckBuilderScene : BaseScene
         pageText.text = "Page " + (currentPage + 1) + "/" + numPages;
         LoadCards(currentPage);
     }
-
+    /// <summary>
+    /// 次のページに進む
+    /// </summary>
     public void OnNextPageButtonPressed()
     {
         ++currentPage;
@@ -198,11 +229,18 @@ public class DeckBuilderScene : BaseScene
         pageText.text = "Page " + (currentPage + 1) + "/" + numPages;
         LoadCards(currentPage);
     }
-
+    /// <summary>
+    /// カード一覧を読み込む
+    /// </summary>
+    /// <param name="page":カード一覧を読み込みたいページ></param>
     public void LoadCards(int page)
     {
+        //初期化
         var gameConfig = GameManager.Instance.config;
+        //ページ数✕カードポジションの数(8個)を取得する
+        //→現在のページのカード数を読み込み
         var startIndex = page * cardPositions.Count;
+        //2つ以上の値(カードポジションの8か、今のページに表示されてるカード枚数か)から最小値を返す
         var endIndex = Mathf.Min(startIndex + cardPositions.Count, gameConfig.GetNumCards());
 
         foreach (var card in FindObjectsOfType<CardView>())
@@ -300,6 +338,9 @@ public class DeckBuilderScene : BaseScene
         currentDeckButton.UpdateDeckInfo();
     }
 
+    /// <summary>
+    /// 値をStringで返す
+    /// </summary>
     public void UpdateNumCardsText()
     {
         if (currentDeckButton != null)
@@ -307,7 +348,10 @@ public class DeckBuilderScene : BaseScene
             numCardsText.text = currentDeckButton.deck.GetNumCards().ToString();
         }
     }
-
+    /// <summary>
+    /// デッキを削除
+    /// </summary>
+    /// <param name="deck"></param>
     public void RemoveDeck(Deck deck)
     {
         GameManager.Instance.playerDecks.Remove(deck);
@@ -316,7 +360,10 @@ public class DeckBuilderScene : BaseScene
             Destroy(item.gameObject);
         }
     }
-
+    /// <summary>
+    /// デッキ構築完了後、saveボタン押した時の挙動。
+    /// デッキ情報を格納したjsonファイルを作成する。
+    /// </summary>
     public void OnDoneButtonPressed()
     {
         var config = GameManager.Instance.config;

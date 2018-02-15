@@ -174,9 +174,11 @@ namespace CCGKit
 
         /// <summary>
         /// Loads the game configuration at runtime.
+        /// 実行時にゲームの設定を読み込みます。
         /// </summary>
         public void LoadGameConfigurationAtRuntime()
         {
+            //全てのカードデータ、デッキに構築できるカード枚数、1ターンの時間、ターン開始時の行動、ターン終了時の行動を読み込む
             var gamePropertiesJSON = Resources.Load<TextAsset>("game_properties");
             Assert.IsTrue(gamePropertiesJSON != null);
             var gameProperties = LoadJSONString<GameProperties>(gamePropertiesJSON.text);
@@ -185,6 +187,7 @@ namespace CCGKit
                 properties = gameProperties;
             }
 
+            //デッキ、ハンド、ボード、墓地それぞれの最大値を設定する
             var gameZonesJSON = Resources.Load<TextAsset>("game_zones");
             Assert.IsTrue(gameZonesJSON != null);
             var zones = LoadJSONString<List<GameZoneType>>(gameZonesJSON.text);
@@ -193,6 +196,7 @@ namespace CCGKit
                 gameZones = zones;
             }
 
+            //ライフとマナの最大値を設定する
             var playerStatsJSON = Resources.Load<TextAsset>("player_stats");
             Assert.IsTrue(playerStatsJSON != null);
             var stats = LoadJSONString<List<DefinitionStat>>(playerStatsJSON.text);
@@ -201,6 +205,7 @@ namespace CCGKit
                 playerStats = stats;
             }
 
+            //ミニオンの属性、スタッツの扱い、ミニオンが死ぬ条件、スペルについてそれぞれ設定する
             var cardTypesJSON = Resources.Load<TextAsset>("card_types");
             Assert.IsTrue(cardTypesJSON != null);
             var types = LoadJSONString<List<CardType>>(cardTypesJSON.text);
@@ -209,6 +214,7 @@ namespace CCGKit
                 cardTypes = types;
             }
 
+            //keywordsの設定
             var keywordsJSON = Resources.Load<TextAsset>("keywords");
             Assert.IsTrue(keywordsJSON != null);
             var keywords = LoadJSONString<List<Keyword>>(keywordsJSON.text);
@@ -217,6 +223,9 @@ namespace CCGKit
                 this.keywords = keywords;
             }
 
+
+            //カード一覧の設定。
+            ///各陣営分けはここで設定する？
             var cardLibraryJSON = Resources.Load<TextAsset>("card_library");
 
 
@@ -260,6 +269,7 @@ namespace CCGKit
 
         /// <summary>
         /// Loads the JSON file from the specified path.
+        /// 指定されたパスからJSONデータを読み込みます。
         /// </summary>
         /// <typeparam name="T">The type of data to load.</typeparam>
         /// <param name="path">The path to the file.</param>
@@ -281,6 +291,7 @@ namespace CCGKit
 
         /// <summary>
         /// Loads the JSON data from the specified string.
+        /// 指定された文字列からJSONデータを読み込みます。
         /// </summary>
         /// <typeparam name="T">The type of data to load.</typeparam>
         /// <param name="json">The JSON string.</param>
@@ -295,6 +306,7 @@ namespace CCGKit
 
         /// <summary>
         /// Saves the game configuration to the specified path.
+        /// ゲームの設定を指定されたパスに保存します。
         /// </summary>
         /// <param name="path">The path to the game configuration.</param>
         public void SaveGameConfiguration(string path)
@@ -314,6 +326,7 @@ namespace CCGKit
 
         /// <summary>
         /// Saves the game configuration to the path selected by the user.
+        /// ユーザーが選択したパスにゲームの設定を保存します。
         /// </summary>
         public void SaveGameConfigurationAs()
         {
@@ -329,6 +342,7 @@ namespace CCGKit
 
         /// <summary>
         /// Saves the specified data to the specified path.
+        /// 指定されたデータを指定されたパスに保存します。
         /// </summary>
         /// <typeparam name="T">The type of data to save.</typeparam>
         /// <param name="path">The path where to save the data.</param>
@@ -346,6 +360,7 @@ namespace CCGKit
 
         /// <summary>
         /// Returns the card with the specified identifier.
+        /// 指定された識別子を持つカードを返します。
         /// </summary>
         /// <param name="id">The unique identifier of the card.</param>
         /// <returns>The card with the specified identifier.</returns>
@@ -357,6 +372,7 @@ namespace CCGKit
 
         /// <summary>
         /// Returns the number of cards in the configuration.
+        /// ユーザ作成のデッキやゲーム内で使用するカードの総数等、構成内のカードの数を返します。
         /// </summary>
         /// <returns>The number of cards in the configuration.</returns>
         public int GetNumCards()

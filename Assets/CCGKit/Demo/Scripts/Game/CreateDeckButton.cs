@@ -1,21 +1,29 @@
-﻿// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CreateDeckButton : MonoBehaviour
 {
     [HideInInspector]
     public DeckBuilderScene scene;
+
+
 //    [HideInInspector]
 //    public KoumaDeckBuilderScene kScene;
  //   [HideInInspector]
  //   public HakugyokuDeckBuilderScene hScene;
  //   [HideInInspector]
- //   public EinenDeckBuilderScene eScene;   
+ //   public EinenDeckBuilderScene eScene;
+
+
+ /// <summary>
+ /// 新規デッキ作成ボタン(プラスボタン)が押下された時。
+ /// SelectTeam画面に遷移する。
+ /// </summary>
     public void OnButtonPressed()
     {
+        //陣営わけのため追加
+        SceneManager.LoadScene("SelectTeam");
+
         scene.CreateNewDeck();
     }
 }

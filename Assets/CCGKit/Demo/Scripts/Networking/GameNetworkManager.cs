@@ -22,14 +22,17 @@ public class GameNetworkManager : NetworkManager
 
     /// <summary>
     /// Indicates if the current match is single-player against the AI or multiplayer between humans.
+    /// 現在の試合が、人間同士のAIまたはマルチプレイヤーに対するシングルプレイヤーかどうかを示します。
     /// </summary>
     public bool isSinglePlayer;
 
     /// <summary>
     /// Prefab for the AI-controlled player.
+    /// AI制御プレーヤのプレハブ。
     /// </summary>
     public GameObject aiPlayerPrefab;
 
+    //GameNetworkManagerの初期化
     public void Initialize()
     {
         if (instance != null)
@@ -40,6 +43,9 @@ public class GameNetworkManager : NetworkManager
         instance = this;
 
         // UNET currently crashes on iOS if the runInBackground property is set to true.
+        //runInBackgroundプロパティがtrueに設定されていると、UNETは現在iOSでクラッシュします。
+        //なので、iOSの場合ここでfalseに設定する
+        //UNETはネットワーク通信するための仕組み。
         if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.tvOS)
         {
             runInBackground = false;
@@ -54,6 +60,7 @@ public class GameNetworkManager : NetworkManager
         }
     }
 
+    //サーバ側のユーザ名表示
     public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
     {
         GameObject player = null;

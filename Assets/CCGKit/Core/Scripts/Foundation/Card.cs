@@ -1,7 +1,3 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
 using System.Collections.Generic;
 
 using UnityEngine.Assertions;
@@ -10,11 +6,13 @@ namespace CCGKit
 {
     /// <summary>
     /// This class represents a single card in the game.
+    /// このクラスは、ゲーム内の1枚のカードを表します。
     /// </summary>
     public class Card : Resource
     {
         /// <summary>
         /// The current resource identifier.
+        /// 現在のリソース識別子(カードのユニークID)
         /// </summary>
         public static int currentId;
 
@@ -62,6 +60,7 @@ namespace CCGKit
 
         /// <summary>
         /// Returns the value of the integer property with the specified name.
+        /// 指定された名前を持つ整数プロパティの値を返します。
         /// </summary>
         /// <param name="name">The name of the property.</param>
         /// <returns>The value of the property.</returns>
@@ -74,6 +73,7 @@ namespace CCGKit
 
         /// <summary>
         /// Returns the value of the string property with the specified name.
+        /// 指定した名前の文字列プロパティの値を返します。
         /// </summary>
         /// <param name="name">The name of the property.</param>
         /// <returns>The value of the property.</returns>

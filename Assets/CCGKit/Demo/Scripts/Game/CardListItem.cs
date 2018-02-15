@@ -8,6 +8,9 @@ using TMPro;
 
 using CCGKit;
 
+/// <summary>
+/// 構築中のデッキの表示を表現するクラス
+/// </summary>
 public class CardListItem : MonoBehaviour
 {
     public DeckButton deckButton;

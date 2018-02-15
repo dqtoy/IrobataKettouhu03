@@ -63,14 +63,20 @@ public class HomeScene : BaseScene
         Application.targetFrameRate = 60;
 
         versionText.text = "Ver" + CCGKitInfo.version;
-
+        //C:\Users\imoho\AppData\LocalLow\chorimpoo\囲炉端決闘符/decks.json
         var decksPath = Application.persistentDataPath + "/decks.json";
+
+        // デッキデータが存在する場合、GameManager.Instance.playerDecksにデッキデータを代入する処理
         if (File.Exists(decksPath))
         {
+            //外部データ(デッキファイル)の読み込み
             var file = new StreamReader(decksPath);
             var fileContents = file.ReadToEnd();
+            //fsJsonParserはJSONの単純な再帰的降下パーサー。
+            //デッキデータの解析をする
             var data = fsJsonParser.Parse(fileContents);
             object deserialized = null;
+            //デッキデータをマシン上で使える形に変換してる
             serializer.TryDeserialize(data, typeof(List<Deck>), ref deserialized).AssertSuccessWithoutWarnings();
             file.Close();
             GameManager.Instance.playerDecks = deserialized as List<Deck>;
@@ -122,11 +128,14 @@ public class HomeScene : BaseScene
             popup.text.text = "接続";
             popup.buttonText.text = "サーバ";
             popup.button2Text.text = "クライアント";
+            //button(サーバ)が押されたら以下を実行
             popup.button.onClickEvent.AddListener(() => {
+                //falseにすることで対人戦であることを定義
                 GameNetworkManager.Instance.isSinglePlayer = false;
                 CreateGame();
             });
-            popup.button2.onClickEvent.AddListener(() => { popup.Close(); });
+            popup.button2.onClickEvent.AddListener(() => {
+                popup.Close(); });
         });
 
         //SceneManager.LoadScene("SelectHero");
@@ -144,8 +153,10 @@ public class HomeScene : BaseScene
             popup.text.text = "ゲームを終了しますか?";
             popup.buttonText.text = "はい";
             popup.button2Text.text = "いいえ";
-            popup.button.onClickEvent.AddListener(() => { Application.Quit(); });
-            popup.button2.onClickEvent.AddListener(() => { popup.Close(); });
+            popup.button.onClickEvent.AddListener(() => {
+                Application.Quit(); });
+            popup.button2.onClickEvent.AddListener(() => {
+                popup.Close(); });
         });
     }
 

@@ -8,6 +8,7 @@ namespace FullSerializer {
 
     /// <summary>
     /// A simple recursive descent parser for JSON.
+    /// JSONの単純な再帰的降下パーサーです。
     /// </summary>
     public class fsJsonParser {
         private int _start;
@@ -49,6 +50,7 @@ namespace FullSerializer {
 
         /// <summary>
         /// Skips input such that Character() will return a non-whitespace character
+        /// Character（）が空白以外の文字を返すような入力をスキップします。
         /// </summary>
         private void SkipSpace() {
             while (HasValue()) {
@@ -84,6 +86,7 @@ namespace FullSerializer {
                         }
                     }
                     // let other checks to check fail
+                    //チェックする他のチェックを失敗させる
                     continue;
                 }
 
@@ -227,17 +230,20 @@ namespace FullSerializer {
 
         /// <summary>
         /// Parses numbers that follow the regular expression [-+](\d+|\d*\.\d*)
+        /// 正規表現[ - +]（\ d + | \ d * \。\ d *）に続く数字を解析します。
         /// </summary>
         private fsResult TryParseNumber(out fsData data) {
             int start = _start;
 
             // read until we get to a separator
+            //セパレータに到達するまで読む
             while (
                 TryMoveNext() &&
                 (HasValue() && IsSeparator(Character()) == false)) {
             }
 
             // try to parse the value
+            //値を解析しようとする
             string numberString = _input.Substring(start, _start - start);
 
             // double -- includes a .
@@ -267,21 +273,25 @@ namespace FullSerializer {
         private readonly StringBuilder _cachedStringBuilder = new StringBuilder(256);
         /// <summary>
         /// Parses a string
+        /// 文字列の解析
         /// </summary>
         private fsResult TryParseString(out string str) {
             _cachedStringBuilder.Length = 0;
 
             // skip the first "
+            //最初の"は無視する
             if (Character() != '"' || TryMoveNext() == false) {
                 str = string.Empty;
                 return MakeFailure("Expected initial \" when parsing a string");
             }
 
             // read until the next "
+            //最後の"まで読み込む
             while (HasValue() && Character() != '\"') {
                 char c = Character();
 
                 // escape if necessary
+                //必要に応じてエスケープする
                 if (c == '\\') {
                     char unescaped;
                     var fail = TryUnescapeChar(out unescaped);
@@ -298,6 +308,7 @@ namespace FullSerializer {
                     _cachedStringBuilder.Append(c);
 
                     // get the next character
+                    //次の文字を取得
                     if (TryMoveNext() == false) {
                         str = string.Empty;
                         return MakeFailure("Unexpected end of input when reading a string");
@@ -317,6 +328,7 @@ namespace FullSerializer {
 
         /// <summary>
         /// Parses an array
+        /// 配列の解析
         /// </summary>
         private fsResult TryParseArray(out fsData arr) {
             if (Character() != '[') {
@@ -335,6 +347,7 @@ namespace FullSerializer {
 
             while (HasValue() && Character() != ']') {
                 // parse the element
+                //要素の解析
                 fsData element;
                 var fail = RunParse(out element);
                 if (fail.Failed) {
@@ -392,6 +405,7 @@ namespace FullSerializer {
                 SkipSpace();
 
                 // parse the ':' after the key
+                //キーの後に '：'を解析する
                 if (HasValue() == false || Character() != ':' || TryMoveNext() == false) {
                     obj = null;
                     return MakeFailure("Expected : after key \"" + key + "\"");
@@ -473,6 +487,7 @@ namespace FullSerializer {
 
         /// <summary>
         /// Parses the specified input. Returns a failure state if parsing failed.
+        /// 指定された入力を解析します。 解析に失敗した場合に失敗状態を返します。
         /// </summary>
         /// <param name="input">The input to parse.</param>
         /// <param name="data">The parsed data. This is undefined if parsing fails.</param>
@@ -490,6 +505,7 @@ namespace FullSerializer {
         /// <summary>
         /// Helper method for Parse that does not allow the error information
         /// to be recovered.
+        /// エラー情報を復元することはできないParseのヘルパーメソッド
         /// </summary>
         public static fsData Parse(string input) {
             fsData data;
