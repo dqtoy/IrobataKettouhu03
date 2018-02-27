@@ -1,13 +1,10 @@
-﻿// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 /// <summary>
 /// Utility class used to play music and sound effects. It uses an object pool of audio sources
 /// internally for better performance.
+/// 音楽と効果音を再生するためのユーティリティクラス。 パフォーマンスを向上させるため、オーディオソースのオブジェクトプールを内部的に使用します。
 /// </summary>
 public class AudioManager : MonoBehaviour
 {

@@ -4,7 +4,7 @@
         "baseValue": 30,
         "originalValue": 30,
         "minValue": 0,
-        "maxValue": 99,
+        "maxValue": 30,
         "id": 0,
         "$type": "CCGKit.PlayerStat"
     },

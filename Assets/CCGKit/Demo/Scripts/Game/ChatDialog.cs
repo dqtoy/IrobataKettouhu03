@@ -1,7 +1,3 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Networking;
@@ -11,31 +7,37 @@ namespace CCGKit
 {
     /// <summary>
     /// Holds information about the in-game chat dialog.
+    /// ゲーム内のチャットダイアログに関する情報を保持します。
     /// </summary>
     public class ChatDialog : MonoBehaviour
     {
         /// <summary>
         /// Chat scroll view.
+        /// チャットスクロールビュー。
         /// </summary>
         public ScrollRect ChatScrollView;
 
         /// <summary>
         /// Chat scroll view content.
+        /// チャットスクロールビューのコンテンツ。
         /// </summary>
         public GameObject ChatScrollViewContent;
 
         /// <summary>
         /// Chat entry prefab.
+        /// チャットエントリプレハブ。
         /// </summary>
         public GameObject ChatEntryPrefab;
 
         /// <summary>
         /// Input field component.
+        /// 入力フィールドコンポーネント。
         /// </summary>
         public InputField InputField;
 
         /// <summary>
         /// Maximum length (in characters) allowed for a single chat message.
+        /// 1つのチャットメッセージに許容される最大長（文字数）。
         /// </summary>
         private static readonly int maxChatMessageLength = 50;
 
@@ -54,6 +56,7 @@ namespace CCGKit
 
         /// <summary>
         /// Send button callback.
+        /// ボタンコールバックを送信します。
         /// </summary>
         public void OnSendButtonPressed()
         {
@@ -62,6 +65,7 @@ namespace CCGKit
 
         /// <summary>
         /// Close button callback.
+        /// 閉じるボタンのコールバック。
         /// </summary>
         public void OnCloseButtonPressed()
         {
@@ -70,6 +74,7 @@ namespace CCGKit
 
         /// <summary>
         /// Chat input field
+        /// チャット入力フィールド
         /// </summary>
         public void OnChatInputFieldEditEnded()
         {
@@ -77,6 +82,8 @@ namespace CCGKit
             // other than submitting the text from an input field (e.g, clicking on a
             // scrollbar), so make sure we got here only by pressing Enter on an input
             // field.
+            //ユニティのInputField OnEndEditイベントは、入力フィールド（例えば、スクロールバーをクリックする）からテキストを送信する以外の多くのコンテキストで呼び出されるようですので、
+            //入力フィールドでEnterを押すだけでここに来ていることを確認してください。
             if (!Input.GetButtonDown("Submit"))
                 return;
 
@@ -85,6 +92,7 @@ namespace CCGKit
 
         /// <summary>
         /// Performs the actual work of submitting the chat text.
+        /// チャットテキストを送信する実際の作業を行います。
         /// </summary>
         public void SubmitText()
         {
@@ -104,6 +112,7 @@ namespace CCGKit
 
         /// <summary>
         /// Adds the specified text to the chat dialog.
+        /// 指定されたテキストをチャットダイアログに追加します。
         /// </summary>
         /// <param name="text">Text to add to the chat dialog.</param>
         public void AddTextEntry(string text)
@@ -116,6 +125,7 @@ namespace CCGKit
 
         /// <summary>
         /// Shows the chat dialog.
+        /// チャットダイアログを表示します。
         /// </summary>
         public void Show()
         {
@@ -126,6 +136,7 @@ namespace CCGKit
 
         /// <summary>
         /// Hides the chat dialog.
+        /// チャットダイアログを非表示にします。
         /// </summary>
         public void Hide()
         {

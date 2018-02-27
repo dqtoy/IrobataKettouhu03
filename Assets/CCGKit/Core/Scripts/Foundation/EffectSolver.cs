@@ -1,8 +1,4 @@
-﻿// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -51,6 +47,7 @@ namespace CCGKit
 
         /// <summary>   
         /// This method is automatically called when the turn starts.
+        /// このメソッドは、順番が始まると自動的に呼び出されます。
         /// </summary>
         public void OnTurnStarted()
         {
@@ -69,6 +66,7 @@ namespace CCGKit
 
         /// <summary>
         /// This method is automatically called when the turn ends.
+        /// このメソッドは、終了時に自動的に呼び出されます。
         /// </summary>
         public void OnTurnEnded()
         {
@@ -87,6 +85,7 @@ namespace CCGKit
 
         /// <summary>
         /// Resolves the combat between the specified card and its opponent player.
+        /// 指定されたカードと相手プレイヤーとの戦闘を解決する。
         /// </summary>
         /// <param name="attackingPlayerNetId">The network identifier of the attacking player.</param>
         /// <param name="attackingCardInstanceId">The instance identifier of the attacking card.</param>
@@ -107,6 +106,7 @@ namespace CCGKit
 
         /// <summary>
         /// Resolves the combat between the specified creatures.
+        /// 指定されたクリーチャー間の戦闘を解決します。
         /// </summary>
         /// <param name="attackingPlayerNetId">The network identifier of the attacking player.</param>
         /// <param name="attackingCreature">The attacking creature.</param>
@@ -124,12 +124,16 @@ namespace CCGKit
 
         /// <summary>
         /// Moves the specified card from the specified origin zone to the specified destination zone.
+        /// 指定したカードを指定された起点ゾーンから指定された目的地ゾーンに移動します。
         /// </summary>
         /// <param name="playerNetId">The network identifier of the card's owner player.</param>
+        /// <param name = "playerNetId">カード所有者のプレーヤーのネットワーク識別子</ param>
         /// <param name="card">The card to move.</param>
+        /// <param name = "card" > 移動するカード </ param >
         /// <param name="originZone">The origin zone.</param>
         /// <param name="destinationZone">The destination zone.</param>
         /// <param name="targetInfo">The optional target information.</param>
+        /// <param name = "targetInfo">オプションのターゲット情報</ param>
         public void MoveCard(NetworkInstanceId playerNetId, RuntimeCard card, string originZone, string destinationZone, List<int> targetInfo = null)
         {
             var player = gameState.players.Find(x => x.netId == playerNetId);
@@ -147,6 +151,7 @@ namespace CCGKit
                     var finalDestinationZone = gameState.config.gameZones.Find(x => x.id == cardType.zoneId);
                     // We do not use the MoveCards function here, because we do not want to trigger any effects
                     // (which would cause an infinite recursion).
+                    //ここではMoveCards関数を使用しません。なぜなら、（無限再帰を引き起こす）エフェクトをトリガーしたくないからです。
                     player.namedZones[destinationZone].RemoveCard(card);
                     player.namedZones[finalDestinationZone.name].AddCard(card);
                 }
@@ -155,6 +160,7 @@ namespace CCGKit
 
         /// <summary>
         /// Triggers the triggered effects of the specified card.
+        /// 指定したカードのトリガーに指定された効果のトリガー
         /// </summary>
         /// <typeparam name="T">The type of the trigger.</typeparam>
         /// <param name="player">The owner player of the card that is triggering the effect.</param>
@@ -203,11 +209,16 @@ namespace CCGKit
 
         /// <summary>
         /// Activates the specified ability of the specified card.
+        /// 指定されたカードの指定された能力をアクティブにする。
         /// </summary>
         /// <param name="player">The owner player of the card that is activating the effect.</param>
+        /// <param name = "player">効果を有効にしているカードの所有者</ param>
         /// <param name="card">The card that is activating the effect.</param>
+        /// <param name = "card">効果を有効にしているカード</ param>
         /// <param name="abilityIndex">The index of the ability to activate.</param>
+        /// <param name = "abilityIndex">アクティブ化する機能のインデックス</ param>
         /// <param name="targetInfo">The optional target information.</param>
+        /// <param name = "targetInfo">オプションのターゲット情報</ param>
         public void ActivateAbility(PlayerInfo player, RuntimeCard card, int abilityIndex, List<int> targetInfo = null)
         {
             var libraryCard = gameState.config.GetCard(card.cardId);
@@ -243,6 +254,7 @@ namespace CCGKit
 
         /// <summary>
         /// Sets the destroy conditions of the specified card.
+        /// 指定されたカードの破壊条件を設定します。
         /// </summary>
         /// <param name="card">The card to set.</param>
         public void SetDestroyConditions(RuntimeCard card)
@@ -266,6 +278,7 @@ namespace CCGKit
 
         /// <summary>
         /// Sets the triggers of the specified player.
+        /// 指定したプレーヤーのトリガーを設定します。
         /// </summary>
         /// <param name="player">The player to set.</param>
         public void SetTriggers(PlayerInfo player)
@@ -293,6 +306,7 @@ namespace CCGKit
 
         /// <summary>
         /// Sets the triggers of the specified card.
+        /// 指定したカードのトリガーを設定します。
         /// </summary>
         /// <param name="card">The card to set.</param>
         public void SetTriggers(RuntimeCard card)
@@ -310,6 +324,7 @@ namespace CCGKit
 
         /// <summary>
         /// Returns the actual player targets of the specified target type.
+        /// 指定されたターゲットタイプの実際のプレーヤーターゲットを返します。
         /// </summary>
         /// <param name="player">The current player.</param>
         /// <param name="abilityTarget">The target.</param>
@@ -375,6 +390,7 @@ namespace CCGKit
 
         /// <summary>
         /// Returns the actual card targets of the specified target.
+        /// 指定されたターゲットの実際のカードターゲットを返します。
         /// </summary>
         /// <param name="player">The current player.</param>
         /// <param name="sourceCard">The current card.</param>
@@ -488,6 +504,7 @@ namespace CCGKit
 
         /// <summary>
         /// Returns true if there are any targets available for the specified effect and false otherwise.
+        /// 指定されたエフェクトに使用可能なターゲットがある場合はtrueを返し、そうでない場合はfalseを返します。
         /// </summary>
         /// <param name="effect">The effect.</param>
         /// <param name="sourceCard">The card originating the effect.</param>
@@ -500,6 +517,7 @@ namespace CCGKit
 
         /// <summary>
         /// Returns a random number in the [0, max] range.
+        /// [0、max]の範囲の乱数を返します。
         /// </summary>
         /// <param name="max">The maximum value.</param>
         /// <returns>A random number in the [0, max] range.</returns>
@@ -510,6 +528,7 @@ namespace CCGKit
 
         /// <summary>
         /// Returns a random number in the [min, max] range.
+        /// [min、max]の範囲の乱数を返します。
         /// </summary>
         /// <param name="min">The minimum value.</param>
         /// <param name="max">The maximum value.</param>

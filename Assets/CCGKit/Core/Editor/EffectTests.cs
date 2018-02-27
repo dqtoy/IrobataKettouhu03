@@ -8,6 +8,7 @@ using CCGKit;
 
 /// <summary>
 /// Unit tests for the provided card effects.
+/// 提供されたカードエフェクトのユニットテスト。
 /// </summary>
 public class EffectTests
 {

@@ -1,18 +1,16 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CCGKit
 {
     /// <summary>
     /// The base class for effects.
+    /// エフェクトの基本クラスです。
     /// </summary>
     public abstract class Effect
     {
         /// <summary>
         /// Returns true if there are any targets available for this effect and false otherwise.
+        /// このエフェクトに使用可能なターゲットがあればtrueを返し、そうでない場合はfalseを返します。
         /// </summary>
         /// <param name="state">The game's state.</param>
         /// <param name="sourceCard">The card containing the effect.</param>
@@ -26,11 +24,13 @@ namespace CCGKit
 
     /// <summary>
     /// The base class for effects that target players.
+    /// プレイヤーをターゲットとするエフェクトの基本クラスです。
     /// </summary>
     public abstract class PlayerEffect : Effect
     {
         /// <summary>
         /// Resolves this effect on the specified player.
+        /// このエフェクトを指定されたプレーヤーに解決します。
         /// </summary>
         /// <param name="state">The game's state.</param>
         /// <param name="player">The player on which to resolve this effect.</param>
@@ -40,6 +40,7 @@ namespace CCGKit
 
         /// <summary>
         /// Returns true if there are any targets available for this effect and false otherwise.
+        /// このエフェクトに使用可能なターゲットがあればtrueを返し、そうでない場合はfalseを返します。
         /// </summary>
         /// <param name="state">The game's state.</param>
         /// <param name="sourceCard">The card containing the effect.</param>
@@ -88,11 +89,13 @@ namespace CCGKit
 
     /// <summary>
     /// The base class for effects that target cards.
+    /// ターゲットカードのエフェクトの基本クラスです。
     /// </summary>
     public abstract class CardBaseEffect : Effect
     {
         /// <summary>
         /// Resolves this effect on the specified card.
+        /// この効果を指定されたカードに解決します。
         /// </summary>
         /// <param name="state">The game's state.</param>
         /// <param name="player">The card on which to resolve this effect.</param>
@@ -103,11 +106,13 @@ namespace CCGKit
 
     /// <summary>
     /// The base class for card effects.
+    /// カードエフェクトの基本クラスです。
     /// </summary>
     public abstract class CardEffect : CardBaseEffect
     {
         /// <summary>
         /// The unique identifier of the game zone.
+        /// ゲームゾーンのユニークID
         /// </summary>
         [GameZoneField("Zone")]
         [Order(1)]
@@ -115,6 +120,7 @@ namespace CCGKit
 
         /// <summary>
         /// The unique identifier of the card type.
+        /// カードタイプのユニークID
         /// </summary>
         [CardTypeField("Card type")]
         [Order(2)]
@@ -122,6 +128,7 @@ namespace CCGKit
 
         /// <summary>
         /// Returns true if there are any targets available for this effect and false otherwise.
+        /// このエフェクトに使用可能なターゲットがあればtrueを返し、そうでない場合はfalseを返します。
         /// </summary>
         /// <param name="state">The game's state.</param>
         /// <param name="sourceCard">The card containing the effect.</param>
@@ -201,6 +208,7 @@ namespace CCGKit
 
     /// <summary>
     /// The base class for card stat effects.
+    /// カードスタッツ効果の基本クラス
     /// </summary>
     public abstract class CardStatEffect : CardEffect
     {

@@ -1,8 +1,4 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 
 using UnityEditor;
 
@@ -14,11 +10,13 @@ namespace CCGKit
 {
     /// <summary>
     /// The base class for properties.
+    /// プロパティの基本クラス。
     /// </summary>
     public class Property
     {
         /// <summary>
         /// The name of this property.
+        /// このプロパティの名前。
         /// </summary>
         public string name;
 
@@ -26,6 +24,7 @@ namespace CCGKit
 
         /// <summary>
         /// Draws this property in the editor.
+        /// このプロパティをエディタに描画します。
         /// </summary>
         public virtual void Draw()
         {

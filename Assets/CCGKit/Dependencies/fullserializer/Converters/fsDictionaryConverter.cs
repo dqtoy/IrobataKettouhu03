@@ -7,6 +7,8 @@ namespace FullSerializer.Internal {
     // While the generic IEnumerable converter can handle dictionaries, we process them separately here because
     // we support a few more advanced use-cases with dictionaries, such as inline strings. Further, dictionary
     // processing in general is a bit more advanced because a few of the collection implementations are buggy.
+    //一般的なIEnumerableコンバータは辞書を扱うことができますが、ここではインライン文字列などの辞書を使用した高度なユースケースをサポートしているため、
+    //ここでは別々に処理しています。 さらに、コレクションの実装のいくつかはバグが多いので、一般的な辞書処理は少し高度です。
     public class fsDictionaryConverter : fsConverter {
         public override bool CanProcess(Type type) {
             return typeof(IDictionary).IsAssignableFrom(type);
@@ -71,6 +73,7 @@ namespace FullSerializer.Internal {
             GetKeyValueTypes(instance.GetType(), out keyStorageType, out valueStorageType);
 
             // No other way to iterate dictionaries and still have access to the key/value info
+            //辞書を繰り返す方法はありませんが、依然としてキー/バリュー情報にアクセスできます
             IDictionaryEnumerator enumerator = instance.GetEnumerator();
 
             bool allStringKeys = true;
@@ -123,16 +126,25 @@ namespace FullSerializer.Internal {
             // not consider null a subtype of the parameter types, and exceptions get thrown. So,
             // we have to special case adding null items via the generic functions (which do not
             // do the null check), which is slow and messy.
+            //IDictionaryインタフェースを介してデフォルトで（一般的なものではなく）操作しているため、通常はIDictionary.Add（オブジェクト、オブジェクト）を通じてアイテムを送信します。 
+            //これは、addメソッドがパラメータ型が適切な型であることを確認する点を除いて、一般的な場合には問題ありません。 しかし、モノがバグであり、
+            //これらの型チェックはnullをパラメータ型のサブタイプと見なさず、例外がスローされます。 だから、私たちは特別な場合には、
+            //（ヌルチェックをしない）汎用関数を介してヌル項目を追加する必要があります。これは遅くて面倒です。
             //
             // An example of a collection that fails deserialization without this method is
             // `new SortedList<int, string> { { 0, null } }`. (SortedDictionary is fine because
             // it properly handles null values).
+            //このメソッドなしでデシリアライズに失敗するコレクションの例は `new SortedList<int、string> { { 0、null } }`です。 （SortedDictionaryはnull値を適切に処理するため、正常です）。
             if (key == null || value == null) {
                 // Life would be much easier if we had MakeGenericType available, but we don't. So
                 // we're going to find the correct generic KeyValuePair type via a bit of trickery.
                 // All dictionaries extend ICollection<KeyValuePair<TKey, TValue>>, so we just
                 // fetch the ICollection<> type with the proper generic arguments, and then we take
                 // the KeyValuePair<> generic argument, and whola! we have our proper generic type.
+                //MakeGenericTypeが利用可能であれば人生ははるかに簡単ですが、そうではありません。 
+                //だから私たちはちょっとしたトリッキーを介して正しい汎用KeyValuePairタイプを見つけるつもりです。
+                //すべての辞書はICollection <KeyValuePair <TKey、TValue >>を継承しているので、
+                //適切な汎用引数を持つICollection <>型を取得し、KeyValuePair <>汎用引数をとって「やった！」 私たちは適切なジェネリックタイプを持っています。
 
                 var collectionType = fsReflectionUtility.GetInterface(dictionary.GetType(), typeof(ICollection<>));
                 if (collectionType == null) {
@@ -148,12 +160,14 @@ namespace FullSerializer.Internal {
 
             // We use the inline set methods instead of dictionary.Add; dictionary.Add will throw an exception
             // if the key already exists.
+            //私たちはdictionary.Addの代わりにインラインセットメソッドを使用します。 キーがすでに存在する場合、dictionary.Addは例外をスローします。
             dictionary[key] = value;
             return fsResult.Success;
         }
 
         private static void GetKeyValueTypes(Type dictionaryType, out Type keyStorageType, out Type valueStorageType) {
             // All dictionaries extend IDictionary<TKey, TValue>, so we just fetch the generic arguments from it
+            //すべての辞書はIDictionary <TKey、TValue>を拡張しているので、汎用の引数を取り出すだけです
             var interfaceType = fsReflectionUtility.GetInterface(dictionaryType, typeof(IDictionary<,>));
             if (interfaceType != null) {
                 var genericArgs = interfaceType.GetGenericArguments();
@@ -163,6 +177,7 @@ namespace FullSerializer.Internal {
 
             else {
                 // Fetching IDictionary<,> failed... we have to encode full type information :(
+                //IDictionary <、>の取得に失敗しました。完全な型情報をエンコードする必要があります：
                 keyStorageType = typeof(object);
                 valueStorageType = typeof(object);
             }

@@ -3,6 +3,7 @@
 namespace FullSerializer.Internal {
     /// <summary>
     /// Serializes and deserializes WeakReferences.
+    /// WeakReferencesをシリアル化および逆シリアル化します。
     /// </summary>
     public class fsWeakReferenceConverter : fsConverter {
         public override bool CanProcess(Type type) {

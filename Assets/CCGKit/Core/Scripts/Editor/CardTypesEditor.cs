@@ -1,4 +1,4 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
+﻿// Copyright (C) 2016-2017 David Pol. All rights reserved.
 // This code can only be used under the standard Unity Asset Store End User License Agreement,
 // a copy of which is available at http://unity3d.com/company/legal/as_terms.
 
@@ -14,6 +14,7 @@ namespace CCGKit
 {
     /// <summary>
     /// CCG Kit editor's 'Card types' tab.
+    /// CCGキットエディタの[カードタイプ]タブ。
     /// </summary>
     public class CardTypesEditor : EditorTab
     {
@@ -31,7 +32,7 @@ namespace CCGKit
 
         public CardTypesEditor(GameConfiguration config) : base(config)
         {
-            cardTypesList = EditorUtils.SetupReorderableList("Card types", gameConfig.cardTypes, ref currentCardType, (rect, x) =>
+            cardTypesList = EditorUtils.SetupReorderableList("カードタイプ", gameConfig.cardTypes, ref currentCardType, (rect, x) =>
             {
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.name);
             },
@@ -61,7 +62,7 @@ namespace CCGKit
 
         private void CreateCurrentCardTypeStatsList()
         {
-            currentCardTypeStatsList = EditorUtils.SetupReorderableList("Card stats", currentCardType.stats, ref currentCardTypeStat, (rect, x) =>
+            currentCardTypeStatsList = EditorUtils.SetupReorderableList("カードのスタッツ(ゲーム中に変化する)", currentCardType.stats, ref currentCardTypeStat, (rect, x) =>
             {
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.name);
             },
@@ -90,7 +91,7 @@ namespace CCGKit
 
         private void CreateCurrentCardTypePropertiesList()
         {
-            currentCardTypePropertiesList = EditorUtils.SetupReorderableList("Card properties", currentCardType.properties, ref currentCardTypeProperty, (rect, x) =>
+            currentCardTypePropertiesList = EditorUtils.SetupReorderableList("ゲーム中に変化しない値", currentCardType.properties, ref currentCardTypeProperty, (rect, x) =>
             {
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.name);
             },
@@ -116,7 +117,7 @@ namespace CCGKit
 
         private void CreateCurrentCardTypeDestroyConditionsList()
         {
-            currentCardTypeDestroyConditionsList = EditorUtils.SetupReorderableList("Destroy conditions", currentCardType.destroyConditions, ref currentCardTypeDestroyCondition, (rect, x) =>
+            currentCardTypeDestroyConditionsList = EditorUtils.SetupReorderableList("破壊の定義", currentCardType.destroyConditions, ref currentCardTypeDestroyCondition, (rect, x) =>
             {
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.GetReadableString(gameConfig));
             },
@@ -184,9 +185,11 @@ namespace CCGKit
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal(GUILayout.MaxWidth(400));
-            var statsHelpText = "Card stats are fields that can change throughout the course of a game. " +
-                "Examples of common stats are: attack, health, etc. " +
-                "They are numeric and always transmitted over the network.";
+            //var statsHelpText = "Card stats are fields that can change throughout the course of a game. " +
+            //    "Examples of common stats are: attack, health, etc. " +
+            //    "They are numeric and always transmitted over the network.";
+            var statsHelpText = "カードのスタッツ情報は、ゲーム中に変化する可能性のあるフィールドです。 " + "一般的なスタッツの例は、攻撃、体力などです。" + "それらは数値であり、常にネットワークを介して送信されます";
+
             EditorGUILayout.HelpBox(statsHelpText, MessageType.Info);
             GUILayout.EndHorizontal();
 
@@ -206,9 +209,10 @@ namespace CCGKit
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal(GUILayout.MaxWidth(400));
-            var propertiesHelpText = "Card properties are fields that never change throughout the course of a game. " +
-                "Examples of common properties are: the body text of the card, its collector number, etc. " +
-                "They are never transmitted over the network, as they do not have any gameplay relevance.";
+    //            var propertiesHelpText = "Card properties are fields that never change throughout the course of a game. " +
+    //           "Examples of common properties are: the body text of the card, its collector number, etc. " +
+    //           "They are never transmitted over the network, as they do not have any gameplay relevance.";
+            var propertiesHelpText = "カードのプロパティは、ゲーム中に変化しないフィールドです。" +  "一般的なプロパティの例は、カードの本文、コレクタ番号などです。" + "ゲームの関連性がないため、ネットワーク経由で送信されることはありません。";
             EditorGUILayout.HelpBox(propertiesHelpText, MessageType.Info);
             GUILayout.EndHorizontal();
 
@@ -246,7 +250,9 @@ namespace CCGKit
 
             EditorGUIUtility.labelWidth = 170;
             GUILayout.BeginHorizontal();
-            EditorGUILayout.PrefixLabel("Move after triggering effect");
+            //EditorGUILayout.PrefixLabel("Move after triggering effect");
+            //効果を発揮した後、どこへ行くかを定義する
+            EditorGUILayout.PrefixLabel("効果発揮後のカードの移動先(スペル等に利用)");
             currentCardType.moveAfterTriggeringEffect = EditorGUILayout.Toggle(currentCardType.moveAfterTriggeringEffect, GUILayout.MaxWidth(EditorConfig.RegularTextFieldWidth));
             GUILayout.EndHorizontal();
 
@@ -308,6 +314,10 @@ namespace CCGKit
             EditorGUIUtility.labelWidth = oldLabelWidth;
         }
 
+        /// <summary>
+        /// カードの破棄条件を定義
+        /// </summary>
+        /// <param name="condition"></param>
         private void DrawDestroyCardCondition(DestroyCardCondition condition)
         {
             var oldLabelWidth = EditorGUIUtility.labelWidth;

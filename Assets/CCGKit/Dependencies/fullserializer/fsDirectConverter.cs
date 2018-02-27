@@ -6,6 +6,8 @@ namespace FullSerializer {
     /// The direct converter is similar to a regular converter, except that it targets specifically only one type.
     /// This means that it can be used without performance impact when discovering converters. It is strongly
     /// recommended that you derive from fsDirectConverter{TModel}.
+    /// ダイレクトコンバーターは通常のコンバーターと似ていますが、特に1つのタイプのみを対象としています。 
+    /// つまり、コンバータを検出するときにパフォーマンスに影響を与えることなく使用できます。 fsDirectConverter {TModel}から派生させることを強くお勧めします。
     /// </summary>
     /// <remarks>Due to the way that direct converters operate, inheritance is *not* supported. Direct converters
     /// will only be used with the exact ModelType object.</remarks>

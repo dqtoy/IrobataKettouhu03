@@ -1,7 +1,3 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
 using System.Collections.Generic;
 
 using UnityEngine;
@@ -11,6 +7,9 @@ using UnityEngine;
 /// pre-allocated pool, which avoids the need to instantiate them at runtime (a potentially costly
 /// operation). They are particularly useful for handling sets consisting of many small objects
 /// like particle systems or audio SFX.
+/// オブジェクトプールは、最適化の目的に役立ちます。 事前割り当てプールからゲームオブジェクトを取り出すことができるため、
+/// 実行時にインスタンス化する必要がありません（潜在的にコストのかかる操作）。 
+/// パーティクルシステムやオーディオSFXのような多くの小さなオブジェクトからなるセットを処理する場合に特に便利です。
 /// </summary>
 public class ObjectPool : MonoBehaviour
 {

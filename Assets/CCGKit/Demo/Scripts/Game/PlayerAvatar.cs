@@ -1,7 +1,3 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
 using UnityEngine;
 
 using CCGKit;
@@ -10,6 +6,8 @@ using CCGKit;
 /// This class holds information about a player avatar from the game scene, which can be clicked
 /// to select a target player for an effect or during combat (this will send the appropriate
 /// information to the server).
+/// このクラスは、ゲームシーンからプレイヤーのアバターに関する情報を保持します。
+/// このアタッカーは、エフェクトまたは戦闘中に目的のプレイヤーを選択するためにクリックできます（サーバーに適切な情報を送信します）。
 /// </summary>
 public class PlayerAvatar : MonoBehaviour
 {

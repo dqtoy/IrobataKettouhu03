@@ -6,18 +6,22 @@ using FullSerializer.Internal;
 namespace FullSerializer {
     /// <summary>
     /// The serialization converter allows for customization of the serialization process.
+    /// シリアライゼーション・コンバーターは、シリアライズ・プロセスのカスタマイズを可能にします。
     /// </summary>
     /// <remarks>You do not want to derive from this class - there is no way to actually use it within
     /// the serializer.. Instead, derive from either fsConverter or fsDirectConverter</remarks>
+    /// <注意>このクラスから派生したくないのですが、シリアライザ内で実際に使用する方法はありません。代わりに、fsConverterまたはfsDirectConverterのいずれかから派生します。</注意>
     public abstract class fsBaseConverter {
         /// <summary>
         /// The serializer that was owns this converter.
+        /// このコンバータを所有していたシリアライザ。
         /// </summary>
         public fsSerializer Serializer;
 
         /// <summary>
         /// Construct an object instance that will be passed to TryDeserialize. This should **not**
         /// deserialize the object.
+        /// TryDeserializeに渡すオブジェクトインスタンスを作成します。 これはオブジェクトを非直列化しない**です。
         /// </summary>
         /// <param name="data">The data the object was serialized with.</param>
         /// <param name="storageType">The field/property type that is storing the instance.</param>
@@ -36,9 +40,10 @@ namespace FullSerializer {
         /// <summary>
         /// If true, then the serializer will support cyclic references with the given converted
         /// type.
+        /// trueの場合、シリアライザは指定された変換タイプの循環参照をサポートします。
         /// </summary>
-        /// <param name="storageType">The field/property type that is currently storing the object
-        /// that is being serialized.</param>
+        /// <param name="storageType">The field/property type that is currently storing the object that is being serialized.</param>
+        /// 現在直列化されているオブジェクトを格納しているフィールド/プロパティ型。
         public virtual bool RequestCycleSupport(Type storageType) {
             if (storageType == typeof(string)) return false;
 
@@ -47,6 +52,7 @@ namespace FullSerializer {
 
         /// <summary>
         /// If true, then the serializer will include inheritance data for the given converter.
+        /// trueの場合、シリアライザには指定されたコンバーターの継承データが含まれます。
         /// </summary>
         /// <param name="storageType">The field/property type that is currently storing the object
         /// that is being serialized.</param>
@@ -56,6 +62,7 @@ namespace FullSerializer {
 
         /// <summary>
         /// Serialize the actual object into the given data storage.
+        /// 実際のオブジェクトを指定されたデータストレージにシリアル化します。
         /// </summary>
         /// <param name="instance">The object instance to serialize. This will never be null.</param>
         /// <param name="serialized">The serialized state.</param>
@@ -65,6 +72,7 @@ namespace FullSerializer {
 
         /// <summary>
         /// Deserialize data into the object instance.
+        /// データをオブジェクトインスタンスにデシリアライズします。
         /// </summary>
         /// <param name="data">Serialization data to deserialize from.</param>
         /// <param name="instance">The object instance to deserialize into.</param>

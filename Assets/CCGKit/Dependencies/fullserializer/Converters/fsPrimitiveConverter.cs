@@ -59,9 +59,12 @@ namespace FullSerializer.Internal {
 
             if (UseDouble(instanceType)) {
                 // Casting from float to double introduces floating point jitter, ie, 0.1 becomes 0.100000001490116.
+                //floatからdoubleへのキャストは浮動小数点ジッタを導入します。つまり、0.1は0.100000001490116になります。
                 // Casting to decimal as an intermediate step removes the jitter. Not sure why.
+                //中間ステップとして10進数にキャストすると、ジッタが除去されます。 理由は分かりません。
                 if (instance.GetType() == typeof(float) &&
                     // Decimal can't store float.MinValue/float.MaxValue/float.PositiveInfinity/float.NegativeInfinity/float.NaN - an exception gets thrown in that scenario.
+                    //Decimalはfloat.MinValue / float.MaxValue / float.PositiveInfinity / float.NegativeInfinity / float.NaNを格納できません - このシナリオでは例外がスローされます。
                     (float)instance != float.MinValue &&
                     (float)instance != float.MaxValue &&
                     !float.IsInfinity((float)instance) &&

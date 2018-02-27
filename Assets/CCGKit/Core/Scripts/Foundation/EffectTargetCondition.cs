@@ -1,16 +1,14 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
 namespace CCGKit
 {
     /// <summary>
     /// The base class for conditions.
+    /// 条件の基本クラス。
     /// </summary>
     public abstract class Condition
     {
         /// <summary>
         /// Returns a readable string representing this condition.
+        /// この条件を表す読み込み可能な文字列を返します。
         /// </summary>
         /// <param name="config">The game's configuration.</param>
         /// <returns>A readable string that represents this condition.</returns>
@@ -18,6 +16,7 @@ namespace CCGKit
 
         /// <summary>
         /// Returns a readable string representing the specified condition operator.
+        /// 指定した条件演算子を表す読み込み可能な文字列を返します。
         /// </summary>
         /// <param name="op">The condition operator.</param>
         /// <returns>A readable string that represents the specified condition operator.</returns>
@@ -45,11 +44,13 @@ namespace CCGKit
 
     /// <summary>
     /// The base class for player conditions.
+    /// プレーヤ条件の基本クラス。
     /// </summary>
     public abstract class PlayerCondition : Condition
     {
         /// <summary>
         /// Returns true if this condition has been met on the specified player and false otherwise.
+        /// この条件が指定されたプレーヤで満たされている場合はtrueを返し、そうでない場合はfalseを返します。
         /// </summary>
         /// <param name="player">The player.</param>
         /// <returns>True if this condition has been met on the specified player; false otherwise.</returns>
@@ -58,14 +59,17 @@ namespace CCGKit
 
     /// <summary>
     /// The base class for card conditions.
+    /// カード条件の基本クラス。
     /// </summary>
     public abstract class CardCondition : Condition
     {
         /// <summary>
         /// Returns true if this condition has been met on the specified card and false otherwise.
+        /// 指定されたカードでこの条件が満たされている場合はtrueを返し、そうでない場合はfalseを返します。
         /// </summary>
         /// <param name="card">The card.</param>
         /// <returns>True if this condition has been met on the specified card; false otherwise.</returns>
+        /// <returns>この条件が指定されたカードで満たされていれば真。 そうでない場合はfalseです。</ returns>
         public abstract bool IsTrue(RuntimeCard card);
     }
 }

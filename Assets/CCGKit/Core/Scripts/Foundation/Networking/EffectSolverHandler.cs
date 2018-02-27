@@ -42,6 +42,8 @@ namespace CCGKit
                         if (sourcePlayer.stats[payResourceCost.statId].effectiveValue >= statCost)
                         {
                             sourcePlayer.stats[payResourceCost.statId].baseValue -= statCost;
+                            //battlecryの判定
+                            //serverは親クラスのフィールド
                             server.effectSolver.ActivateAbility(sourcePlayer, card, 0);
                         }
                     }

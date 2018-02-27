@@ -16,6 +16,7 @@ namespace CCGKit
 {
     /// <summary>
     /// Custom attribute for card stats.
+    /// カードのスタッツ情報のカスタム属性
     /// </summary>
     public class CardStatFieldAttribute : FieldAttribute
     {
@@ -32,6 +33,7 @@ namespace CCGKit
 
         /// <summary>
         /// Draws this attribute.
+        /// 属性を描画
         /// </summary>
         /// <param name="gameConfig">The configuration of the game.</param>
         /// <param name="instance">The instance.</param>

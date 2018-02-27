@@ -1,28 +1,28 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
 namespace CCGKit
 {
     /// <summary>
     /// A random number.
+    /// 乱数
     /// </summary>
     public class RandomValue : Value
     {
         /// <summary>
         /// The minimum value of this value.
+        /// この値の最小値。
         /// </summary>
         [IntField("Min")]
         public int min;
 
         /// <summary>
         /// The maximum value of this value.
+        /// この値の最大値。
         /// </summary>
         [IntField("Max")]
         public int max;
 
         /// <summary>
         /// Returns the integer value of this value.
+        /// この値の整数値を返します。
         /// </summary>
         /// <param name="state">The state of the game.</param>
         /// <param name="player">The state of the player.</param>

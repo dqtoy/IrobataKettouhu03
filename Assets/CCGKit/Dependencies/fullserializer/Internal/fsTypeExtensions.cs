@@ -13,6 +13,7 @@ namespace FullSerializer {
     public static class fsTypeExtensions {
         /// <summary>
         /// Returns a pretty name for the type in the style of one that you'd see in C# without the namespace.
+        /// ネームスペースのないC＃で見られるようなスタイルで、その型のかなりの名前を返します。
         /// </summary>
         public static string CSharpName(this Type type) {
             return CSharpName(type, /*includeNamespace:*/false);
@@ -26,6 +27,7 @@ namespace FullSerializer {
 
         /// <summary>
         /// Returns a pretty name for the type in the style of one that you'd see in C#.
+        /// あなたがC＃で見られるようなスタイルの、きれいな名前を返します。
         /// </summary>
         /// <parparam name="includeNamespace">Should the name include namespaces?</parparam>
         public static string CSharpName(this Type type, bool includeNamespace) {
@@ -38,7 +40,9 @@ namespace FullSerializer {
             if (type == typeof(string)) return "string";
 
             // Generic parameter, ie, T in Okay<T>
+            //一般的なパラメータ（Okay<T> のT）
             // We special-case this logic otherwise we will recurse on the T
+            //特別なケースではこのロジックを使用しなければ、Tで再帰的に扱います
             if (type.IsGenericParameter) {
                 return type.ToString();
             }
@@ -51,10 +55,12 @@ namespace FullSerializer {
 
                 // The declaring type generic parameters are considered part of the nested types generic
                 // parameters so we need to remove them, otherwise it will get included again.
-                //
+                //宣言型のジェネリックパラメータは、ネストされたタイプのジェネリックパラメータの一部とみなされるため、それらを削除する必要があります。それ以外の場合は、再度インクルードされます。
+
                 // Say we have type `class Parent<T> { class Child {} }`
                 // If we did not do the removal, then we would output Parent<T>.Child<T>, but we really want
                 // to output Parent<T>.Child
+                //`class Parent <T> {class Child {}}`を削除しなかった場合は、Parent <T> .Child <T>を出力しますが、本当にParent <T>を出力したいとします。 子
                 if (type.DeclaringType.GetGenericArguments().Length > 0) {
                     genericArguments = genericArguments.Skip(type.DeclaringType.GetGenericArguments().Length);
                 }

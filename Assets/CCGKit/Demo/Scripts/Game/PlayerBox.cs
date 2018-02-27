@@ -1,14 +1,11 @@
-﻿// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 /// <summary>
 /// This class wraps the information of a player box from the game scene and it is updated by the
 /// game user interface in response to the server sending new state updates to the client.
+/// このクラスは、プレイヤーボックスの情報をゲームシーンからラップし、サーバーがクライアントに新しい状態の更新を送信するのに応じて、ゲームユーザーインターフェイスによって更新されます。
 /// </summary>
 public class PlayerBox : MonoBehaviour
 {

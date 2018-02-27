@@ -1,8 +1,4 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
@@ -10,6 +6,7 @@ namespace CCGKit
 {
     /// <summary>
     /// CCG Kit editor's 'Keyword' tab.
+    /// CCGキットエディタの[キーワード]タブ。
     /// </summary>
     public class KeywordEditor : EditorTab
     {
@@ -21,7 +18,8 @@ namespace CCGKit
 
         public KeywordEditor(GameConfiguration config) : base(config)
         {
-            keywordList = EditorUtils.SetupReorderableList("Keywords", gameConfig.keywords, ref currentKeyword, (rect, x) =>
+//            keywordList = EditorUtils.SetupReorderableList("Keywords", gameConfig.keywords, ref currentKeyword, (rect, x) =>
+            keywordList = EditorUtils.SetupReorderableList("キーワード", gameConfig.keywords, ref currentKeyword, (rect, x) =>
             {
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.name);
             },
@@ -45,7 +43,8 @@ namespace CCGKit
 
         private void CreateCurrentKeywordValuesList()
         {
-            currentKeywordValuesList = EditorUtils.SetupReorderableList("Values", currentKeyword.values, ref currentKeywordValue, (rect, x) =>
+ //           currentKeywordValuesList = EditorUtils.SetupReorderableList("Values", currentKeyword.values, ref currentKeywordValue, (rect, x) =>
+            currentKeywordValuesList = EditorUtils.SetupReorderableList("値", currentKeyword.values, ref currentKeywordValue, (rect, x) =>
             {
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.value);
             },
@@ -63,7 +62,9 @@ namespace CCGKit
                 currentKeywordValue = null;
             });
         }
-
+        /// <summary>
+        /// 描画
+        /// </summary>
         public override void Draw()
         {
             GUILayout.BeginHorizontal();
@@ -91,7 +92,9 @@ namespace CCGKit
             GUILayout.BeginVertical();
 
             GUILayout.BeginHorizontal();
-            EditorGUILayout.PrefixLabel("Name");
+
+//            EditorGUILayout.PrefixLabel("Name");
+            EditorGUILayout.PrefixLabel("名前");
             keyword.name = EditorGUILayout.TextField(keyword.name, GUILayout.MaxWidth(EditorConfig.RegularTextFieldWidth));
             GUILayout.EndHorizontal();
 
@@ -120,7 +123,8 @@ namespace CCGKit
             GUILayout.BeginVertical();
 
             GUILayout.BeginHorizontal();
-            EditorGUILayout.PrefixLabel("Name");
+//            EditorGUILayout.PrefixLabel("Name");
+            EditorGUILayout.PrefixLabel("名前");
             value.value = EditorGUILayout.TextField(value.value, GUILayout.MaxWidth(EditorConfig.RegularTextFieldWidth));
             GUILayout.EndHorizontal();
 

@@ -1,24 +1,23 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
-using System;
+﻿using System;
 
 namespace CCGKit
 {
     /// <summary>
     /// Custom attribute that allows to control the ordering of fields retrieved via reflection.
+    /// リフレクションによって取得されたフィールドの順序を制御できるカスタム属性。
     /// </summary>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
     public sealed class OrderAttribute : Attribute
     {
         /// <summary>
         /// The order of this field.
+        /// このフィールドの順序。
         /// </summary>
         private readonly int order;
 
         /// <summary>
         /// The order of this field.
+        /// このフィールドの順序。
         /// </summary>
         public int Order { get { return order; } }
 

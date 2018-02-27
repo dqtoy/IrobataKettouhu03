@@ -1,7 +1,3 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
 using System;
 using System.Collections.Generic;
 
@@ -9,41 +5,49 @@ namespace CCGKit
 {
     /// <summary>
     /// This class represents a runtime instance of a card.
+    /// このクラスは、カードのランタイムインスタンスを表します。
     /// </summary>
     public class RuntimeCard
     {
         /// <summary>
         /// The card identifier of this card.
+        /// カードの固有ID
         /// </summary>
         public int cardId;
 
         /// <summary>
         /// The instance identifier of this card.
+        /// このカードのインスタンス識別子。
         /// </summary>
         public int instanceId;
 
         /// <summary>
         /// The stats of this card, indexed by id.
+        /// このカードのスタッツはidで示されます。
         /// </summary>
         public Dictionary<int, Stat> stats = new Dictionary<int, Stat>();
 
         /// <summary>
         /// The stats of this card, indexed by name.
+        /// このカードのスタッツは名前で示されます。
         /// </summary>
         public Dictionary<string, Stat> namedStats = new Dictionary<string, Stat>();
 
         /// <summary>
         /// The keywords of this card.
+        /// カードのキーワード
         /// </summary>
         public List<RuntimeKeyword> keywords = new List<RuntimeKeyword>();
 
         /// <summary>
         /// The player that owns this card.
+        /// このカードを所有しているプレイヤー。
         /// </summary>
         public PlayerInfo ownerPlayer;
 
         /// <summary>
         /// The type of this card.
+        /// カードタイプ
         /// </summary>
         public CardType cardType
         {
@@ -57,16 +61,19 @@ namespace CCGKit
 
         /// <summary>
         /// The callback that is called when a keyword is added to this card.
+        /// このカードにキーワードが追加されたときに呼び出されるコールバック。
         /// </summary>
         public Action<RuntimeKeyword> onKeywordAdded;
 
         /// <summary>
         /// The callback that is called when a keyword is removed from this card.
+        /// このカードからキーワードが削除されたときに呼び出されるコールバック。
         /// </summary>
         public Action<RuntimeKeyword> onKeywordRemoved;
 
         /// <summary>
         /// Adds a keyword to this card.
+        /// このカードにキーワードを追加する
         /// </summary>
         /// <param name="keyword">The identifier of the keyword.</param>
         /// <param name="value">The value of the keyword.</param>
@@ -88,6 +95,7 @@ namespace CCGKit
 
         /// <summary>
         /// Removes a keyword from this card.
+        /// カードからキーワードを削除する
         /// </summary>
         /// <param name="keyword">The identifier of this keyword.</param>
         /// <param name="value">The value of this keyword.</param>
@@ -106,6 +114,7 @@ namespace CCGKit
 
         /// <summary>
         /// Returns true if this card has the specified keyword and false otherwise.
+        /// このカードに指定されたキーワードがある場合はtrueを返し、そうでない場合はfalseを返します。
         /// </summary>
         /// <param name="name">The name of the keyword.</param>
         /// <returns>True if this card has the specified keyword; false otherwise.</returns>

@@ -1,4 +1,4 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
+﻿// Copyright (C) 2016-2017 David Pol. All rights reserved.
 // This code can only be used under the standard Unity Asset Store End User License Agreement,
 // a copy of which is available at http://unity3d.com/company/legal/as_terms.
 
@@ -18,7 +18,8 @@ namespace CCGKit
 
         public GameZonesEditor(GameConfiguration config) : base(config)
         {
-            gameZonesList = EditorUtils.SetupReorderableList("Game zones", gameConfig.gameZones, ref currentGameZone, (rect, x) =>
+            gameZonesList = EditorUtils.SetupReorderableList("場の設定", gameConfig.gameZones, ref currentGameZone, (rect, x) =>
+            //gameZonesList = EditorUtils.SetupReorderableList("Game zones", gameConfig.gameZones, ref currentGameZone, (rect, x) =>
             {
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.name);
             },
@@ -64,32 +65,36 @@ namespace CCGKit
             GUILayout.BeginVertical();
 
             GUILayout.BeginHorizontal();
-            EditorGUILayout.PrefixLabel("Name");
+            EditorGUILayout.PrefixLabel("名前");
             zone.name = EditorGUILayout.TextField(zone.name, GUILayout.MaxWidth(EditorConfig.RegularTextFieldWidth));
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            EditorGUILayout.PrefixLabel("Owner");
+            EditorGUILayout.PrefixLabel("所有者");
             zone.owner = (ZoneOwner)EditorGUILayout.EnumPopup(zone.owner, GUILayout.MaxWidth(EditorConfig.RegularComboBoxWidth));
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            EditorGUILayout.PrefixLabel("Type");
+ //           EditorGUILayout.PrefixLabel("Type");
+            EditorGUILayout.PrefixLabel("静的か動的か");
             zone.type = (ZoneType)EditorGUILayout.EnumPopup(zone.type, GUILayout.MaxWidth(EditorConfig.RegularComboBoxWidth));
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            EditorGUILayout.PrefixLabel("Owner visibility");
+//            EditorGUILayout.PrefixLabel("Owner visibility");
+            EditorGUILayout.PrefixLabel("所有者への表示");
             zone.ownerVisibility = (ZoneOwnerVisibility)EditorGUILayout.EnumPopup(zone.ownerVisibility, GUILayout.MaxWidth(EditorConfig.RegularComboBoxWidth));
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            EditorGUILayout.PrefixLabel("Opponent visibility");
+//            EditorGUILayout.PrefixLabel("Opponent visibility");
+            EditorGUILayout.PrefixLabel("対戦相手への表示");
             zone.opponentVisibility = (ZoneOpponentVisibility)EditorGUILayout.EnumPopup(zone.opponentVisibility, GUILayout.MaxWidth(EditorConfig.RegularComboBoxWidth));
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            EditorGUILayout.PrefixLabel("Has maximum size");
+//            EditorGUILayout.PrefixLabel("Has maximum size");
+            EditorGUILayout.PrefixLabel("上限値を設けるか");
             zone.hasMaxSize = EditorGUILayout.Toggle(zone.hasMaxSize, GUILayout.MaxWidth(EditorConfig.RegularTextFieldWidth));
             GUILayout.EndHorizontal();
 
@@ -97,7 +102,8 @@ namespace CCGKit
             {
                 EditorGUI.indentLevel++;
                 GUILayout.BeginHorizontal();
-                EditorGUILayout.PrefixLabel("Maximum size");
+ //               EditorGUILayout.PrefixLabel("Maximum size");
+                EditorGUILayout.PrefixLabel("上限値");
                 zone.maxSize = EditorGUILayout.IntField(zone.maxSize, GUILayout.MaxWidth(EditorConfig.RegularIntFieldWidth + 15));
                 GUILayout.EndHorizontal();
                 EditorGUI.indentLevel--;

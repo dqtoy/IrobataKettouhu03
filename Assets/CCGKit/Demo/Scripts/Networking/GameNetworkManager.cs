@@ -45,7 +45,7 @@ public class GameNetworkManager : NetworkManager
         // UNET currently crashes on iOS if the runInBackground property is set to true.
         //runInBackgroundプロパティがtrueに設定されていると、UNETは現在iOSでクラッシュします。
         //なので、iOSの場合ここでfalseに設定する
-        //UNETはネットワーク通信するための仕組み。
+        ///UNETはネットワーク通信するための仕組み。
         if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.tvOS)
         {
             runInBackground = false;

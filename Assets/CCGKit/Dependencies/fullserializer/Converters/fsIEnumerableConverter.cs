@@ -6,6 +6,7 @@ using System.Reflection;
 namespace FullSerializer.Internal {
     /// <summary>
     /// Provides serialization support for anything which extends from `IEnumerable` and has an `Add` method.
+    /// `IEnumerable`から拡張され、` Add`メソッドを持つもののシリアライゼーションサポートを提供します。
     /// </summary>
     public class fsIEnumerableConverter : fsConverter {
         public override bool CanProcess(Type type) {
@@ -30,6 +31,7 @@ namespace FullSerializer.Internal {
                 fsData itemData;
 
                 // note: We don't fail the entire deserialization even if the item failed
+                //注：アイテムが失敗しても、すべての直列化解除に失敗しません
                 var itemResult = Serializer.TrySerialize(elementType, item, out itemData);
                 result.AddMessages(itemResult);
                 if (itemResult.Failed) continue;
@@ -39,6 +41,7 @@ namespace FullSerializer.Internal {
 
             // Stacks iterate from back to front, which means when we deserialize we will deserialize
             // the items in the wrong order, so the stack will get reversed.
+            //スタックは前後に反復されます。つまり、逆直列化すると間違った順序でアイテムを逆直列化するので、スタックが逆転します。
             if (IsStack(instance.GetType())) {
                 serializedList.Reverse();
             }
@@ -59,6 +62,7 @@ namespace FullSerializer.Internal {
 
             // For general strategy, instance may already have items in it. We will try to deserialize into
             // the existing element.
+            //一般的な戦略の場合、インスタンスにはすでにアイテムが含まれている可能性があります。 既存の要素に脱直列化しようとします。
             var elementStorageType = GetElementType(storageType);
             var addMethod = GetAddMethod(storageType);
             var getMethod = storageType.GetFlattenedMethod("get_Item");
@@ -75,6 +79,7 @@ namespace FullSerializer.Internal {
                 }
 
                 // note: We don't fail the entire deserialization even if the item failed
+                //注：アイテムが失敗しても、すべての直列化解除に失敗しません
                 var itemResult = Serializer.TryDeserialize(itemData, elementStorageType, ref itemInstance);
                 result.AddMessages(itemResult);
                 if (itemResult.Failed) continue;
@@ -99,6 +104,7 @@ namespace FullSerializer.Internal {
 
         /// <summary>
         /// Fetches the element type for objects inside of the collection.
+        /// コレクション内のオブジェクトの要素タイプを取得します。
         /// </summary>
         private static Type GetElementType(Type objectType) {
             if (objectType.HasElementType) return objectType.GetElementType();
@@ -129,6 +135,7 @@ namespace FullSerializer.Internal {
             // the add method we want. Just doing type.GetFlattenedMethod() may return the incorrect one --
             // for example, with dictionaries, it'll return Add(TKey, TValue), and we want
             // Add(KeyValuePair<TKey, TValue>).
+            //型がICollection {}を拡張する可能性は非常にあります。ICollection {}には、必要なaddメソッドが含まれています。 ちょうどtype.GetFlattenedMethod（）は誤ったものを返すかもしれません - たとえば、辞書ではAdd（TKey、TValue）を返し、Add（KeyValuePair <TKey、TValue>）を返します。
             Type collectionInterface = fsReflectionUtility.GetInterface(type, typeof(ICollection<>));
             if (collectionInterface != null) {
                 MethodInfo add = collectionInterface.GetDeclaredMethod("Add");
@@ -136,6 +143,7 @@ namespace FullSerializer.Internal {
             }
 
             // Otherwise try and look up a general Add method.
+            //それ以外の場合は、一般的なAddメソッドを参照してください。
             return
                 type.GetFlattenedMethod("Add") ??
                 type.GetFlattenedMethod("Push") ??

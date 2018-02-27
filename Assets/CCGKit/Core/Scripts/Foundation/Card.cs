@@ -18,36 +18,43 @@ namespace CCGKit
 
         /// <summary>
         /// The type of this card.
+        /// このカードのタイプ。
         /// </summary>
         public int cardTypeId;
 
         /// <summary>
         /// The name of this card.
+        /// このカードの名前。
         /// </summary>
         public string name;
 
         /// <summary>
         /// The costs of this card.
+        /// このカードのコスト。
         /// </summary>
         public List<Cost> costs = new List<Cost>();
 
         /// <summary>
         /// The properties of this card.
+        /// このカードの特性。
         /// </summary>
         public List<Property> properties = new List<Property>();
 
         /// <summary>
         /// The stats of this card.
+        /// このカードの統計情報。
         /// </summary>
         public List<Stat> stats = new List<Stat>();
 
         /// <summary>
         /// The keywords of this card.
+        /// このカードのキーワード。
         /// </summary>
         public List<RuntimeKeyword> keywords = new List<RuntimeKeyword>();
 
         /// <summary>
         /// The abilities of this card.
+        /// このカードの能力。
         /// </summary>
         public List<Ability> abilities = new List<Ability>();
 

@@ -41,11 +41,13 @@ namespace FullSerializer.Internal {
                 if (attr != null) {
                     if (string.IsNullOrEmpty(attr.VersionString) == false || attr.PreviousModels != null) {
                         // Version string must be provided
+                        //バージョン文字列を指定する必要があります
                         if (attr.PreviousModels != null && string.IsNullOrEmpty(attr.VersionString)) {
                             throw new Exception("fsObject attribute on " + type + " contains a PreviousModels specifier - it must also include a VersionString modifier");
                         }
 
                         // Map the ancestor types into versioned types
+                        //祖先型をバージョン管理された型にマップする
                         fsVersionedType[] ancestors = new fsVersionedType[attr.PreviousModels != null ? attr.PreviousModels.Length : 0];
                         for (int i = 0; i < ancestors.Length; ++i) {
                             fsOption<fsVersionedType> ancestorType = GetVersionedType(attr.PreviousModels[i]);
@@ -56,6 +58,7 @@ namespace FullSerializer.Internal {
                         }
 
                         // construct the actual versioned type instance
+                        //実際のバージョン管理された型インスタンスを構築する
                         fsVersionedType versionedType = new fsVersionedType {
                             Ancestors = ancestors,
                             VersionString = attr.VersionString,
@@ -63,6 +66,7 @@ namespace FullSerializer.Internal {
                         };
 
                         // finally, verify that the versioned type passes some sanity checks
+                        //最後に、バージョン管理された型がいくつかの健全性チェックをパスすることを確認します
                         VerifyUniqueVersionStrings(versionedType);
                         VerifyConstructors(versionedType);
 
@@ -78,6 +82,7 @@ namespace FullSerializer.Internal {
 
         /// <summary>
         /// Verifies that the given type has constructors to migrate from all ancestor types.
+        /// 指定された型にすべての祖先型から移行するコンストラクタがあることを検証します。
         /// </summary>
         private static void VerifyConstructors(fsVersionedType type) {
             ConstructorInfo[] publicConstructors = type.ModelType.GetDeclaredConstructors();
@@ -102,6 +107,7 @@ namespace FullSerializer.Internal {
 
         /// <summary>
         /// Verifies that the given version graph contains only unique versions.
+        /// 指定されたバージョングラフに固有のバージョンのみが含まれていることを検証します。
         /// </summary>
         private static void VerifyUniqueVersionStrings(fsVersionedType type) {
             // simple tree traversal
@@ -117,6 +123,7 @@ namespace FullSerializer.Internal {
                 // Verify we do not already have the version string. Take into account that we're not just
                 // comparing the same model twice, since we can have a valid import graph that has the same
                 // model multiple times.
+                //バージョン文字列がまだないことを確認します。 同じモデルを複数回持つ有効なインポートグラフを持つことができるので、同じモデルを2回比較するだけではないことを考慮してください。
                 if (found.ContainsKey(item.VersionString) && found[item.VersionString] != item.ModelType) {
                     throw new fsDuplicateVersionNameException(found[item.VersionString], item.ModelType, item.VersionString);
                 }

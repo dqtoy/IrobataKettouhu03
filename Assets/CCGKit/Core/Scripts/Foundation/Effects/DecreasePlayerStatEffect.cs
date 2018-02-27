@@ -4,6 +4,9 @@
 
 namespace CCGKit
 {
+    /// <summary>
+    /// プレイヤーのダメージ計算
+    /// </summary>
     [PlayerTarget]
     public class DecreasePlayerStatEffect : PlayerEffect
     {

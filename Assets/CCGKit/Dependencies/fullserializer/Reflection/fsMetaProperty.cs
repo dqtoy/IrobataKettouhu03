@@ -4,6 +4,7 @@ using System.Reflection;
 namespace FullSerializer.Internal {
     /// <summary>
     /// A property or field on a MetaType. This unifies the FieldInfo and PropertyInfo classes.
+    /// MetaTypeのプロパティまたはフィールド。 これにより、FieldInfoおよびPropertyInfoクラスが統一されます。
     /// </summary>
     public class fsMetaProperty {
         internal fsMetaProperty(fsConfig config, FieldInfo field) {
@@ -45,12 +46,14 @@ namespace FullSerializer.Internal {
 
         /// <summary>
         /// Internal handle to the reflected member.
+        /// 反射された部材の内部ハンドル。
         /// </summary>
         private MemberInfo _memberInfo;
 
         /// <summary>
         /// The type of value that is stored inside of the property. For example, for an int field,
         /// StorageType will be typeof(int).
+        /// プロパティの内部に格納される値の型。 たとえば、intフィールドの場合、StorageTypeはtypeof（int）になります。
         /// </summary>
         public Type StorageType {
             get;
@@ -61,6 +64,8 @@ namespace FullSerializer.Internal {
         /// A custom fsBaseConverter instance to use for this field/property, if requested. This will be
         /// null if the default converter selection algorithm should be used. This is specified using the
         /// [fsObject] annotation with the Converter field.
+        /// 要求された場合、このフィールド/プロパティに使用するカスタムfsBaseConverterインスタンス。 
+        /// デフォルトのコンバータ選択アルゴリズムを使用する必要がある場合は、この値はnullになります。 これは[fsObject]アノテーションと[コンバーター]フィールドを使用して指定します。
         /// </summary>
         public Type OverrideConverterType {
             get;
@@ -69,6 +74,7 @@ namespace FullSerializer.Internal {
 
         /// <summary>
         /// Can this property be read?
+        /// このプロパティを読み取ることはできますか？
         /// </summary>
         public bool CanRead {
             get;
@@ -77,6 +83,7 @@ namespace FullSerializer.Internal {
 
         /// <summary>
         /// Can this property be written to?
+        /// このプロパティを書き込めますか？
         /// </summary>
         public bool CanWrite {
             get;
@@ -85,6 +92,7 @@ namespace FullSerializer.Internal {
 
         /// <summary>
         /// The serialized name of the property, as it should appear in JSON.
+        /// JSONに表示されるプロパティのシリアル化された名前。
         /// </summary>
         public string JsonName {
             get;
@@ -93,6 +101,7 @@ namespace FullSerializer.Internal {
 
         /// <summary>
         /// The name of the actual member.
+        /// 実際のメンバーの名前。
         /// </summary>
         public string MemberName {
             get;
@@ -101,6 +110,7 @@ namespace FullSerializer.Internal {
 
         /// <summary>
         /// Is this member public?
+        /// このメンバーは公開されていますか？
         /// </summary>
         public bool IsPublic {
             get;
@@ -110,6 +120,7 @@ namespace FullSerializer.Internal {
         /// <summary>
         /// Is this type readonly? We can modify readonly properties using reflection, but not
         /// using generated C#.
+        /// このタイプは読み込み専用ですか？ リフレクションを使用して読み取り専用プロパティを変更できますが、生成されたC＃を使用することはできません。
         /// </summary>
         public bool IsReadOnly {
             get; private set;
@@ -118,6 +129,7 @@ namespace FullSerializer.Internal {
         /// <summary>
         /// Writes a value to the property that this MetaProperty represents, using given object
         /// instance as the context.
+        /// 指定されたオブジェクトインスタンスをコンテキストとして使用して、このMetaPropertyが表すプロパティに値を書き込みます。
         /// </summary>
         public void Write(object context, object value) {
             FieldInfo field = _memberInfo as FieldInfo;
@@ -138,6 +150,7 @@ namespace FullSerializer.Internal {
         /// <summary>
         /// Reads a value from the property that this MetaProperty represents, using the given
         /// object instance as the context.
+        /// 指定されたオブジェクトインスタンスをコンテキストとして使用して、このMetaPropertyが表すプロパティから値を読み取ります。
         /// </summary>
         public object Read(object context) {
             if (_memberInfo is PropertyInfo) {

@@ -6,6 +6,7 @@ namespace CCGKit
 {
     /// <summary>
     /// Game action to increase a player stat.
+    /// プレイヤーの能力を増加させるゲームアクション。
     /// </summary>
     public class IncreasePlayerStatAction : GameAction
     {

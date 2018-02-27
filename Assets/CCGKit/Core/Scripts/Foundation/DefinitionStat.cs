@@ -1,11 +1,8 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
 namespace CCGKit
 {
     /// <summary>
     /// The base stat class used in player and card definitions.
+    /// プレーヤとカードの定義で使用される基本statクラス。
     /// </summary>
     public class DefinitionStat : Resource
     {
@@ -50,12 +47,15 @@ namespace CCGKit
     {
         /// <summary>
         /// The current resource identifier.
+        /// 複数のプレイヤーをIDで管理する
         /// </summary>
         public static int currentId;
 
         /// <summary>
         /// Constructor.
+        /// 呼び出されるたびにIDを1ずつ増やす
         /// </summary>
+        /// 派生クラスから基底クラスの共通処理を呼び出すときは「base.関数名」で呼び出すことができる
         public PlayerStat() : base(currentId++)
         {
         }
@@ -74,6 +74,8 @@ namespace CCGKit
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// 呼び出されるたびにIDを1ずつ増やす
+        /// 派生クラスから基底クラスの共通処理を呼び出すときは「base.関数名」で呼び出すことができる
         public CardStat() : base(currentId++)
         {
         }

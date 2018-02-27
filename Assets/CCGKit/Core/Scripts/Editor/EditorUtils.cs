@@ -1,8 +1,4 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 using UnityEditor;
@@ -13,6 +9,7 @@ namespace CCGKit
 {
     /// <summary>
     /// Miscellaneous editor functionality.
+    /// その他のエディタ機能。
     /// </summary>
     public class EditorUtils
     {
@@ -20,6 +17,8 @@ namespace CCGKit
         {
             var list = new ReorderableList(elements, typeof(T), true, true, true, true);
 
+            //drawHeaderCallbackでヘッダーの描画。
+            //ヘッダの文字を変更する
             list.drawHeaderCallback = (Rect rect) =>
             {
                 EditorGUI.LabelField(rect, headerText);
@@ -47,8 +46,9 @@ namespace CCGKit
 
             list.onRemoveCallback = (ReorderableList l) =>
             {
-                if (EditorUtility.DisplayDialog("Warning!", "Are you sure you want to delete this item?", "Yes", "No"))
-                {
+//                if (EditorUtility.DisplayDialog("Warning!", "Are you sure you want to delete this item?", "Yes", "No"))
+                  if (EditorUtility.DisplayDialog("警告！", "本当にこのアイテムを削除しますか？", "はい", "いいえ"))
+                    {
                     var element = elements[l.index];
                     removeElement(element);
                     ReorderableList.defaultBehaviours.DoRemoveButton(l);

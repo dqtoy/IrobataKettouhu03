@@ -1,4 +1,4 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
+﻿// Copyright (C) 2016-2017 David Pol. All rights reserved.
 // This code can only be used under the standard Unity Asset Store End User License Agreement,
 // a copy of which is available at http://unity3d.com/company/legal/as_terms.
 
@@ -7,6 +7,7 @@ using System.Linq;
 
 /// <summary>
 /// A collection of miscellaneous string-related utilities.
+/// その他の文字列関連ユーティリティの集合。
 /// </summary>
 public static class StringUtils
 {

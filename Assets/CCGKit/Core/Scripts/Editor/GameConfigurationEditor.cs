@@ -1,4 +1,4 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
+﻿// Copyright (C) 2016-2017 David Pol. All rights reserved.
 // This code can only be used under the standard Unity Asset Store End User License Agreement,
 // a copy of which is available at http://unity3d.com/company/legal/as_terms.
 
@@ -14,6 +14,7 @@ namespace CCGKit
 {
     /// <summary>
     /// CCG Kit editor's 'Game configuration' tab.
+    /// ゲームの基本設定タブ
     /// </summary>
     public class GameConfigurationEditor : EditorTab
     {
@@ -29,11 +30,16 @@ namespace CCGKit
         private ReorderableList endGameConditionList;
         private EndGameCondition currentEndGameCondition;
 
+        /// <summary>
+        /// ゲームの基本設定タブ
+        /// </summary>
+        /// <param name="config":基本設定をロードしている></param>
         public GameConfigurationEditor(GameConfiguration config) : base(config)
         {
-            gameStartActionList = EditorUtils.SetupReorderableList("Game start actions", gameConfig.properties.gameStartActions, ref currentGameStartAction, (rect, x) =>
-            {
-                EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.name);
+//            gameStartActionList = EditorUtils.SetupReorderableList("ゲーム開始時の行動Game start actions", gameConfig.properties.gameStartActions, ref currentGameStartAction, (rect, x) =>
+            gameStartActionList = EditorUtils.SetupReorderableList("ゲーム開始時の行動", gameConfig.properties.gameStartActions, ref currentGameStartAction, (rect, x) =>
+             {
+                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.name);
             },
             (x) =>
             {
@@ -54,7 +60,8 @@ namespace CCGKit
                 currentGameStartAction = null;
             });
 
-            turnStartActionList = EditorUtils.SetupReorderableList("Turn start actions", gameConfig.properties.turnStartActions, ref currentTurnStartAction, (rect, x) =>
+ //           turnStartActionList = EditorUtils.SetupReorderableList("Turn start actions", gameConfig.properties.turnStartActions, ref currentTurnStartAction, (rect, x) =>
+            turnStartActionList = EditorUtils.SetupReorderableList("ターン開始時の行動", gameConfig.properties.turnStartActions, ref currentTurnStartAction, (rect, x) =>
             {
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.name);
             },
@@ -77,7 +84,8 @@ namespace CCGKit
                 currentTurnStartAction = null;
             });
 
-            turnEndActionList = EditorUtils.SetupReorderableList("Turn end actions", gameConfig.properties.turnEndActions, ref currentTurnEndAction, (rect, x) =>
+//            turnEndActionList = EditorUtils.SetupReorderableList("Turn end actions", gameConfig.properties.turnEndActions, ref currentTurnEndAction, (rect, x) =>
+            turnEndActionList = EditorUtils.SetupReorderableList("ターン終了時の行動", gameConfig.properties.turnEndActions, ref currentTurnEndAction, (rect, x) =>
             {
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.name);
             },
@@ -100,7 +108,8 @@ namespace CCGKit
                 currentTurnEndAction = null;
             });
 
-            endGameConditionList = EditorUtils.SetupReorderableList("End game conditions", gameConfig.properties.endGameConditions, ref currentEndGameCondition, (rect, x) =>
+//            endGameConditionList = EditorUtils.SetupReorderableList("End game conditions", gameConfig.properties.endGameConditions, ref currentEndGameCondition, (rect, x) =>
+            endGameConditionList = EditorUtils.SetupReorderableList("ゲームの終了条件", gameConfig.properties.endGameConditions, ref currentEndGameCondition, (rect, x) =>
             {
                 var conditionString = x.type.ToString() + ": " + x.GetReadableString(gameConfig);
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), conditionString);
@@ -124,7 +133,10 @@ namespace CCGKit
                 currentEndGameCondition = null;
             });
         }
-
+        /// <summary>
+        /// ゲーム開始時の行動
+        /// </summary>
+        /// <param name="obj"></param>
         private void CreateGameStartActionCallback(object obj)
         {
             var action = Activator.CreateInstance((Type)obj);
@@ -152,17 +164,18 @@ namespace CCGKit
         public override void Draw()
         {
             GUILayout.BeginHorizontal();
-            EditorGUILayout.PrefixLabel("Turn duration");
+            EditorGUILayout.PrefixLabel("1ターンの制限時間");
             gameConfig.properties.turnDuration = EditorGUILayout.IntField(gameConfig.properties.turnDuration, GUILayout.MaxWidth(30));
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            EditorGUILayout.PrefixLabel("Minimum deck size");
+            EditorGUILayout.PrefixLabel("最小デッキ構築枚数");
             gameConfig.properties.minDeckSize = EditorGUILayout.IntField(gameConfig.properties.minDeckSize, GUILayout.MaxWidth(30));
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            EditorGUILayout.PrefixLabel("Maximum deck size");
+//            EditorGUILayout.PrefixLabel("Maximum deck size");
+            EditorGUILayout.PrefixLabel("最大デッキ構築枚数");
             gameConfig.properties.maxDeckSize = EditorGUILayout.IntField(gameConfig.properties.maxDeckSize, GUILayout.MaxWidth(30));
             GUILayout.EndHorizontal();
 
@@ -247,7 +260,8 @@ namespace CCGKit
             GUILayout.BeginVertical();
 
             GUILayout.BeginHorizontal();
-            EditorGUILayout.PrefixLabel("Target");
+            //            EditorGUILayout.PrefixLabel("Target");
+            EditorGUILayout.PrefixLabel("対象");
             action.target = (GameActionTarget)EditorGUILayout.EnumPopup(action.target, GUILayout.MaxWidth(100));
             GUILayout.EndHorizontal();
 

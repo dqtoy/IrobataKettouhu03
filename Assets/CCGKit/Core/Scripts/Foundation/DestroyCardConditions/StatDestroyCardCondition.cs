@@ -7,6 +7,7 @@ namespace CCGKit
     /// <summary>
     /// This class represents a condition for a card to be destroyed based on one of its stats
     /// reaching a certain value.
+    /// このクラスは、ある値に達するスタッツの1つに基づいて破棄されるカードの条件を表します。
     /// </summary>
     public class StatDestroyCardCondition : DestroyCardCondition
     {
@@ -26,6 +27,7 @@ namespace CCGKit
 
         /// <summary>
         /// The operator of this condition.
+        /// この条件の演算子。
         /// </summary>
         [EnumField("Operator", width = 150)]
         [Order(3)]
@@ -33,6 +35,7 @@ namespace CCGKit
 
         /// <summary>
         /// The value of this condition.
+        /// この条件の値。
         /// </summary>
         [IntField("Value")]
         [Order(4)]
@@ -40,6 +43,7 @@ namespace CCGKit
 
         /// <summary>
         /// Returns true if this condition has been met on the specified card and false otherwise.
+        /// 指定されたカードでこの条件が満たされている場合はtrueを返し、そうでない場合はfalseを返します。
         /// </summary>
         /// <param name="card">The card.</param>
         /// <returns>True if this condition has been met on the specified card; false otherwise.</returns>
@@ -68,6 +72,7 @@ namespace CCGKit
 
         /// <summary>
         /// Returns a readable string representing this condition.
+        /// この条件を表す読み込み可能な文字列を返します。
         /// </summary>
         /// <param name="config">The game's configuration.</param>
         /// <returns>A readable string that represents this condition.</returns>

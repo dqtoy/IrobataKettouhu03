@@ -212,6 +212,7 @@ namespace FullSerializer {
 
             public void WriteReference(int id, Dictionary<string, fsData> dict) {
                 // Write the actual definition if necessary
+                //必要に応じて実際の定義を記述する
                 if (_pendingDefinitions.ContainsKey(id)) {
                     var data = _pendingDefinitions[id];
                     EnsureDictionary(data);

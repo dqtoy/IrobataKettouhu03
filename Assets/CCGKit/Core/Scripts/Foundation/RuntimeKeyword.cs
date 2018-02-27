@@ -1,21 +1,20 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
 namespace CCGKit
 {
     /// <summary>
     /// This class represents a runtime instance of a keyword.
+    /// このクラスは、キーワードの実行時インスタンスを表します。
     /// </summary>
     public class RuntimeKeyword
     {
         /// <summary>
         /// The identifier of this keyword.
+        /// このキーワードの識別子。
         /// </summary>
         public int keywordId;
 
         /// <summary>
         /// The value of this keyword.
+        /// このキーワードの値。
         /// </summary>
         public int valueId;
     }

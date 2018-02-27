@@ -8,6 +8,9 @@ namespace FullSerializer {
     /// simply declare a new field called "Register_*" that stores the type of converter you would
     /// like to add. Alternatively, you can do the same with a method called "Register_*"; just add
     /// the converter type to the `Converters` list.
+    /// このクラスを使用すると、任意のコードでグローバルコンバータを簡単に登録できます。
+    /// コンバータを追加するには、単に追加するコンバータのタイプを格納する "Register_ *"という新しいフィールドを宣言します。
+    /// あるいは、 "Register_ *"というメソッドでも同じことができます。 コンバータタイプを `Converters`リストに追加するだけです。
     /// </summary>
     public partial class fsConverterRegistrar {
         static fsConverterRegistrar() {
@@ -26,9 +29,11 @@ namespace FullSerializer {
         public static List<Type> Converters;
 
         // Example field registration:
+        //フィールド登録の例：
         //public static AnimationCurve_DirectConverter Register_AnimationCurve_DirectConverter;
 
         // Example method registration:
+        //フィールド登録の例：
         //public static void Register_AnimationCurve_DirectConverter() {
         //    Converters.Add(typeof(AnimationCurve_DirectConverter));
         //}

@@ -121,12 +121,14 @@ public class DeckBuilderScene : BaseScene
     {
         SceneManager.LoadScene("Home");
     }
-
+    /// <summary>
+    /// 新規作成ボタンを謳歌した時の処理
+    /// </summary>
     public void OnCreateDeckButtonPressed()
     {
-
-        CreateNewDeck();
+        
         SceneManager.LoadScene("SelectTeam");
+        CreateNewDeck();
     }
     /// <summary>
     /// 新しいデッキを作成する

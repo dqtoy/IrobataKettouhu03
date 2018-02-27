@@ -3,6 +3,7 @@
 namespace FullSerializer.Internal {
     /// <summary>
     /// Serializes and deserializes guids.
+    /// guidsをシリアライズしてデシリアライズします。
     /// </summary>
     public class fsGuidConverter : fsConverter {
         public override bool CanProcess(Type type) {

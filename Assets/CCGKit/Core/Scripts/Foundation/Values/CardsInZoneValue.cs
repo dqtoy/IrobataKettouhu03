@@ -1,22 +1,21 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
-namespace CCGKit
+﻿namespace CCGKit
 {
     /// <summary>
     /// A value that is equal to the number of cards in a zone.
+    /// ゾーン内のカードの数に等しい値。
     /// </summary>
     public class CardsInZoneValue : Value
     {
         /// <summary>
         /// The zone of this value.
+        /// この値のゾーン。
         /// </summary>
         [GameZoneField("Zone")]
         public int zoneId;
 
         /// <summary>
         /// Returns the integer value of this value.
+        /// この値の整数値を返します。
         /// </summary>
         /// <param name="state">The state of the game.</param>
         /// <param name="player">The state of the player.</param>

@@ -1,8 +1,4 @@
-﻿// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 using UnityEngine;
@@ -45,6 +41,7 @@ namespace CCGKit
 
         /// <summary>
         /// Returns true if this modifier is permanent and false otherwise.
+        /// この修飾子が永続的である場合はtrueを返し、そうでない場合はfalseを返します。
         /// </summary>
         /// <returns>True if this modifier is permanent; false otherwise.</returns>
         public bool IsPermanent()
@@ -59,26 +56,33 @@ namespace CCGKit
     /// life and mana stats and a creature card could have cost, attack and defense stats. Stats are
     /// transmitted over the network, which means you should only use them to represent values that can
     /// actually change over the course of a game in order to save bandwidth.
+    /// Statsは、CCGキットの基本概念です。 それらは、ゲームの過程で変化し、プレイヤーとカードの両方で使用される整数値を表します。 
+    /// 例えば、プレイヤーはライフとマナ・ステータスを持つことができ、クリーチャー・カードはコスト、攻撃、防御のStatsを持つことができます。 
+    /// Statsはネットワークを介して送信されます。つまり、Stats情報を使用して、ゲームの過程で実際に変更できる値を表すだけで、帯域幅を節約できます。
     /// </summary>
     public class Stat
     {
         /// <summary>
         /// The identifier of this stat.
+        /// 対象のスタッツを表す固有ID
         /// </summary>
         public int statId;
 
         /// <summary>
         /// The name of this stat.
+        /// スタッツの名前
         /// </summary>
         public string name;
 
         /// <summary>
         /// The base value of this stat.
+        /// スタッツのベースとなる値
         /// </summary>
         private int _baseValue;
 
         /// <summary>
         /// The base value of this stat.
+        /// スタッツの基本値
         /// </summary>
         [SerializeField]
         public int baseValue
@@ -97,46 +101,55 @@ namespace CCGKit
 
         /// <summary>
         /// The original value of this stat.
+        /// このスタッツの元の値
         /// </summary>
         public int originalValue;
 
         /// <summary>
         /// The minimum value of this stat.
+        /// スタッツの最小値
         /// </summary>
         public int minValue;
 
         /// <summary>
         /// The maximum value of this stat.
+        /// スタッツの最大値
         /// </summary>
         public int maxValue;
 
         /// <summary>
         /// The modifiers of this stat.
+        /// スタッツの修飾語
         /// </summary>
         public List<Modifier> modifiers = new List<Modifier>();
 
         /// <summary>
         /// The callback that is called when the value of this stat changes.
+        /// このstatの値が変更されたときに呼び出されるコールバックです。
         /// </summary>
         public Action<int, int> onValueChanged;
 
         /// <summary>
         /// The effective value of this stat.
+        /// スタッツの実効値
         /// </summary>
         public int effectiveValue
         {
             get
             {
                 // Start with the base value.
+                //基本値から開始
                 var value = baseValue;
 
                 // Apply all the modifiers.
+                //全ての修飾子を適用
                 foreach (var modifier in modifiers)
                 {
                     value += modifier.value;
                 }
 
                 // Clamp to [minValue, maxValue] if needed.
+                //必要に応じて[minValue、maxValue]に固定します。
                 if (value < minValue)
                 {
                     value = minValue;
@@ -147,12 +160,14 @@ namespace CCGKit
                 }
 
                 // Return the effective value.
+                //実効値を返す
                 return value;
             }
         }
 
         /// <summary>
         /// Adds a modifier to this stat.
+        /// スタッツに修飾子を追加する(バフデバフする)
         /// </summary>
         /// <param name="modifier">The modifier to add.</param>
         public void AddModifier(Modifier modifier)
@@ -167,6 +182,7 @@ namespace CCGKit
 
         /// <summary>
         /// This method is automatically called when the turn ends.
+        /// ターン終了時に呼ばれるメソッド
         /// </summary>
         public void OnEndTurn()
         {

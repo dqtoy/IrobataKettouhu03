@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿/*
+using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.IO;
@@ -262,3 +263,4 @@ public class AssetPostprocessUTF8Encode : AssetPostprocessor
 		return null;
 	}
 }
+*/

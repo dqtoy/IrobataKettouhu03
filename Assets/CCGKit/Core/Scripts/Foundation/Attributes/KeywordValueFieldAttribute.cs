@@ -16,6 +16,7 @@ namespace CCGKit
 {
     /// <summary>
     /// Custom attribute for keyword values.
+    /// キーワード値のカスタム属性。
     /// </summary>
     public class KeywordValueFieldAttribute : FieldAttribute
     {

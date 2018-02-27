@@ -16,6 +16,7 @@ namespace CCGKit
 {
     /// <summary>
     /// Custom attribute for player stats.
+    /// プレーヤーのスタッツのカスタム属性
     /// </summary>
     public class PlayerStatFieldAttribute : FieldAttribute
     {

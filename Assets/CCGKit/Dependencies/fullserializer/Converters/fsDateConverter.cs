@@ -4,6 +4,7 @@ using System.Globalization;
 namespace FullSerializer.Internal {
     /// <summary>
     /// Supports serialization for DateTime, DateTimeOffset, and TimeSpan.
+    /// DateTime、DateTimeOffset、およびTimeSpanのシリアル化をサポートします。
     /// </summary>
     public class fsDateConverter : fsConverter {
         // The format strings that we use when serializing DateTime and DateTimeOffset types.
@@ -58,6 +59,7 @@ namespace FullSerializer.Internal {
                 }
 
                 // DateTime.TryParse can fail for some valid DateTime instances. Try to use Convert.ToDateTime.
+                //DateTime.TryParseは、一部の有効なDateTimeインスタンスで失敗する可能性があります。 Convert.ToDateTimeを使用してください。
                 if (fsGlobalConfig.AllowInternalExceptions) {
                     try {
                         instance = Convert.ToDateTime(data.AsString);

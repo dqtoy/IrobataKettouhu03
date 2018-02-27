@@ -8,6 +8,7 @@ using FullSerializer.Internal;
 namespace FullSerializer {
     /// <summary>
     /// MetaType contains metadata about a type. This is used by the reflection serializer.
+    /// メタタイプには、タイプに関するメタデータが含まれています。 これはリフレクションシリアライザで使用されます。
     /// </summary>
     public class fsMetaType {
         private static Dictionary<fsConfig, Dictionary<Type, fsMetaType>> _configMetaTypes =
@@ -30,6 +31,7 @@ namespace FullSerializer {
         /// <summary>
         /// Clears out the cached type results. Useful if some prior assumptions become invalid, ie, the default member
         /// serialization mode.
+        /// キャッシュされた型の結果をクリアします。 いくつかの前提条件が無効になる場合、つまりデフォルトのメンバーシリアライゼーションモードの場合に役立ちます。
         /// </summary>
         public static void ClearCache() {
             _configMetaTypes = new Dictionary<fsConfig, Dictionary<Type, fsMetaType>>();
@@ -47,6 +49,7 @@ namespace FullSerializer {
 
         private static void CollectProperties(fsConfig config, List<fsMetaProperty> properties, Type reflectedType) {
             // do we require a [SerializeField] or [fsProperty] attribute?
+            //[SerializeField]または[fsProperty]属性が必要ですか？
             bool requireOptIn = config.DefaultMemberSerialization == fsMemberSerialization.OptIn;
             bool requireOptOut = config.DefaultMemberSerialization == fsMemberSerialization.OptOut;
 
@@ -59,6 +62,7 @@ namespace FullSerializer {
             MemberInfo[] members = reflectedType.GetDeclaredMembers();
             foreach (var member in members) {
                 // We don't serialize members annotated with any of the ignore serialize attributes
+                //いずれのignore serialize属性でもアノテーションされたメンバーをシリアル化しません
                 if (config.IgnoreSerializeAttributes.Any(t => fsPortableReflection.HasAttribute(member, t))) {
                     continue;
                 }
@@ -67,17 +71,20 @@ namespace FullSerializer {
                 FieldInfo field = member as FieldInfo;
 
                 // Early out if it's neither a field or a property, since we don't serialize anything else.
+                //私たちは何もシリアル化していないので、それがフィールドでも財産でもない場合は早めに出てください。
                 if (property == null && field == null) {
                     continue;
                 }
 
                 // Skip properties if we don't want them, to avoid the cost of checking attributes.
+                //属性を確認するコストを避けるために、プロパティを必要としない場合はスキップします。
                 if (property != null && !config.EnablePropertySerialization) {
                     continue;
                 }
 
                 // If an opt-in annotation is required, then skip the property if it doesn't have one
                 // of the serialize attributes
+                //オプトイン注釈が必要な場合は、serialize属性のいずれかがない場合はそのプロパティをスキップします
                 if (requireOptIn &&
                     !config.SerializeAttributes.Any(t => fsPortableReflection.HasAttribute(member, t))) {
 
@@ -86,6 +93,7 @@ namespace FullSerializer {
 
                 // If an opt-out annotation is required, then skip the property *only if* it has one of
                 // the not serialize attributes
+                //オプトアウト注釈が必要な場合は、*シリアル化されていない属性のいずれかが*存在する場合にのみ、プロパティー*をスキップします
                 if (requireOptOut &&
                     config.IgnoreSerializeAttributes.Any(t => fsPortableReflection.HasAttribute(member, t))) {
 
@@ -126,10 +134,12 @@ namespace FullSerializer {
 
         /// <summary>
         /// Returns if the given property should be serialized.
+        /// 指定されたプロパティを直列化する必要がある場合はを返します。
         /// </summary>
         /// <param name="annotationFreeValue">Should a property without any annotations be serialized?</param>
         private static bool CanSerializeProperty(fsConfig config, PropertyInfo property, MemberInfo[] members, bool annotationFreeValue) {
             // We don't serialize delegates
+            //デリゲートをシリアル化しません
             if (typeof(Delegate).IsAssignableFrom(property.PropertyType)) {
                 return false;
             }
@@ -138,33 +148,39 @@ namespace FullSerializer {
             var publicSetMethod = property.GetSetMethod(/*nonPublic:*/ false);
 
             // We do not bother to serialize static fields.
+            //静的フィールドをシリアル化するのは面倒ではありません。
             if ((publicGetMethod != null && publicGetMethod.IsStatic) ||
                 (publicSetMethod != null && publicSetMethod.IsStatic)) {
                 return false;
             }
 
             // Never serialize indexers. I can't think of a sane way to serialize/deserialize them, and they're normally wrappers around other fields anyway...
+            //インデクサーをシリアル化しないでください。 私はそれらをシリアライズ/デシリアライズする純粋な方法を考えることはできません。そして、彼らは通常、とにかく他のフィールドの周りのラッパーです...
             if (property.GetIndexParameters().Length > 0) {
                 return false;
             }
 
             // If a property is annotated with one of the serializable attributes, then it should
             // it should definitely be serialized.
-            //
+            //プロパティーに直列化可能な属性の1つが注釈されている場合は、必ず直列化する必要があります。
+
             // NOTE: We place this override check *after* the static check, because we *never*
             //       allow statics to be serialized.
+            //このオーバーライドチェック*は静的チェックの後に置かれます。なぜなら、静的な統計を直列化することは決してないからです。
             if (config.SerializeAttributes.Any(t => fsPortableReflection.HasAttribute(property, t))) {
                 return true;
             }
 
             // If the property cannot be both read and written to, we are not going to serialize it
             // regardless of the default serialization mode
+            //プロパティを読み書きすることができない場合は、デフォルトのシリアル化モードに関係なくシリアル化するつもりはありません
             if (property.CanRead == false || property.CanWrite == false) {
                 return false;
             }
 
             // Depending on the configuration options, check whether the property is automatic
             // and if it has a public setter to determine whether it should be serialized
+            //設定オプションに応じて、プロパティが自動かどうか、およびシリアル化する必要があるかどうかを判断するパブリックセッターがあるかどうかをチェックします
             if ((config.SerializeNonAutoProperties || IsAutoProperty(property, members)) &&
                 (publicGetMethod != null && (config.SerializeNonPublicSetProperties || publicSetMethod != null))) {
                 return true;
@@ -172,34 +188,41 @@ namespace FullSerializer {
 
 
             // Otherwise, we don't bother with serialization
+            //さもなければ、私たちはシリアル化を気にしません
             return annotationFreeValue;
         }
 
         private static bool CanSerializeField(fsConfig config, FieldInfo field, bool annotationFreeValue) {
             // We don't serialize delegates
+            //デリゲートをシリアル化しません
             if (typeof(Delegate).IsAssignableFrom(field.FieldType)) {
                 return false;
             }
 
             // We don't serialize compiler generated fields.
+            //私たちはコンパイラ生成フィールドをシリアル化しません。
             if (field.IsDefined(typeof(CompilerGeneratedAttribute), false)) {
                 return false;
             }
 
             // We don't serialize static fields
+            //静的フィールドをシリアル化しません
             if (field.IsStatic) {
                 return false;
             }
 
             // We want to serialize any fields annotated with one of the serialize attributes.
+            //私たちは、serialize属性の1つで注釈を付けられたフィールドを直列化したいと思っています。
             //
             // NOTE: This occurs *after* the static check, because we *never* want to serialize
             //       static fields.
+            //静的フィールドのシリアル化を決してしないので、静的検査の後に*発生します。
             if (config.SerializeAttributes.Any(t => fsPortableReflection.HasAttribute(field, t))) {
                 return true;
             }
 
             // We use !IsPublic because that also checks for internal, protected, and private.
+            //IsPublicは内部、保護、およびプライベートのチェックも行うため、これを使用します。
             if (!annotationFreeValue && !field.IsPublic) {
                 return false;
             }
@@ -209,6 +232,7 @@ namespace FullSerializer {
 
         /// <summary>
         /// Attempt to emit an AOT compiled direct converter for this type.
+        /// このタイプのAOTコンパイルされたダイレクトコンバータを発行しようとします。
         /// </summary>
         /// <returns>True if AOT data was emitted, false otherwise.</returns>
         public bool EmitAotData() {
@@ -219,17 +243,22 @@ namespace FullSerializer {
                 // Even if the type has derived types, we can still generate a direct converter for it.
                 // Direct converters are not used for inherited types, so the reflected converter or something
                 // similar will be used for the derived type instead of our AOT compiled one.
+                //型が派生型を持っていても、それに対して直接変換器を生成することはできます。
+               // 直接変換器は継承された型には使用されないので、AOTコンパイルされた型の代わりに、変換された型または類似の型が使用されます。
 
                 for (int i = 0; i < Properties.Length; ++i) {
                     // Cannot AOT compile since we need to public member access.
+                    //パブリックメンバーのアクセスが必要なので、AOTをコンパイルできません。
                     if (Properties[i].IsPublic == false)
                         return false;
                     // Cannot AOT compile since readonly members can only be modified using reflection.
+                    //読み取り専用メンバはリフレクションを使用してのみ変更できますので、コンパイルできません。
                     if (Properties[i].IsReadOnly)
                         return false;
                 }
 
                 // Cannot AOT compile since we need a default ctor.
+                //デフォルトのctorが必要なので、AOTをコンパイルできません。
                 if (HasDefaultConstructor == false)
                     return false;
 
@@ -248,17 +277,20 @@ namespace FullSerializer {
 
         /// <summary>
         /// Returns true if the type represented by this metadata contains a default constructor.
+        /// このメタデータによって表される型がデフォルトコンストラクタを含む場合はtrueを返します。
         /// </summary>
         public bool HasDefaultConstructor {
             get {
                 if (_hasDefaultConstructorCache.HasValue == false) {
                     // arrays are considered to have a default constructor
+                    //配列にはデフォルトのコンストラクタがあるとみなされます
                     if (ReflectedType.Resolve().IsArray) {
                         _hasDefaultConstructorCache = true;
                         _isDefaultConstructorPublic = true;
                     }
 
                     // value types (ie, structs) always have a default constructor
+                    //値型（つまり、構造体）には常にデフォルトのコンストラクタがあります
                     else if (ReflectedType.Resolve().IsValueType) {
                         _hasDefaultConstructorCache = true;
                         _isDefaultConstructorPublic = true;
@@ -266,6 +298,7 @@ namespace FullSerializer {
 
                     else {
                         // consider private constructors as well
+                        //民間のコンストラクタも考慮する
                         var ctor = ReflectedType.GetDeclaredConstructor(fsPortableReflection.EmptyTypes);
                         _hasDefaultConstructorCache = ctor != null;
                         if (ctor != null) {
@@ -285,6 +318,9 @@ namespace FullSerializer {
         /// default constructor, then Activator.CreateInstance will be used to construct the type
         /// (or Array.CreateInstance if it an array). Otherwise, an uninitialized object created via
         /// FormatterServices.GetSafeUninitializedObject is used to construct the instance.
+        /// このメタデータが指す型の新しいインスタンスを作成します。 この型にデフォルトのコンストラクタがある場合は、
+        /// 型を構築するためにActivator.CreateInstanceが使用されます（配列の場合はArray.CreateInstance）。
+        /// それ以外の場合は、FormatterServices.GetSafeUninitializedObjectを使用して作成された初期化されていないオブジェクトを使用してインスタンスが構築されます。
         /// </summary>
         public object CreateInstance() {
             if (ReflectedType.Resolve().IsInterface || ReflectedType.Resolve().IsAbstract) {
@@ -294,6 +330,7 @@ namespace FullSerializer {
 #if !NO_UNITY
             // Unity requires special construction logic for types that derive from
             // ScriptableObject.
+            //Unityには、ScriptableObjectから派生する型のための特殊な構築ロジックが必要です。
             if (typeof(UnityEngine.ScriptableObject).IsAssignableFrom(ReflectedType)) {
                 return UnityEngine.ScriptableObject.CreateInstance(ReflectedType);
             }
@@ -301,6 +338,7 @@ namespace FullSerializer {
 
             // Strings don't have default constructors but also fail when run through
             // FormatterSerivces.GetSafeUninitializedObject
+            //文字列にはデフォルトコンストラクタがありませんが、FormatterSerivces.GetSafeUninitializedObjectを実行すると失敗します
             if (typeof(string) == ReflectedType) {
                 return string.Empty;
             }
@@ -317,6 +355,7 @@ namespace FullSerializer {
             if (ReflectedType.Resolve().IsArray) {
                 // we have to start with a size zero array otherwise it will have invalid data
                 // inside of it
+                //サイズゼロの配列から始めなければなりません。さもなければ、内部に無効なデータがあります
                 return Array.CreateInstance(ReflectedType.GetElementType(), 0);
             }
 

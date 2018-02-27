@@ -95,8 +95,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: "\u3042\u306A\u305F\u306E\u30BF\u30FC\u30F3"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ee339a72defd1bf46ace50ec9237a302, type: 2}
-  m_sharedMaterial: {fileID: 21814545482012466, guid: ee339a72defd1bf46ace50ec9237a302,
+  m_fontAsset: {fileID: 11400000, guid: f3e3f4becaa17284aa124ff8895663af, type: 2}
+  m_sharedMaterial: {fileID: 21610979902498614, guid: f3e3f4becaa17284aa124ff8895663af,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}

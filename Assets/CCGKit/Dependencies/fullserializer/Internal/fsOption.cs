@@ -3,6 +3,7 @@
 namespace FullSerializer.Internal {
     /// <summary>
     /// Simple option type. This is akin to nullable types.
+    /// シンプルなオプションタイプ。 これはnull可能な型に似ています。
     /// </summary>
     public struct fsOption<T> {
         private bool _hasValue;

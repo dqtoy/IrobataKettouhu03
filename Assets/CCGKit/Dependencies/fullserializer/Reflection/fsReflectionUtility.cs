@@ -12,12 +12,15 @@ namespace FullSerializer.Internal {
         /// This is particularly useful if the interface type is an open type, ie, typeof(IFace{}),
         /// because this method will then return IFace{} but with appropriate type parameters
         /// inserted.
+        /// 指定されたインタフェース型の特定の実装をその型の中で検索します。
+        /// これは、IFass {}が返されますが、適切な型パラメータが挿入されているため、インターフェイスタイプがオープンタイプ、つまりtypeof（IFace {}）の場合に特に便利です。
         /// </summary>
         /// <param name="type">The base type to search for interface</param>
         /// <param name="interfaceType">The interface type to search for. Can be an open generic
         /// type.</param>
         /// <returns>The actual interface type that the type contains, or null if there is no
         /// implementation of the given interfaceType on type.</returns>
+        /// <returns>型に含まれる実際のインタフェース型。型に指定されたinterfaceTypeの実装がない場合はnull </ returns>
         public static Type GetInterface(Type type, Type interfaceType) {
             if (interfaceType.Resolve().IsGenericType &&
                 interfaceType.Resolve().IsGenericTypeDefinition == false) {

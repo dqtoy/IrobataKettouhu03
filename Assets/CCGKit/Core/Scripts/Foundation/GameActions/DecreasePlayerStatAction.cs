@@ -6,6 +6,7 @@ namespace CCGKit
 {
     /// <summary>
     /// Game action to decrease a player stat.
+    /// プレイヤーの能力を低下させるゲームアクション。
     /// </summary>
     public class DecreasePlayerStatAction : GameAction
     {

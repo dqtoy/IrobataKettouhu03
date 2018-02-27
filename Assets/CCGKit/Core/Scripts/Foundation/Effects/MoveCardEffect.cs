@@ -1,18 +1,20 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
 using System.Collections.Generic;
 
+/// <summary>
+/// カード移動時の効果
+/// battlecryやdeathrattleなど。
+/// </summary>
 namespace CCGKit
 {
     [CardTarget]
     public class MoveCardEffect : CardBaseEffect
     {
+        //移動元
         [GameZoneField("Origin")]
         [Order(1)]
         public int originGameZoneId;
 
+        //移動先
         [GameZoneField("Destination")]
         [Order(2)]
         public int destinationGameZoneId;
@@ -23,7 +25,12 @@ namespace CCGKit
 
         public override void Resolve(GameState state, RuntimeCard card)
         {
+            // 条件にあった最初の要素を返します。
+            // // 要素に4があれば
+            // var num = list.Find(x => x.Equals(4));
+            ///移動元のゾーンIDを代入
             var originZone = state.config.gameZones.Find(x => x.id == originGameZoneId);
+            ///移動先のゾーンIDを代入
             var destinationZone = state.config.gameZones.Find(x => x.id == destinationGameZoneId);
             state.effectSolver.MoveCard(card.ownerPlayer.netId, card, originZone.name, destinationZone.name);
         }

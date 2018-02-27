@@ -1,8 +1,4 @@
-﻿// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -30,46 +26,55 @@ namespace CCGKit
         string checkTeam;
         /// <summary>
         /// The properties of the game.
+        /// ゲームのプロパティ。
         /// </summary>
         public GameProperties properties = new GameProperties();
 
         /// <summary>
         /// The game zones of the game.
+        /// ゲームのゲームゾーン。
         /// </summary>
         public List<GameZoneType> gameZones = new List<GameZoneType>();
 
         /// <summary>
         /// The player stats.
+        /// プレーヤーの統計。
         /// </summary>
         public List<DefinitionStat> playerStats = new List<DefinitionStat>();
 
         /// <summary>
         /// The card types.
+        /// カードの種類。
         /// </summary>
         public List<CardType> cardTypes = new List<CardType>();
 
         /// <summary>
         /// The keywords of the game.
+        /// ゲームのキーワード。
         /// </summary>
         public List<Keyword> keywords = new List<Keyword>();
 
         /// <summary>
         /// The card sets of the game.
+        /// ゲームのカードセット。
         /// </summary>
         public List<CardSet> cardSets = new List<CardSet>();
 
         /// <summary>
         /// The cards of the game.
+        /// ゲームのカード。
         /// </summary>
         public List<Card> cards = new List<Card>();
 
         /// <summary>
         /// The JSON serializer.
+        /// JSONシリアライザ
         /// </summary>
         private fsSerializer serializer = new fsSerializer();
 
         /// <summary>
         /// Loads the game configuration from the specified path.
+        /// 指定されたパスからゲーム設定をロードします。
         /// </summary>
         /// <param name="path">The path to the game configuration.</param>
         public void LoadGameConfiguration(string path)
@@ -331,7 +336,8 @@ namespace CCGKit
         public void SaveGameConfigurationAs()
         {
 #if UNITY_EDITOR
-            var path = EditorUtility.OpenFolderPanel("Select game configuration folder", "", "");
+//            var path = EditorUtility.OpenFolderPanel("Select game configuration folder", "", "");
+            var path = EditorUtility.OpenFolderPanel("ファイルの保存先を指定", "", "");
             if (!string.IsNullOrEmpty(path))
             {
                 EditorPrefs.SetString("GameConfigurationPath", path);

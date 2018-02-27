@@ -1,8 +1,4 @@
-﻿// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +18,7 @@ using UnityEngine.SceneManagement;
 /// The demo player is a subclass of the core HumanPlayer type which extends it with demo-specific
 /// functionality. Most of which is straightforward updating of the user interface when receiving
 /// new state from the server.
+/// デモプレーヤーは、デモ固有の機能を拡張したコアHumanPlayerタイプのサブクラスです。 その大部分は、サーバーから新しい状態を受け取ったときのユーザーインターフェイスの直接的な更新です。
 /// </summary>
 public class DemoHumanPlayer : DemoPlayer
 {
@@ -45,6 +42,12 @@ public class DemoHumanPlayer : DemoPlayer
 
     [SerializeField]
     private GameObject opponentTargetingArrowPrefab;
+
+    //ヒロパ追加
+    [SerializeField]
+    private GameObject PlayerHeroPowerPrefab;
+    [SerializeField]
+    private GameObject opponentHeroPowerPrefab;
 
     protected List<CardView> playerHandCards = new List<CardView>();
     protected List<GameObject> opponentHandCards = new List<GameObject>();
@@ -513,6 +516,7 @@ public class DemoHumanPlayer : DemoPlayer
         });
     }
 
+    //virtualは仮想関数の印。継承先(派生クラス)でも同様のメソッドが作られることを明示している。
     protected virtual void RearrangeBottomBoard(Action onComplete = null)
     {
         var boardWidth = 0.0f;
@@ -805,6 +809,11 @@ public class DemoHumanPlayer : DemoPlayer
         go.GetComponent<SortingGroup>().sortingOrder = opponentHandCards.Count;
     }
 
+    /// <summary>
+    /// エリア間のカードの移動を処理する
+    /// ドローなどもここ
+    /// </summary>
+    /// <param name="card"></param>
     public void PlayCard(CardView card)
     {
         if (card.CanBePlayed(this))
@@ -850,6 +859,7 @@ public class DemoHumanPlayer : DemoPlayer
 
                     // Preemptively move the card so that the effect solver can properly check the availability of targets
                     // by also taking into account this card (that is trying to be played).
+                    //プレイしようとしているカードも考慮して、エフェクトソルバーがターゲットの使用可能性を適切にチェックできるように、先制してカードを移動します。
                     playerInfo.namedZones["Hand"].RemoveCard(card.card);
                     playerInfo.namedZones["Board"].AddCard(card.card);
 

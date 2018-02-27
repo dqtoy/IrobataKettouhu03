@@ -6,14 +6,20 @@ using FullSerializer.Internal;
 namespace FullSerializer {
     /// <summary>
     /// The AOT compilation manager
+    /// AOTコンパイルマネージャ
     /// </summary>
-    public class fsAotCompilationManager {
+    public class fsAotCompilationManager
+    {
         /// <summary>
         /// Ahead of time compilations that are available. The type maps to the object type the generated converter
         /// will serialize/deserialize, and the string is the text content for a converter that will do the serialization.
         /// <para />
         /// The generated serializer is completely independent and you don't need to do anything. Simply add the file to
         /// your project and it'll get used instead of the reflection based one.
+        /// 時間のかかるコンパイルが可能です。 型は、生成されたコンバーターがシリアル化/逆シリアル化するオブジェクト型にマップし、ストリングはシリアル化を行うコンバーターのテキストコンテンツです。
+        /// <para />
+        /// 生成されたシリアライザは完全に独立しており、何もする必要はありません。 プロジェクトにファイルを追加するだけで、リフレクションベースのファイルの代わりにファイルが使用されます。
+        /// 
         /// </summary>
         public static Dictionary<Type, string> AvailableAotCompilations {
             get {
@@ -37,6 +43,7 @@ namespace FullSerializer {
 
         /// <summary>
         /// This is a helper method that makes it simple to run an AOT compilation on the given type.
+        /// これは、与えられた型のAOTコンパイルを簡単に実行できるヘルパーメソッドです。
         /// </summary>
         /// <param name="config">The configuration to use when running AOT compilation.</param>
         /// <param name="type">The type to perform the AOT compilation on.</param>
@@ -54,6 +61,7 @@ namespace FullSerializer {
 
         /// <summary>
         /// Adds a new AOT compilation unit.
+        /// 新しいAOTコンパイル単位を追加します。
         /// </summary>
         /// <param name="type">The type of object we are AOT compiling.</param>
         /// <param name="members">The members on the object which will be serialized/deserialized.</param>
@@ -75,6 +83,7 @@ namespace FullSerializer {
 
         /// <summary>
         /// AOT compiles the object (in C#).
+        /// AOTはオブジェクトをコンパイルします（C＃で）。
         /// </summary>
         private static string GenerateDirectConverterForTypeInCSharp(Type type, fsMetaProperty[] members, bool isConstructorPublic) {
             var sb = new StringBuilder();

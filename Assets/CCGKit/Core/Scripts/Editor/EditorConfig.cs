@@ -1,12 +1,10 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
-namespace CCGKit
+﻿namespace CCGKit
 {
     /// <summary>
     /// Miscellaneous editor config data.
+    /// その他のエディタ設定データ。
     /// </summary>
+    /// constは定数を定義する時に使う
     public static class EditorConfig
     {
         public const int RegularLabelWidth = 60;

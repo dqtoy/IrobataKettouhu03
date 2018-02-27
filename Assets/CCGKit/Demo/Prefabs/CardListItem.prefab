@@ -502,8 +502,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 99
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ee339a72defd1bf46ace50ec9237a302, type: 2}
-  m_sharedMaterial: {fileID: 21814545482012466, guid: ee339a72defd1bf46ace50ec9237a302,
+  m_fontAsset: {fileID: 11400000, guid: f3e3f4becaa17284aa124ff8895663af, type: 2}
+  m_sharedMaterial: {fileID: 21610979902498614, guid: f3e3f4becaa17284aa124ff8895663af,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -615,8 +615,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: x1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ee339a72defd1bf46ace50ec9237a302, type: 2}
-  m_sharedMaterial: {fileID: 21814545482012466, guid: ee339a72defd1bf46ace50ec9237a302,
+  m_fontAsset: {fileID: 11400000, guid: f3e3f4becaa17284aa124ff8895663af, type: 2}
+  m_sharedMaterial: {fileID: 21610979902498614, guid: f3e3f4becaa17284aa124ff8895663af,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -728,8 +728,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Card name
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ee339a72defd1bf46ace50ec9237a302, type: 2}
-  m_sharedMaterial: {fileID: 21814545482012466, guid: ee339a72defd1bf46ace50ec9237a302,
+  m_fontAsset: {fileID: 11400000, guid: f3e3f4becaa17284aa124ff8895663af, type: 2}
+  m_sharedMaterial: {fileID: 21610979902498614, guid: f3e3f4becaa17284aa124ff8895663af,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -911,7 +911,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1080000776513900}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.00024414062, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 224173699417794846}
@@ -949,7 +949,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1665120788202184}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 114.7, y: -0.70000076, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 224298191894682984}
@@ -967,7 +967,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1473841342552064}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -46.700005, y: -0.6000004, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 224298191894682984}
@@ -985,7 +985,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1877247766631216}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.099975586, y: 1.6000004, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 224584450680180362}
@@ -1003,7 +1003,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1866628662947014}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -193.1, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224508268857151124}
@@ -1096,7 +1096,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1717406828175660}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 165.6, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224827593892364688}

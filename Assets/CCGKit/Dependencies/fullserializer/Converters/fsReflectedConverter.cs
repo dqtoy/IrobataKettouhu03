@@ -48,6 +48,7 @@ namespace FullSerializer.Internal {
             var result = fsResult.Success;
 
             // Verify that we actually have an Object
+            //実際にオブジェクトがあることを確認する
             if ((result += CheckType(data, fsDataType.Object)).Failed) {
                 return result;
             }
@@ -65,10 +66,14 @@ namespace FullSerializer.Internal {
 
                     // We have to read in the existing value, since we need to support partial
                     // deserialization. However, this is bad for perf.
+                    //部分的な直列化をサポートする必要があるため、既存の値を読み込む必要があります。 しかし、これはperfのために悪いです。
                     // TODO: Find a way to avoid this call when we are not doing a partial deserialization
                     //       Maybe through a new property, ie, Serializer.IsPartialSerialization, which just
                     //       gets set when starting a new serialization? We cannot pipe the information
                     //       through CreateInstance unfortunately.
+                    //部分的な直列化をしないときにこの呼び出しを避ける方法を見つけるかもしれません。
+                    //新しい直列化を開始するときにちょうど設定される新しいプロパティ、つまりSerializer.IsPartialSerializationを使用しますか？ 
+                    //残念ながら、CreateInstanceを通じて情報をパイプすることはできません。
                     if (property.CanRead) {
                         deserializedValue = property.Read(instance);
                     }

@@ -16,6 +16,7 @@ namespace CCGKit
 {
     /// <summary>
     /// Custom attribute for integers.
+    /// 整数のカスタム属性。
     /// </summary>
     public class IntFieldAttribute : FieldAttribute
     {

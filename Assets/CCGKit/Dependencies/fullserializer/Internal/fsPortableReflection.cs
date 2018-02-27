@@ -42,6 +42,7 @@ namespace System {
 namespace FullSerializer.Internal {
     /// <summary>
     /// This wraps reflection types so that it is portable across different Unity runtimes.
+    /// これは、さまざまなUnityランタイム間で移植可能になるようにリフレクションタイプをラップします。
     /// </summary>
     public static class fsPortableReflection {
         public static Type[] EmptyTypes = { };

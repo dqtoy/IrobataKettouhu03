@@ -1,12 +1,8 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
-namespace CCGKit
+ï»¿namespace CCGKit
 {
     /// <summary>
     /// The available game action targets.
-    /// —˜—p‰Â”\‚ÈƒQ[ƒ€ƒAƒNƒVƒ‡ƒ“ƒ^[ƒQƒbƒgB
+    /// åˆ©ç”¨å¯èƒ½ãªã‚²ãƒ¼ãƒ ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã€‚
     /// </summary>
     public enum GameActionTarget
     {
@@ -17,19 +13,20 @@ namespace CCGKit
 
     /// <summary>
     /// The base class for game actions.
-    /// ƒQ[ƒ€ƒAƒNƒVƒ‡ƒ“‚ÌŠî–{ƒNƒ‰ƒXB
+    /// ã‚²ãƒ¼ãƒ ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã®åŸºæœ¬ã‚¯ãƒ©ã‚¹ã€‚
+    /// æŠ½è±¡ã‚¯ãƒ©ã‚¹ãªã®ã§å¤–éƒ¨ã‹ã‚‰ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ç”Ÿæˆã¯ä¸å¯
     /// </summary>
     public abstract class GameAction
     {
         /// <summary>
         /// The name of this action.
-        /// ‚±‚ÌƒAƒNƒVƒ‡ƒ“‚Ì–¼‘O
+        /// ã“ã®ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã®åå‰
         /// </summary>
         public string name { get; private set; }
 
         /// <summary>
         /// The target of this action.
-        /// ‚±‚ÌƒAƒNƒVƒ‡ƒ“‚Ìƒ^[ƒQƒbƒg
+        /// ã“ã®ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ
         /// </summary>
         public GameActionTarget target;
 
@@ -44,7 +41,7 @@ namespace CCGKit
 
         /// <summary>
         /// Resolves this action.
-        /// ‘€ì‚ğ‰ğŒˆ‚·‚é
+        /// æ“ä½œã‚’è§£æ±ºã™ã‚‹
         /// </summary>
         /// <param name="state">The state of the game.</param>
         /// <param name="player">The player on which to resolve this action.</param>

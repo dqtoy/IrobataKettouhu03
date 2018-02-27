@@ -7,6 +7,7 @@ namespace FullSerializer {
     public static class fsJsonPrinter {
         /// <summary>
         /// Inserts the given number of indents into the builder.
+        /// 与えられた数のインデントをビルダーに挿入します。
         /// </summary>
         private static void InsertSpacing(TextWriter stream, int count) {
             for (int i = 0; i < count; ++i) {
@@ -16,15 +17,20 @@ namespace FullSerializer {
 
         /// <summary>
         /// Escapes a string.
+        /// 文字列をエスケープします。
         /// </summary>
         private static string EscapeString(string str) {
             // Escaping a string is pretty allocation heavy, so we try hard to not do it.
+            //文字列をエスケープするのはかなり重いので、私たちはそれをしないように努力しています。
+            //キーボードから入力できない文字を他の文字の組み合わせで表現したものをエスケープシーケンスといいます
+            //https://www.javadrive.jp/start/num/index4.html参照
 
             bool needsEscape = false;
             for (int i = 0; i < str.Length; ++i) {
                 char c = str[i];
 
                 // unicode code point
+                //ユニコードコードポイント
                 int intChar = Convert.ToInt32(c);
                 if (intChar < 0 || intChar > 127) {
                     needsEscape = true;
@@ -32,6 +38,7 @@ namespace FullSerializer {
                 }
 
                 // standard escape character
+                //標準エスケープ文字
                 switch (c) {
                     case '"':
                     case '\\':
@@ -62,6 +69,7 @@ namespace FullSerializer {
                 char c = str[i];
 
                 // unicode code point
+                //ユニコードコードポイント
                 int intChar = Convert.ToInt32(c);
                 if (intChar < 0 || intChar > 127) {
                     result.Append(string.Format("\\u{0:x4} ", intChar).Trim());
@@ -69,6 +77,7 @@ namespace FullSerializer {
                 }
 
                 // standard escape character
+                //標準エスケープ文字
                 switch (c) {
                     case '"': result.Append("\\\""); continue;
                     case '\\': result.Append(@"\\"); continue;
@@ -82,6 +91,7 @@ namespace FullSerializer {
                 }
 
                 // no escaping needed
+                //エスケープする必要はありません
                 result.Append(c);
             }
             return result.ToString();
@@ -100,6 +110,7 @@ namespace FullSerializer {
 
                 case fsDataType.Double:
                     // doubles must *always* include a decimal
+                    //doubleは常に*小数を含める必要があります
                     stream.Write(ConvertDoubleToString(data.AsDouble));
                     break;
 
@@ -145,6 +156,7 @@ namespace FullSerializer {
 
         /// <summary>
         /// Formats this data into the given builder.
+        /// このデータを指定されたBuilderにフォーマットします。
         /// </summary>
         private static void BuildPrettyString(fsData data, TextWriter stream, int depth) {
             switch (data.Type) {
@@ -197,6 +209,7 @@ namespace FullSerializer {
 
                 case fsDataType.Array:
                     // special case for empty lists; we don't put an empty line between the brackets
+                    //空リストの特別な場合。 括弧の間に空行を入れません
                     if (data.AsList.Count == 0) {
                         stream.Write("[]");
                     }
@@ -225,6 +238,7 @@ namespace FullSerializer {
 
         /// <summary>
         /// Writes the pretty JSON output data to the given stream.
+        /// かなりのJSON出力データを指定されたストリームに書き込みます。
         /// </summary>
         /// <param name="data">The data to print.</param>
         /// <param name="outputStream">Where to write the printed data.</param>
@@ -234,6 +248,7 @@ namespace FullSerializer {
 
         /// <summary>
         /// Returns the data in a pretty printed JSON format.
+        /// きれいに印刷されたJSON形式のデータを返します。
         /// </summary>
         public static string PrettyJson(fsData data) {
             var sb = new StringBuilder();
@@ -245,6 +260,7 @@ namespace FullSerializer {
 
         /// <summary>
         /// Writes the compressed JSON output data to the given stream.
+        /// 圧縮されたJSON出力データを指定されたストリームに書き込みます。
         /// </summary>
         /// <param name="data">The data to print.</param>
         /// <param name="outputStream">Where to write the printed data.</param>
@@ -254,6 +270,7 @@ namespace FullSerializer {
 
         /// <summary>
         /// Returns the data in a relatively compressed JSON format.
+        /// 相対的に圧縮されたJSON形式でデータを返します。
         /// </summary>
         public static string CompressedJson(fsData data) {
             var sb = new StringBuilder();
@@ -265,6 +282,7 @@ namespace FullSerializer {
 
         /// <summary>
         /// Utility method that converts a double to a string.
+        /// doubleを文字列に変換するユーティリティメソッド。
         /// </summary>
         private static string ConvertDoubleToString(double d) {
             if (Double.IsInfinity(d) || Double.IsNaN(d))
@@ -274,6 +292,8 @@ namespace FullSerializer {
 
             // NOTE/HACK: If we don't serialize with a period or an exponent,
             // then the number will be deserialized as an Int64, not a double.
+            //NOTE / HACK：期間や指数でシリアル化しないと、
+            //その数値は、倍精度ではなくInt64として逆シリアル化されます。
             if (doubledString.Contains(".") == false &&
                 doubledString.Contains("e") == false &&
                 doubledString.Contains("E") == false) {

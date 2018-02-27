@@ -5,6 +5,7 @@ using System.Text;
 
 namespace FullSerializer {
     // TODO: properly propagate warnings/etc for fsResult states
+    //TODO：fsResult状態の警告/ etcを適切に伝播する
 
     /// <summary>
     /// A simple recursive descent parser for JSON.
@@ -66,6 +67,7 @@ namespace FullSerializer {
                 if (HasValue(1) && Character(0) == '/') {
                     if (Character(1) == '/') {
                         // skip the rest of the line
+                        //残りの行をスキップする
                         while (HasValue() && Environment.NewLine.Contains("" + Character()) == false) {
                             TryMoveNext();
                         }

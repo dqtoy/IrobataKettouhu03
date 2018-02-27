@@ -1,7 +1,3 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -9,6 +5,8 @@ using UnityEngine.Assertions;
 /// Wrapper around Unity's AudioSource that disables the game object after the sound clip
 /// has been played (allowing it to be reused in the context of a pool of sound effects, see
 /// the SoundManager class).
+/// SoundClipを再生した後にゲームオブジェクトを無効にするUnityのAudioSourceの周りをラッパーします
+/// （サウンドエフェクトのプールのコンテキストで再利用できるようにします、SoundManagerクラスを参照）。
 /// </summary>
 public class SoundFX : MonoBehaviour
 {

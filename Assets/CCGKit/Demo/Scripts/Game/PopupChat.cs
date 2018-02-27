@@ -1,7 +1,3 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Networking;
@@ -57,6 +53,8 @@ public class PopupChat : MonoBehaviour
         // other than submitting the text from an input field (e.g, clicking on a
         // scrollbar), so make sure we got here only by pressing Enter on an input
         // field.
+        //ユニティのInputField OnEndEditイベントは、入力フィールド（例えば、スクロールバーをクリックする）からテキストを送信する以外の多くのコンテキストで呼び出されるようですので、
+        //入力フィールドでEnterを押すだけでここに来ていることを確認してください。
         if (!Input.GetButtonDown("Submit"))
         {
             return;

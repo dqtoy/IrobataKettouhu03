@@ -3,7 +3,7 @@
         "name": "Creature",
         "properties": [
             {
-                "value": "Placeholder text",
+                "value": "",
                 "name": "Text",
                 "$type": "CCGKit.StringProperty"
             },
@@ -60,7 +60,7 @@
         "name": "Spell",
         "properties": [
             {
-                "value": "Placeholder text",
+                "value": "",
                 "name": "Text",
                 "$type": "CCGKit.StringProperty"
             },
@@ -70,7 +70,7 @@
                 "$type": "CCGKit.StringProperty"
             },
             {
-                "value": 4,
+                "value": 2,
                 "name": "MaxCopies",
                 "$type": "CCGKit.IntProperty"
             },

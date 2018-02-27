@@ -4,21 +4,25 @@ namespace FullSerializer.Internal {
     public struct fsVersionedType {
         /// <summary>
         /// The direct ancestors that this type can import.
+        /// このタイプの直接祖先をインポートできます。
         /// </summary>
         public fsVersionedType[] Ancestors;
 
         /// <summary>
         /// The identifying string that is unique among all ancestors.
+        /// すべての祖先間でユニークな識別文字列。
         /// </summary>
         public string VersionString;
 
         /// <summary>
         /// The modeling type that this versioned type maps back to.
+        /// このバージョン管理された型がマップするモデリング型。
         /// </summary>
         public Type ModelType;
 
         /// <summary>
         /// Migrate from an instance of an ancestor.
+        /// 祖先のインスタンスから移行します。
         /// </summary>
         public object Migrate(object ancestorInstance) {
             return Activator.CreateInstance(ModelType, ancestorInstance);

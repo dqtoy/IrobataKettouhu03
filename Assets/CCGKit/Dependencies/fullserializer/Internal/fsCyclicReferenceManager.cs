@@ -8,6 +8,9 @@ namespace FullSerializer.Internal {
         // custom objects may override equals methods. These overriden equals may
         // treat equals differently; we want to serialize/deserialize the object
         // graph *identically* to how it currently exists.
+        //カスタムオブジェクトはequalsメソッドをオーバーライドできるので、2つのオブジェクトを比較するときは、
+        //デフォルトのReferenceEqualsを使用します。 これらのオーバーライドされた等価は、等しく扱われる可能性があります。
+        //私たちは、オブジェクトグラフ*を現在のものと同じようにシリアル化/デシリアライズする必要があります。
         class ObjectReferenceEqualityComparator : IEqualityComparer<object> {
             bool IEqualityComparer<object>.Equals(object x, object y) {
                 return ReferenceEquals(x, y);

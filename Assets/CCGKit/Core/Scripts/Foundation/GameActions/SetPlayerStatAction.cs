@@ -1,22 +1,21 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
 namespace CCGKit
 {
     /// <summary>
     /// Game action to set a player stat.
+    /// プレーヤーの状態を設定するためのゲームアクション。
     /// </summary>
     public class SetPlayerStatAction : GameAction
     {
         /// <summary>
         /// The stat of this action.
+        /// この行動のスタッツ
         /// </summary>
         [PlayerStatField("Stat")]
         public int statId;
 
         /// <summary>
         /// The value of this action.
+        /// アクションの値
         /// </summary>
         [ValueField("Value")]
         public Value value;
@@ -30,6 +29,7 @@ namespace CCGKit
 
         /// <summary>
         /// Resolves this action.
+        /// アクションの解決
         /// </summary>
         /// <param name="state">The state of the game.</param>
         /// <param name="player">The player on which to resolve this action.</param>

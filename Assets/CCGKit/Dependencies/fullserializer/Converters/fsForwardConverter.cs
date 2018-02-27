@@ -3,26 +3,32 @@
 namespace FullSerializer {
     /// <summary>
     /// This allows you to forward serialization of an object to one of its members. For example,
+    ///これにより、オブジェクトのメンバーへの直列化を転送することができます。 例えば、
     ///
     /// [fsForward("Values")]
     /// struct Wrapper {
     ///   public int[] Values;
     /// }
     ///
+    /// 
     /// Then `Wrapper` will be serialized into a JSON array of integers. It will be as if `Wrapper`
     /// doesn't exist.
+    /// 次に、 `Wrapper`はJSON配列の整数にシリアル化されます。 あたかも `Wrapper`が存在しないかのようになります。
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Struct)]
     public sealed class fsForwardAttribute : Attribute {
         /// <summary>
         /// The name of the member we should serialize as.
+        /// シリアライズするメンバーの名前。
         /// </summary>
         public string MemberName;
 
         /// <summary>
         /// Forward object serialization to an instance member. See class comment.
+        /// インスタンスメンバーへのオブジェクトの直列化を転送します。 クラスコメントを参照してください。
         /// </summary>
         /// <param name="memberName">The name of the member that we should serialize this object as.</param>
+        /// このオブジェクトを直列化する必要があるメンバの名前。
         public fsForwardAttribute(string memberName) {
             MemberName = memberName;
         }

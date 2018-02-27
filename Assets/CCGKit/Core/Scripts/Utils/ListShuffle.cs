@@ -1,7 +1,3 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
 using System;
 using System.Collections.Generic;
 
@@ -10,6 +6,8 @@ using System.Collections.Generic;
 /// based on the Fisher-Yates shuffle algorithm (https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle).
 ///
 /// This is primarily used by the server when authoritatively shuffling the player decks.
+/// Fisher-Yatesシャッフルアルゴリズム（https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle）に基づいてランダムシャッフリングを提供する汎用リストの拡張メソッドを定義するユーティリティクラス。
+/// これは主にプレイヤーデッキを正式にシャッフルするときにサーバーによって使用されます。
 /// </summary>
 public static class ListShuffle
 {

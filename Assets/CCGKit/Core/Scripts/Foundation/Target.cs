@@ -1,13 +1,10 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
 using System.Collections.Generic;
 
 namespace CCGKit
 {
     /// <summary>
     /// The available effect targets.
+    /// 使用可能なエフェクトターゲット。
     /// </summary>
     public enum EffectTarget
     {
@@ -33,6 +30,7 @@ namespace CCGKit
 
     /// <summary>
     /// The base class for targets.
+    /// ターゲットのベースとなるクラス
     /// </summary>
     public abstract class Target
     {

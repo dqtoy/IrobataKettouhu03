@@ -1,8 +1,4 @@
-﻿// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
-using System.Collections;
+﻿using System.Collections;
 
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -13,6 +9,7 @@ using TMPro;
 /// <summary>
 /// This class wraps the game scene's user interface and it is mostly updated when the server
 /// sends updated information to the client.
+/// このクラスはゲームシーンのユーザーインターフェイスをラップし、サーバーが更新された情報をクライアントに送信すると主に更新されます。
 /// </summary>
 public class GameUI : MonoBehaviour
 {
@@ -181,6 +178,11 @@ public class GameUI : MonoBehaviour
         endTurnTimeText.DOFade(0.0f, 0.2f);
     }
 
+    /// <summary>
+    /// プレイヤーの時間カウント
+    /// </summary>
+    /// <param name="time"></param>
+    /// <returns></returns>
     private IEnumerator StartCountdown(int time)
     {
         while (time >= 0)
