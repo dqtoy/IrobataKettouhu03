@@ -1,7 +1,3 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
 using System.Collections.Generic;
 
 using UnityEngine;
@@ -12,22 +8,26 @@ namespace CCGKit
     /// <summary>
     /// This type represents a game player and, as a multiplayer-aware entity, it is derived from
     /// NetworkBehaviour.
+    /// このタイプはゲームプレーヤーを表し、マルチプレイヤー対応のエンティティとしてNetworkBehaviourから派生しています。
     /// </summary>
     public class Player : NetworkBehaviour
     {
         /// <summary>
         /// True if this player is the current active player in the game; false otherwise. 'Active' meaning
         /// the current game turn is his turn.
+        /// このプレイヤーがゲーム中の現在アクティブなプレイヤーであれば真。 そうでなければfalse。 現在のゲームターンが彼の番であることを意味する「アクティブ」。
         /// </summary>
         public bool isActivePlayer;
 
         /// <summary>
         /// True if this player is controlled by a human; false otherwise (AI).
+        /// このプレイヤーが人間によって制御されている場合は真です。 そうでなければfalse（AI）。
         /// </summary>
         public bool isHuman;
 
         /// <summary>
         /// Cached network client.
+        /// キャッシュされたネットワーククライアント。
         /// </summary>
         protected NetworkClient client;
 
@@ -37,16 +37,19 @@ namespace CCGKit
 
         /// <summary>
         /// True if the game has started; false otherwise.
+        /// ゲームが開始されていれば真。 そうでなければfalse。
         /// </summary>
         protected bool gameStarted;
 
         /// <summary>
         /// Index of this player in the game.
+        /// ゲーム内のこのプレイヤーのインデックス。
         /// </summary>
         protected int playerIndex;
 
         /// <summary>
         /// This game's turn duration (in seconds).
+        /// このゲームの回転時間（秒）。
         /// </summary>
         protected int turnDuration;
 
@@ -161,6 +164,7 @@ namespace CCGKit
             }
 
             // Register the player to the game and send the server his information.
+            // プレーヤーをゲームに登録し、サーバーに情報を送信します。
             var msg = new RegisterPlayerMessage();
             msg.netId = netId;
             if (isHuman)
@@ -247,6 +251,7 @@ namespace CCGKit
                 foreach (var zone in player.Key.staticZones)
                 {
                     // Remove obsolete entries.
+                    //廃止されたエントリを削除します。
                     var obsoleteCards = new List<RuntimeCard>(player.Value.zones[zone.zoneId].cards.Count);
                     foreach (var card in player.Value.zones[zone.zoneId].cards)
                     {
@@ -261,6 +266,7 @@ namespace CCGKit
                     }
 
                     // Add new entries.
+                    //新しいエントリを追加します。
                     foreach (var card in zone.cards)
                     {
                         var runtimeCard = player.Value.zones[zone.zoneId].cards.Find(x => x.instanceId == card.instanceId);
@@ -280,6 +286,7 @@ namespace CCGKit
                 foreach (var zone in player.Key.dynamicZones)
                 {
                     // Remove obsolete entries.
+                    //廃止されたエントリを削除します。
                     var obsoleteCards = new List<RuntimeCard>(player.Value.zones[zone.zoneId].cards.Count);
                     foreach (var card in player.Value.zones[zone.zoneId].cards)
                     {
@@ -395,7 +402,11 @@ namespace CCGKit
         {
             return new RuntimeCard();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="msg"></param>
+        /// virtualは仮想関数。派生クラスでoverrideによる上書きが必要
         public virtual void OnCardMoved(CardMovedMessage msg)
         {
             var runtimeCard = CreateRuntimeCard();

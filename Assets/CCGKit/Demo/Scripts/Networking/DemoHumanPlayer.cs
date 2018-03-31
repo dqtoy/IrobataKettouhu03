@@ -281,7 +281,10 @@ public class DemoHumanPlayer : DemoPlayer
             gameUI.SetOpponentGraveyardCards(numCards);
         };
     }
-
+    /// <summary>
+    /// ゲーム開始時の処理
+    /// </summary>
+    /// <param name="msg"></param>
     public override void OnStartGame(StartGameMessage msg)
     {
         base.OnStartGame(msg);
@@ -297,6 +300,7 @@ public class DemoHumanPlayer : DemoPlayer
         RearrangeOpponentHand();
 
         // Update the UI as appropriate.
+        //必要に応じてUIを更新します。
         gameUI.SetPlayerHealth(lifeStat.effectiveValue);
         gameUI.SetOpponentHealth(opponentLifeStat.effectiveValue);
         gameUI.SetPlayerMana(manaStat.effectiveValue);
@@ -310,6 +314,7 @@ public class DemoHumanPlayer : DemoPlayer
         gameUI.SetOpponentDeckCards(opponentDeckZone.numCards);
 
         // Set the player nicknames in the UI.
+        //プレイヤーのニックネームをUIで設定します。
 
             SelectHeroScene shc = new SelectHeroScene();
             bool rFlag = shc.GetRenkoNameFlag();
@@ -358,7 +363,10 @@ public class DemoHumanPlayer : DemoPlayer
             endTurnButton.GetComponent<EndTurnButton>().player = this;
         }
     }
-
+    /// <summary>
+    /// ターン開始時の処理
+    /// </summary>
+    /// <param name="msg"></param>
     public override void OnStartTurn(StartTurnMessage msg)
     {
         base.OnStartTurn(msg);
@@ -411,7 +419,9 @@ public class DemoHumanPlayer : DemoPlayer
             gameUI.HideTurnCountdown();
         }
     }
-
+    /// <summary>
+    /// プレイヤーの手札に関する描画処理
+    /// </summary>
     protected virtual void RearrangeHand()
     {
         var handWidth = 0.0f;
@@ -446,6 +456,9 @@ public class DemoHumanPlayer : DemoPlayer
         }
     }
 
+    /// <summary>
+    /// 対戦相手の手札に関する描画処理
+    /// </summary>
     protected virtual void RearrangeOpponentHand()
     {
         var handWidth = 0.0f;
@@ -478,7 +491,10 @@ public class DemoHumanPlayer : DemoPlayer
             card.GetComponent<SortingGroup>().sortingOrder = i;
         }
     }
-
+    /// <summary>
+    /// 対戦相手のボードに関する描画処理
+    /// </summary>
+    /// <param name="onComplete"></param>
     protected virtual void RearrangeTopBoard(Action onComplete = null)
     {
         var boardWidth = 0.0f;
@@ -515,7 +531,10 @@ public class DemoHumanPlayer : DemoPlayer
             }
         });
     }
-
+    /// <summary>
+    /// プレイヤーのボードに関する描画処理
+    /// </summary>
+    /// <param name="onComplete"></param>
     //virtualは仮想関数の印。継承先(派生クラス)でも同様のメソッドが作られることを明示している。
     protected virtual void RearrangeBottomBoard(Action onComplete = null)
     {
@@ -554,6 +573,10 @@ public class DemoHumanPlayer : DemoPlayer
         });
     }
 
+    /// <summary>
+    /// ターン終了時の処理
+    /// </summary>
+    /// <param name="msg"></param>
     public override void OnEndTurn(EndTurnMessage msg)
     {
         base.OnEndTurn(msg);
@@ -718,6 +741,13 @@ public class DemoHumanPlayer : DemoPlayer
         createPreviewCoroutine = StartCoroutine(CreateCardPreviewAsync(card, pos, highlight));
     }
 
+    /// <summary>
+    /// カードの非同期のプレビュー
+    /// </summary>
+    /// <param name="card"></param>
+    /// <param name="pos"></param>
+    /// <param name="highlight"></param>
+    /// <returns></returns>
     protected virtual IEnumerator CreateCardPreviewAsync(RuntimeCard card, Vector3 pos, bool highlight)
     {
         yield return new WaitForSeconds(0.3f);
@@ -725,19 +755,24 @@ public class DemoHumanPlayer : DemoPlayer
         var gameConfig = GameManager.Instance.config;
         var libraryCard = gameConfig.GetCard(card.cardId);
         var cardType = gameConfig.cardTypes.Find(x => x.id == libraryCard.cardTypeId);
+        ///カードのタイプがCreatureだったらCreature用Prefabを表示
         if (cardType.name == "Creature")
         {
             currentCardPreview = Instantiate(creatureCardViewPrefab as GameObject);
         }
+        ///カードのタイプがSpellだったらSpell用Prefabを表示
         else if (cardType.name == "Spell")
         {
             currentCardPreview = Instantiate(spellCardViewPrefab as GameObject);
         }
         var cardView = currentCardPreview.GetComponent<CardView>();
+        //カードの情報を取り込む
         cardView.PopulateWithInfo(card);
+        //使えるか否か判断してハイライトを設定
         cardView.SetHighlightingEnabled(highlight);
         cardView.isPreview = true;
 
+        //配置設定
         var newPos = pos;
         newPos.y += 2.0f;
         currentCardPreview.transform.position = newPos;
@@ -758,6 +793,12 @@ public class DemoHumanPlayer : DemoPlayer
         isPreviewActive = false;
     }
 
+
+    /// <summary>
+    /// 非同期にカードを消す処理
+    /// </summary>
+    /// <returns></returns>
+    /// IEnumeratorやyieldは遅延評価(あとで値や型が決まるやつ)するループを簡単に書くための記述法
     protected virtual IEnumerator DestroyCardPreviewAsync()
     {
         if (currentCardPreview != null)
@@ -775,7 +816,10 @@ public class DemoHumanPlayer : DemoPlayer
             Destroy(oldCardPreview.gameObject);
         }
     }
-
+    /// <summary>
+    /// カードを手札に加える
+    /// </summary>
+    /// <param name="card"></param>
     protected virtual void AddCardToHand(RuntimeCard card)
     {
         var gameConfig = GameManager.Instance.config;
@@ -801,7 +845,9 @@ public class DemoHumanPlayer : DemoPlayer
 
         go.GetComponent<SortingGroup>().sortingOrder = playerHandCards.Count;
     }
-
+    /// <summary>
+    /// 相手の手札にカードを加える
+    /// </summary>
     protected virtual void AddCardToOpponentHand()
     {
         var go = Instantiate(opponentCardPrefab as GameObject);
@@ -810,7 +856,9 @@ public class DemoHumanPlayer : DemoPlayer
     }
 
     /// <summary>
+    /// 
     /// エリア間のカードの移動を処理する
+    /// プレハブのインスタンス等も含む。
     /// ドローなどもここ
     /// </summary>
     /// <param name="card"></param>
@@ -947,6 +995,9 @@ public class DemoHumanPlayer : DemoPlayer
         }
     }
 
+    /// <summary>
+    /// カードの使用可否状態をアップデート
+    /// </summary>
     protected void UpdateHandCardsHighlight()
     {
         foreach (var card in playerHandCards)
@@ -962,6 +1013,10 @@ public class DemoHumanPlayer : DemoPlayer
         }
     }
 
+    /// <summary>
+    /// ゲーム終了時の挙動
+    /// </summary>
+    /// <param name="msg"></param>
     public override void OnEndGame(EndGameMessage msg)
     {
         base.OnEndGame(msg);
@@ -1002,6 +1057,10 @@ public class DemoHumanPlayer : DemoPlayer
         
     }
 
+    /// <summary>
+    /// カード移動時の処理
+    /// </summary>
+    /// <param name="msg"></param>
     public override void OnCardMoved(CardMovedMessage msg)
     {
         base.OnCardMoved(msg);
@@ -1123,6 +1182,10 @@ public class DemoHumanPlayer : DemoPlayer
         Destroy(arrow.gameObject);
     }
 
+    /// <summary>
+    /// プレイヤーが攻撃された時の処理
+    /// </summary>
+    /// <param name="msg"></param>
     public override void OnPlayerAttacked(PlayerAttackedMessage msg)
     {
         base.OnPlayerAttacked(msg);
@@ -1137,6 +1200,10 @@ public class DemoHumanPlayer : DemoPlayer
         }
     }
 
+    /// <summary>
+    /// ミニオンがミニオンに攻撃された時の処理
+    /// </summary>
+    /// <param name="msg"></param>
     public override void OnCreatureAttacked(CreatureAttackedMessage msg)
     {
         base.OnCreatureAttacked(msg);

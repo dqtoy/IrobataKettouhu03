@@ -6,6 +6,9 @@ using UnityEngine.Rendering;
 
 using DG.Tweening;
 
+/// <summary>
+/// 攻撃時のアニメーション
+/// </summary>
 public static class CombatAnimation
 {
     public static void PlayFightAnimation(GameObject source, GameObject target, float shakeStrength, Action onHitCallback, Action onCompleteCallback = null)

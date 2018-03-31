@@ -86,7 +86,7 @@ public class GameScene : BaseScene
 
     /// <summary>
     /// Callback for when the end turn button is pressed.
-    /// 終了ターンボタンが押されたときのコールバック。
+    /// ターン終了ボタンが押されたときのコールバック。
     /// </summary>
     public void OnEndTurnButtonPressed()
     {

@@ -8,7 +8,9 @@ using DG.Tweening;
 using TMPro;
 
 using CCGKit;
-
+/// <summary>
+/// ボードのクリーチャー描画について
+/// </summary>
 public class BoardCreature : MonoBehaviour
 {
     public RuntimeCard card { get; private set; }
@@ -90,13 +92,20 @@ public class BoardCreature : MonoBehaviour
         attackStat.onValueChanged -= onAttackStatChangedDelegate;
     }
 
+    /// <summary>
+    /// カードのスタッツや属性を描画
+    /// </summary>
+    /// <param name="card"></param>
     public virtual void PopulateWithInfo(RuntimeCard card)
     {
         this.card = card;
 
+        //ゲームの基本設定
         var gameConfig = GameManager.Instance.config;
+        //カードのID一覧
         var libraryCard = gameConfig.GetCard(card.cardId);
         Assert.IsNotNull(libraryCard);
+        //カードの名前
         nameText.text = libraryCard.name;
 
         attackStat = card.namedStats["Attack"];
@@ -123,6 +132,8 @@ public class BoardCreature : MonoBehaviour
         };
         healthStat.onValueChanged += onHealthStatChangedDelegate;
 
+        //キーワードについての挙動
+        //属性追加時にいじるとこ(後日要編集)
         var subtypes = gameConfig.keywords.Find(x => x.name == "Subtypes");
         var impetus = subtypes.values.FindIndex(x => x.value == "Impetus");
         var provoke = subtypes.values.FindIndex(x => x.value == "Provoke");
@@ -189,6 +200,11 @@ public class BoardCreature : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// ボード上のクリーチャーを対象としたスタッツの表示更新
+    /// </summary>
+    /// <param name="text"></param>
+    /// <param name="stat"></param>
     private void UpdateStatText(TextMeshPro text, Stat stat)
     {
         text.text = stat.effectiveValue.ToString();

@@ -67,6 +67,11 @@ namespace CCGKit
         public List<Card> cards = new List<Card>();
 
         /// <summary>
+        /// ヒロパの一覧。
+        /// </summary>
+        public List<HeroPower> heroPowers = new List<HeroPower>();
+
+        /// <summary>
         /// The JSON serializer.
         /// JSONシリアライザ
         /// </summary>
@@ -375,6 +380,20 @@ namespace CCGKit
             var libraryCard = cards.Find(x => x.id == id);
             return libraryCard;
         }
+
+        
+          
+          
+        /// <summary>
+        /// 指定された識別子を持つヒロパを返す。
+        /// </summary>
+        public HeroPower GetHeroPower(int id)
+        {
+            var libraryHeroPower = heroPowers.Find(x => x.id == id);
+            return libraryHeroPower;
+        }
+
+    
 
         /// <summary>
         /// Returns the number of cards in the configuration.

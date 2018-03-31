@@ -20,10 +20,7 @@ public class BGMController : MonoBehaviour
 	/// </summary>
 	/// <param name="define">Define.</param>
 	/// <param name="clip">Clip.</param>
-
-
-
-	public void RegisterBgm (BgmDefine define, AudioClip clip)
+    public void RegisterBgm (BgmDefine define, AudioClip clip)
 	{
 		if (_infoList == null) {
 			_infoList = new List<SoundInfo> ();

@@ -1226,7 +1226,7 @@
                         "$type": "CCGKit.StringProperty"
                     },
                     {
-                        "value": "Creature",
+                        "value": "chen",
                         "name": "Picture",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -2015,7 +2015,7 @@
                         "$type": "CCGKit.StringProperty"
                     },
                     {
-                        "value": "Spell",
+                        "value": "houou",
                         "name": "Picture",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -2569,7 +2569,7 @@
                         "$type": "CCGKit.StringProperty"
                     },
                     {
-                        "value": "Creature",
+                        "value": "wriggle",
                         "name": "Picture",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -2625,7 +2625,7 @@
                         "$type": "CCGKit.StringProperty"
                     },
                     {
-                        "value": "Creature",
+                        "value": "mistia",
                         "name": "Picture",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -3736,7 +3736,7 @@
                         "$type": "CCGKit.StringProperty"
                     },
                     {
-                        "value": "Creature",
+                        "value": "akyu",
                         "name": "Picture",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -3792,7 +3792,7 @@
                         "$type": "CCGKit.StringProperty"
                     },
                     {
-                        "value": "Creature",
+                        "value": "kosuzu",
                         "name": "Picture",
                         "$type": "CCGKit.StringProperty"
                     },

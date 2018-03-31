@@ -136,7 +136,7 @@ namespace CCGKit
                 return;
             }
 
-            selectedTabIndex = GUILayout.Toolbar(selectedTabIndex, new string[] { "ゲームの基本設定", "場の設定", "プレイヤーの設定", "カードタイプ", "キーワード", "カード設定", "CCG Kitについて" });
+            selectedTabIndex = GUILayout.Toolbar(selectedTabIndex, new string[] { "ゲームの基本設定", "場の設定", "プレイヤーの設定", "カードタイプ", "キーワード", "カード設定", "CCG Kitについて", "ヒロパ設定" });
             //初期化時に実装した機能の数とタブの数を比較し、対象の機能とタブを結びつける
             if (selectedTabIndex >= 0 && selectedTabIndex < tabs.Count)
             {

@@ -4,6 +4,9 @@ using UnityEngine;
 
 using CCGKit;
 
+/// <summary>
+/// 対象を選択する時の矢印描画
+/// </summary>
 public class TargetingArrow : MonoBehaviour
 {
     [HideInInspector]

@@ -1,7 +1,3 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
 using UnityEngine.Networking;
 
 namespace CCGKit
@@ -10,6 +6,8 @@ namespace CCGKit
     /// This server handler is responsible for managing client requests to end the current game
     /// turn. If a player does not explicitly request the server to end his current turn, then
     /// the turn will naturally end after the pre-configured turn duration.
+    /// このサーバハンドラは、現在のゲームターンを終了するためのクライアント要求を管理する責任があります。 
+    /// プレーヤーが現在のターンを終了するようにサーバーに明示的に要求していない場合、ターンはあらかじめ設定されたターン時間後に自然に終了します。
     /// </summary>
     public class TurnSequenceHandler : ServerHandler
     {

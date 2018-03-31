@@ -1,13 +1,10 @@
-// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
 using UnityEngine.Networking;
 
 namespace CCGKit
 {
     /// <summary>
     /// This utility class defines all the unique identifiers for every network message in a game.
+    /// このユーティリティクラスは、ゲーム内のすべてのネットワークメッセージの一意の識別子をすべて定義します。
     /// </summary>
     public class NetworkProtocol
     {
@@ -37,6 +34,7 @@ namespace CCGKit
 
     // Every network message has a corresponding message class that carries the information needed
     // per message.
+    //すべてのネットワークメッセージには、メッセージごとに必要な情報を保持する対応するメッセージクラスがあります。
 
     public class RegisterPlayerMessage : MessageBase
     {
@@ -128,6 +126,8 @@ namespace CCGKit
         public NetworkInstanceId attackingPlayerNetId;
         public int attackingCardInstanceId;
         public int attackedCardInstanceId;
+
+
     }
 
     public class EndGameMessage : MessageBase

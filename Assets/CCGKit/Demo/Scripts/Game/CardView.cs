@@ -40,6 +40,10 @@ public class CardView : MonoBehaviour
         Assert.IsNotNull(bodyText);
     }
 
+    /// <summary>
+    /// カードの情報を取り込む
+    /// </summary>
+    /// <param name="card"></param>
     public virtual void PopulateWithInfo(RuntimeCard card)
     {
         this.card = card;

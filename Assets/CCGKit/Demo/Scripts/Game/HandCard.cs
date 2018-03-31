@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// ŽèŽD‚Ì•`‰æ
+/// </summary>
 [RequireComponent(typeof(CardView))]
 public class HandCard : MonoBehaviour
 {

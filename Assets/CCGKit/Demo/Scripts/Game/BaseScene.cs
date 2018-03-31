@@ -67,18 +67,18 @@ public class BaseScene : MonoBehaviour
         }
 
 
-        //request.asset：読み込まれているアセットバンドルを返す
-        //AssetBundle は、ヘッダーとデータセグメントのふたつの部分から構成されます
-        //ヘッダーには AssetBundle の識別子や、圧縮・非圧縮の識別情報、マニフェストなど、AssetBundle に関する情報が含まれています
-        //データセグメントには、AssetBundle 内での Asset のシリアライズによって生成された生データが含まれています。
-        ///Instantiateは、PrefabのTransformのままで生成する場合に使用
+        //request.asset：読み込まれているアセットバンドル(オブジェクトのデータ)を返す
+        //AssetBundle は、ヘッダーとデータセグメントのふたつの部分から構成されている
+        //ヘッダーには AssetBundle の識別子や、圧縮・非圧縮の識別情報、マニフェストなど、AssetBundle に関する情報が含まれる
+        //データセグメントには、AssetBundle 内での Asset のシリアライズによって生成された生データが含まれる。
+        ///Instantiateは、PrefabのTransformのままで生成する場合に使用(prefabのinstance化)
         ///asは生成したオブジェクトになんらかの処理を行いたい場合に使う。
         ///今回は2,3行目の座標指定、今のScene指定など。
         currentPopup = Instantiate(request.asset) as GameObject;
         // ワールド座標系の位置情報を親オブジェクトのローカル座標系に変換する
         currentPopup.transform.SetParent(canvas.transform, false);
         //オブジェクト生成→GetComponentでオブジェクトにアクセス
-        //※parentSceneはPopup内のBaseScene型。Popupが開いてるかどうかの判定に使われる
+        //※parentSceneはPopupクラス内のBaseScene型。Popupが開いてるかどうかの判定に使われる
         currentPopup.GetComponent<Popup>().parentScene = this;
         if (darkenBackground)
         {

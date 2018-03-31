@@ -1,8 +1,4 @@
-﻿// Copyright (C) 2016-2017 David Pol. All rights reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement,
-// a copy of which is available at http://unity3d.com/company/legal/as_terms.
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.Networking;
@@ -11,11 +7,13 @@ namespace CCGKit
 {
     /// <summary>
     /// This class provides general networking utilities.
+    /// このクラスは、一般的なネットワーキングユーティリティを提供します。
     /// </summary>
     public static class NetworkingUtils
     {
         /// <summary>
         /// Returns the local player for this client.
+        /// このクライアントのローカルプレーヤーを返します。
         /// </summary>
         /// <returns>The local player for this client.</returns>
         public static Player GetLocalPlayer()
@@ -43,6 +41,7 @@ namespace CCGKit
 
         /// <summary>
         /// Returns the human local player for this client.
+        /// このクライアントの人間のローカルプレイヤーを返します。
         /// </summary>
         /// <returns>The human local player for this client.</returns>
         public static Player GetHumanLocalPlayer()
@@ -62,6 +61,7 @@ namespace CCGKit
 
         /// <summary>
         /// Returns the active local player for this client.
+        /// このクライアントのアクティブなローカルプレーヤーを返します。
         /// </summary>
         /// <returns>The active local player for this client.</returns>
         public static Player GetActiveLocalPlayer()
@@ -81,9 +81,11 @@ namespace CCGKit
 
         /// <summary>
         /// Returns the network object with the specified network identifier.
+        /// 指定されたネットワーク識別子を持つネットワークオブジェクトを返します。
         /// </summary>
         /// <param name="netId">Network identifier of the network object we want to retrieve.</param>
         /// <returns>The network object with the specified network identifier.</returns>
+        /// <returns>指定されたネットワーク識別子を持つネットワークオブジェクト</ returns>
         public static GameObject GetNetworkObject(NetworkInstanceId netId)
         {
             foreach (var pair in NetworkServer.objects)

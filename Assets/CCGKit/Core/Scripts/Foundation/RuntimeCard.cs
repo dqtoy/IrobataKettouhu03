@@ -5,7 +5,7 @@ namespace CCGKit
 {
     /// <summary>
     /// This class represents a runtime instance of a card.
-    /// このクラスは、カードのランタイムインスタンスを表します。
+    /// このクラスは、カードのランタイムインスタンス(プログラムの実行に必要な部品の集合)を表します。
     /// </summary>
     public class RuntimeCard
     {
