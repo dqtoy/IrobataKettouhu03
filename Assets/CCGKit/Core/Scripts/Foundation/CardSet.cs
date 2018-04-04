@@ -10,8 +10,12 @@ namespace CCGKit
     public class CardSet
     {
         /// <summary>
+        /// カードセットのID。紅魔館とかの陣営のID
+        /// </summary>
+        public int Id;
+        /// <summary>
         /// The name of this card set.
-        /// このカードセットの名前。
+        /// このカードセットの名前。"紅魔館"や"白玉楼"等。
         /// </summary>
         public string name;
 

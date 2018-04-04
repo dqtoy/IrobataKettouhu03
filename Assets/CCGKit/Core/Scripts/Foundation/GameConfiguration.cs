@@ -38,7 +38,7 @@ namespace CCGKit
 
         /// <summary>
         /// The player stats.
-        /// プレーヤーの統計。
+        /// プレーヤーのスタッツ。
         /// </summary>
         public List<DefinitionStat> playerStats = new List<DefinitionStat>();
 
@@ -49,6 +49,18 @@ namespace CCGKit
         public List<CardType> cardTypes = new List<CardType>();
 
         /// <summary>
+        /// The card types.
+        /// カードの種類。
+        /// </summary>
+        public List<HeroPowerType> HeroPowerTypes = new List<HeroPowerType>();
+
+        /// <summary>
+        /// The card types.
+        /// カードの種類。
+        /// </summary>
+        public List<TokenType> tokenTypes = new List<TokenType>();
+
+        /// <summary>
         /// The keywords of the game.
         /// ゲームのキーワード。
         /// </summary>
@@ -56,9 +68,21 @@ namespace CCGKit
 
         /// <summary>
         /// The card sets of the game.
-        /// ゲームのカードセット。
+        /// ゲームのカードセット。(陣営が入ったリスト)
         /// </summary>
         public List<CardSet> cardSets = new List<CardSet>();
+
+        /// <summary>
+        /// The card sets of the game.
+        /// ゲームのヒロパセット。
+        /// </summary>
+        public List<HeroPowerSet> HeroPowerSets = new List<HeroPowerSet>();
+
+        /// <summary>
+        /// The card sets of the game.
+        /// ゲームのカードセット。
+        /// </summary>
+        public List<TokenSet> tokenSets = new List<TokenSet>();
 
         /// <summary>
         /// The cards of the game.
@@ -70,6 +94,11 @@ namespace CCGKit
         /// ヒロパの一覧。
         /// </summary>
         public List<HeroPower> heroPowers = new List<HeroPower>();
+
+        /// <summary>
+        /// トークンの一覧。
+        /// </summary>
+        public List<Token> tokens = new List<Token>();
 
         /// <summary>
         /// The JSON serializer.
@@ -147,9 +176,56 @@ namespace CCGKit
                 Keyword.currentId = this.keywords.Max(x => x.id) + 1;
             }
 
+            ///各陣営分けはここで設定する？
             var cardLibraryPath = path + "/card_library.json";
+                        var KoumaCardLibraryPath = path + "/Kcard_library.json";
+                        var HakugyokuCardLibraryPath = path + "/Hcard_library.json";
+                        var EienCardLibraryPath = path + "/Ecard_library.json";
+                        var tokenLibraryPath = path + "/token_library.json";
+            //カードの一覧をIDで取得、Listにして返す
+            var cardLibrary = LoadJSONFile<List<CardSet>>(cardLibraryPath);
+            //           var KoumaCardLibrary = LoadJSONFile<List<CardSet>>(KoumaCardLibraryPath);
+            //            var HakugyokuCardLibrary = LoadJSONFile<List<CardSet>>(HakugyokuCardLibraryPath);
+            //          var EienCardLibrary = LoadJSONFile<List<CardSet>>(EienCardLibraryPath);
+            var tokenLibrary = LoadJSONFile<List<TokenSet>>(tokenLibraryPath);
+            if (cardLibrary != null)
+            {
+                cardSets = cardLibrary;
+            }
+            if (tokenLibrary != null)
+            {
+                tokenSets = tokenLibrary;
+            }
+            var max = -1;
+            //inは以降にはコンテナを指定する
+            //コンテナ(コレクション)は、配列やリスト、辞書などの複数の要素をひとつにまとめるクラスのこと
+            //setはCardSetクラス
+            //foreachはここ参照 http://ufcpp.net/study/csharp/sp_foreach.html
+            var i = 1;
+            foreach (var set in cardSets)
+            {
 
-/*
+                //カード一覧からの各陣営のIDを取得(cardsはCardSetクラス)
+                var currentMax = set.cards.Max(x => x.id);
+
+                //Debug.Log(currentMax);
+
+
+                if (currentMax > max)
+                {
+                    max = currentMax;
+                    /*
+                    if (max == 305)
+                    {
+                        break;
+                    }
+                    */
+                }
+                i++;
+            }
+            Card.currentId = max + 1;
+
+            /*
             checkTeam=SelectTeamScene.GetTeamFlag();
             if(checkTeam!=null){
                 if(checkTeam=="kouma"){
@@ -163,23 +239,27 @@ namespace CCGKit
                 }
                 
             }
- */
+             */
 
-            var cardLibrary = LoadJSONFile<List<CardSet>>(cardLibraryPath);
-            if (cardLibrary != null)
+            ///トークン
+/*
+            var tokenLibrary = LoadJSONFile<List<TokenSet>>(tokenLibraryPath);
+            if (tokenLibrary != null)
             {
-                cardSets = cardLibrary;
+                tokenSets = tokenLibrary;
             }
-            var max = -1;
-            foreach (var set in cardSets)
+            var token_max = 416;
+            foreach (var set in tokenSets)
             {
-                var currentMax = set.cards.Max(x => x.id);
-                if (currentMax > max)
+                var currentMax = set.Tokens.Max(x => x.id);
+                if (currentMax > token_max)
                 {
-                    max = currentMax;
+                    token_max = currentMax;
                 }
             }
-            Card.currentId = max + 1;
+            Token.currentId = token_max + 1;
+            */
+
         }
 
         /// <summary>
@@ -188,8 +268,9 @@ namespace CCGKit
         /// </summary>
         public void LoadGameConfigurationAtRuntime()
         {
-            //全てのカードデータ、デッキに構築できるカード枚数、1ターンの時間、ターン開始時の行動、ターン終了時の行動を読み込む
+            //全てのカードデータ、デッキに構築できるカード枚数、1ターンの時間、ターン開始時の行動、ターン終了時の行動をTextAssetにキャストして読み込む
             var gamePropertiesJSON = Resources.Load<TextAsset>("game_properties");
+            //gamePropertiesJSONがnullではないことを保証する
             Assert.IsTrue(gamePropertiesJSON != null);
             var gameProperties = LoadJSONString<GameProperties>(gamePropertiesJSON.text);
             if (gameProperties != null)
@@ -234,8 +315,7 @@ namespace CCGKit
             }
 
 
-            //カード一覧の設定。
-            ///各陣営分けはここで設定する？
+            //カード一覧を読み込む。
             var cardLibraryJSON = Resources.Load<TextAsset>("card_library");
 
 
@@ -247,23 +327,25 @@ namespace CCGKit
             Assert.IsTrue(cardLibraryJSON != null);
             var cardLibrary = LoadJSONString<List<CardSet>>(cardLibraryJSON.text);
 
-/*
-            checkTeam=SelectTeamScene.GetTeamFlag();
-            if(checkTeam!=null){
-                if(checkTeam=="kouma"){
-                   cardLibrary = LoadJSONString<List<CardSet>>(koumaCardLibraryJSON.text);
-                }else if(checkTeam=="hakugyoku"){
-                    cardLibrary = LoadJSONString<List<CardSet>>(hakugyokuCardLibraryJSON.text);
-                }else if(checkTeam=="eien"){
-                    cardLibrary = LoadJSONString<List<CardSet>>(eienCardLibraryJSON.text);
-                }else{
+            /*
+                        checkTeam=SelectTeamScene.GetTeamFlag();
+                        if(checkTeam!=null){
+                            if(checkTeam=="kouma"){
+                               cardLibrary = LoadJSONString<List<CardSet>>(koumaCardLibraryJSON.text);
+                            }else if(checkTeam=="hakugyoku"){
+                                cardLibrary = LoadJSONString<List<CardSet>>(hakugyokuCardLibraryJSON.text);
+                            }else if(checkTeam=="eien"){
+                                cardLibrary = LoadJSONString<List<CardSet>>(eienCardLibraryJSON.text);
+                            }else{
 
-                }
-            }
+                            }
+                        }
 
- */
+             */
 
+//            Debug.Log(cardLibrary[2].Id);
 
+            //カードの一覧作成
             if (cardLibrary != null)
             {
                 cardSets = cardLibrary;
@@ -280,6 +362,7 @@ namespace CCGKit
         /// <summary>
         /// Loads the JSON file from the specified path.
         /// 指定されたパスからJSONデータを読み込みます。
+        /// →プログラム中で扱える型(string等)を返す
         /// </summary>
         /// <typeparam name="T">The type of data to load.</typeparam>
         /// <param name="path">The path to the file.</param>
@@ -288,8 +371,13 @@ namespace CCGKit
         {
             if (File.Exists(path))
             {
+                //StreamReaderクラスのオブジェクト作成。
+                //pathからデータを読み出すためのストリームを利用できるようになる
+                //ストリームとは…流れ込んでくるデータを入力、流れ出ていくデータを出力として扱う抽象データ型
                 var file = new StreamReader(path);
+                //指定したパスのファイルをstring型で頭から最後まで読み込む
                 var fileContents = file.ReadToEnd();
+                //JSONファイルの解析
                 var data = fsJsonParser.Parse(fileContents);
                 object deserialized = null;
                 serializer.TryDeserialize(data, typeof(T), ref deserialized).AssertSuccessWithoutWarnings();
@@ -328,7 +416,15 @@ namespace CCGKit
             SaveJSONFile(path + "/card_types.json", cardTypes);
             SaveJSONFile(path + "/keywords.json", keywords);
             SaveJSONFile(path + "/card_library.json", cardSets);
-//            SaveJSONFile(path + "/kouma_card_library.json", cardSets);
+
+//            Debug.Log(cardSets);
+
+            SaveJSONFile(path + "/heroPower_library.json", HeroPowerSets);
+            SaveJSONFile(path + "/token_library.json", tokenSets);
+            //            SaveJSONFile(path + "/kouma_card_library.json", cardSets);
+            //            SaveJSONFile(path + "/hakugyoku_card_library.json", cardSets);
+            //            SaveJSONFile(path + "/eien_card_library.json", cardSets);
+
 
             AssetDatabase.Refresh();
 #endif
@@ -393,7 +489,16 @@ namespace CCGKit
             return libraryHeroPower;
         }
 
-    
+        /// <summary>
+        /// 指定された識別子を持つトークンを返す。
+        /// </summary>
+        public Token GetToken(int id)
+        {
+            var libraryToken = tokens.Find(x => x.id == id);
+            return libraryToken;
+        }
+
+
 
         /// <summary>
         /// Returns the number of cards in the configuration.

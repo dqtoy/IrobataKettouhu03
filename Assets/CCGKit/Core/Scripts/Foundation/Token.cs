@@ -1,78 +1,73 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 
 using UnityEngine.Assertions;
 
 namespace CCGKit
 {
     /// <summary>
-    /// This class represents a single card in the game.
-    /// ‚±‚ÌƒNƒ‰ƒX‚ÍAƒQ[ƒ€“à‚Ì1–‡‚ÌƒJ[ƒh‚ğ•\‚µ‚Ü‚·B
+    /// This class represents a single Token in the game.
+    /// ã“ã®ã‚¯ãƒ©ã‚¹ã¯ã€ã‚²ãƒ¼ãƒ å†…ã®1æšã®ã‚«ãƒ¼ãƒ‰ã‚’è¡¨ã—ã¾ã™ã€‚
     /// </summary>
-    public class Card : Resource
+    public class Token : Resource
     {
         /// <summary>
-        /// ƒJ[ƒh‚ÌŠ‘®w‰c(’Ç‰Á)
-        /// </summary>
-        public static int groupId;
-
-        /// <summary>
         /// The current resource identifier.
-        /// Œ»İ‚ÌƒŠƒ\[ƒX¯•Êq(ƒJ[ƒh‚Ìƒ†ƒj[ƒNID)
+        /// ç¾åœ¨ã®ãƒªã‚½ãƒ¼ã‚¹è­˜åˆ¥å­(ã‚«ãƒ¼ãƒ‰ã®ãƒ¦ãƒ‹ãƒ¼ã‚¯ID)
         /// </summary>
         public static int currentId;
 
         /// <summary>
-        /// The type of this card.
-        /// ‚±‚ÌƒJ[ƒh‚Ìƒ^ƒCƒvB
+        /// The type of this Token.
+        /// ã“ã®ã‚«ãƒ¼ãƒ‰ã®ã‚¿ã‚¤ãƒ—ã€‚
         /// </summary>
-        public int cardTypeId;
+        public int tokenTypeId;
 
         /// <summary>
-        /// The name of this card.
-        /// ‚±‚ÌƒJ[ƒh‚Ì–¼‘OB
+        /// The name of this Token.
+        /// ã“ã®ã‚«ãƒ¼ãƒ‰ã®åå‰ã€‚
         /// </summary>
         public string name;
 
         /// <summary>
-        /// The costs of this card.
-        /// ‚±‚ÌƒJ[ƒh‚ÌƒRƒXƒgB
+        /// The costs of this Token.
+        /// ã“ã®ã‚«ãƒ¼ãƒ‰ã®ã‚³ã‚¹ãƒˆã€‚
         /// </summary>
         public List<Cost> costs = new List<Cost>();
 
         /// <summary>
-        /// The properties of this card.
-        /// ‚±‚ÌƒJ[ƒh‚Ì“Á«B
+        /// The properties of this Token.
+        /// ã“ã®ã‚«ãƒ¼ãƒ‰ã®ç‰¹æ€§ã€‚
         /// </summary>
         public List<Property> properties = new List<Property>();
 
         /// <summary>
-        /// The stats of this card.
-        /// ‚±‚ÌƒJ[ƒh‚Ì“Œvî•ñB
+        /// The stats of this Token.
+        /// ã“ã®ã‚«ãƒ¼ãƒ‰ã®çµ±è¨ˆæƒ…å ±ã€‚
         /// </summary>
         public List<Stat> stats = new List<Stat>();
 
         /// <summary>
-        /// The keywords of this card.
-        /// ‚±‚ÌƒJ[ƒh‚ÌƒL[ƒ[ƒhB
+        /// The keywords of this Token.
+        /// ã“ã®ã‚«ãƒ¼ãƒ‰ã®ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã€‚
         /// </summary>
         public List<RuntimeKeyword> keywords = new List<RuntimeKeyword>();
 
         /// <summary>
-        /// The abilities of this card.
-        /// ‚±‚ÌƒJ[ƒh‚Ì”\—ÍB
+        /// The abilities of this Token.
+        /// ã“ã®ã‚«ãƒ¼ãƒ‰ã®èƒ½åŠ›ã€‚
         /// </summary>
         public List<Ability> abilities = new List<Ability>();
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        public Card() : base(currentId++)
+        public Token() : base(currentId++)
         {
         }
 
         /// <summary>
         /// Returns the value of the integer property with the specified name.
-        /// w’è‚³‚ê‚½–¼‘O‚ğ‚Â®”ƒvƒƒpƒeƒB‚Ì’l‚ğ•Ô‚µ‚Ü‚·B
+        /// æŒ‡å®šã•ã‚ŒãŸåå‰ã‚’æŒã¤æ•´æ•°ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤ã‚’è¿”ã—ã¾ã™ã€‚
         /// </summary>
         /// <param name="name">The name of the property.</param>
         /// <returns>The value of the property.</returns>
@@ -85,7 +80,7 @@ namespace CCGKit
 
         /// <summary>
         /// Returns the value of the string property with the specified name.
-        /// w’è‚µ‚½–¼‘O‚Ì•¶š—ñƒvƒƒpƒeƒB‚Ì’l‚ğ•Ô‚µ‚Ü‚·B
+        /// æŒ‡å®šã—ãŸåå‰ã®æ–‡å­—åˆ—ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤ã‚’è¿”ã—ã¾ã™ã€‚
         /// </summary>
         /// <param name="name">The name of the property.</param>
         /// <returns>The value of the property.</returns>

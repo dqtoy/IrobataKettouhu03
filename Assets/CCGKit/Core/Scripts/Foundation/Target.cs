@@ -48,6 +48,14 @@ namespace CCGKit
     {
     }
 
+    public interface IHeroPowerTarget
+    {
+    }
+
+    public interface ITokenTarget
+    {
+    }
+
     public interface IUserTarget
     {
     }
@@ -65,6 +73,17 @@ namespace CCGKit
     {
         public List<CardCondition> conditions = new List<CardCondition>();
     }
+
+    public abstract class HeroPowerTargetBase : Target, IHeroPowerTarget
+    {
+        public List<HeroPowerCondition> conditions = new List<HeroPowerCondition>();
+    }
+
+    public abstract class TokenTargetBase : Target, ITokenTarget
+    {
+        public List<TokenCondition> conditions = new List<TokenCondition>();
+    }
+
 
     public class PlayerTarget : PlayerTargetBase, IComputedTarget
     {

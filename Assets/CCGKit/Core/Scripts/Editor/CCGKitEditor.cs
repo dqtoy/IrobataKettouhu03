@@ -69,9 +69,14 @@ namespace CCGKit
             tabs.Add(new CardTypesEditor(gameConfig));
             tabs.Add(new KeywordEditor(gameConfig));
             tabs.Add(new CardCollectionEditor(gameConfig));
+            tabs.Add(new HeroPowerEditor(gameConfig));
+            tabs.Add(new TokenEditor(gameConfig));
             tabs.Add(new AboutEditor(gameConfig));
         }
 
+        /// <summary>
+        /// IDを全て0にリセット
+        /// </summary>
         private void ResetIds()
         {
             GameZoneType.currentId = 0;
@@ -136,7 +141,7 @@ namespace CCGKit
                 return;
             }
 
-            selectedTabIndex = GUILayout.Toolbar(selectedTabIndex, new string[] { "ゲームの基本設定", "場の設定", "プレイヤーの設定", "カードタイプ", "キーワード", "カード設定", "CCG Kitについて", "ヒロパ設定" });
+            selectedTabIndex = GUILayout.Toolbar(selectedTabIndex, new string[] { "ゲームの基本設定", "場の設定", "プレイヤーの設定", "カードタイプ", "キーワード", "カード設定", "ヒロパ設定" ,"トークン設定","CCG Kitについて"});
             //初期化時に実装した機能の数とタブの数を比較し、対象の機能とタブを結びつける
             if (selectedTabIndex >= 0 && selectedTabIndex < tabs.Count)
             {

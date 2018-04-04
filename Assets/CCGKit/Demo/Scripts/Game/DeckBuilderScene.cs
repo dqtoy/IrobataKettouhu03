@@ -239,6 +239,54 @@ public class DeckBuilderScene : BaseScene
     {
         //初期化
         var gameConfig = GameManager.Instance.config;
+        //ページ数✕カードポジションを取得する
+        //→現在のページの1枚目のカードを読み込み
+        var startIndex = page * cardPositions.Count;
+        //2つ以上の値(現在のページの一枚目のカードのIDの数に表示されるべきカードの枚数を足したものか、カードの総数か)から最小値を返す
+        var endIndex = Mathf.Min(startIndex + cardPositions.Count, gameConfig.GetNumCards());
+
+        foreach (var card in FindObjectsOfType<CardView>())
+        {
+            Destroy(card.gameObject);
+        }
+
+        for (var i = startIndex; i < endIndex; i++)
+        {
+            var card = gameConfig.cards[i];
+            var cardType = gameConfig.cardTypes.Find(x => x.id == card.cardTypeId);
+            GameObject go = null;
+            if (cardType.name == "Creature")
+            {
+                go = Instantiate(creatureCardViewPrefab as GameObject);
+            }
+            else if (cardType.name == "Spell")
+            {
+                go = Instantiate(spellCardViewPrefab as GameObject);
+            }
+            var cardView = go.GetComponent<CardView>();
+            cardView.PopulateWithLibraryInfo(card);
+            cardView.SetHighlightingEnabled(false);
+            cardView.transform.position = cardPositions[i % cardPositions.Count].position;
+            cardView.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+            cardView.GetComponent<SpriteRenderer>().sortingLayerName = "Default";
+            cardView.GetComponent<SpriteRenderer>().sortingOrder = 1;
+            cardView.GetComponent<SortingGroup>().sortingLayerName = "Default";
+            cardView.GetComponent<SortingGroup>().sortingOrder = 1;
+
+            var deckBuilderCard = go.AddComponent<DeckBuilderCard>();
+            deckBuilderCard.scene = this;
+            deckBuilderCard.card = card;
+        }
+    }
+
+    /// <summary>
+    /// トークン一覧を読み込む
+    /// </summary>
+    /// <param name="page":カード一覧を読み込みたいページ></param>
+    public void LoadTokens(int page)
+    {
+        //初期化
+        var gameConfig = GameManager.Instance.config;
         //ページ数✕カードポジションの数(8個)を取得する
         //→現在のページのカード数を読み込み
         var startIndex = page * cardPositions.Count;
@@ -252,6 +300,7 @@ public class DeckBuilderScene : BaseScene
 
         for (var i = startIndex; i < endIndex; i++)
         {
+            //カードリストからカードを一枚読み込む
             var card = gameConfig.cards[i];
             var cardType = gameConfig.cardTypes.Find(x => x.id == card.cardTypeId);
             GameObject go = null;

@@ -8,26 +8,27 @@ using UnityEditorInternal;
 using UnityEngine;
 
 namespace CCGKit
-{ 
+{
     /// <summary>
-    /// CardCollectionEditorクラスのパクリ
+    /// CCG Kit editor's 'Token' tab.
+    /// CCGキットエディタの[カードコレクション]タブ。
     /// </summary>
-    public class HeroPowerEditor : EditorTab
+    public class TokenEditor : EditorTab
     {
-        private ReorderableList HeroPowerSetsList;
-        private HeroPowerSet currentHeroPowerSet;
+        private ReorderableList TokenSetsList;
+        private TokenSet currentTokenSet;
 
-        private ReorderableList currentHeroPowerList;
-        private HeroPower currentHeroPower;
+        private ReorderableList currentTokenList;
+        private Token currentToken;
 
-        private ReorderableList currentHeroPowerCostsList;
-        private Cost currentHeroPowerCost;
+        private ReorderableList currentTokenCostsList;
+        private Cost currentTokenCost;
 
-        private ReorderableList currentHeroPowerKeywordsList;
-        private RuntimeKeyword currentHeroPowerKeyword;
+        private ReorderableList currentTokenKeywordsList;
+        private RuntimeKeyword currentTokenKeyword;
 
-        private ReorderableList currentHeroPowerAbilitiesList;
-        private Ability currentHeroPowerAbility;
+        private ReorderableList currentTokenAbilitiesList;
+        private Ability currentTokenAbility;
 
         private ReorderableList currentEffectCostsList;
         private Cost currentEffectCost;
@@ -35,9 +36,9 @@ namespace CCGKit
         private ReorderableList currentPlayerTargetConditionsList;
         private PlayerTargetBase currentPlayerTarget;
         private PlayerCondition currentPlayerTargetCondition;
-        private ReorderableList currentHeroPowerTargetConditionsList;
-        private HeroPowerTargetBase currentHeroPowerTarget;
-        private HeroPowerCondition currentHeroPowerTargetCondition;
+        private ReorderableList currentTokenTargetConditionsList;
+        private TokenTargetBase currentTokenTarget;
+        private TokenCondition currentTokenTargetCondition;
 
         private List<Type> triggerTypes;
         private List<string> triggerTypeNames;
@@ -45,81 +46,81 @@ namespace CCGKit
         private List<string> effectTypeNames;
         private List<Type> humanTargetTypes;
         private List<string> humanTargetTypeNames;
-        private List<Type> HeroPowerTargetTypes;
-        private List<string> HeroPowerTargetTypeNames;
+        private List<Type> TokenTargetTypes;
+        private List<string> TokenTargetTypeNames;
 
-        public HeroPowerEditor(GameConfiguration config) : base(config)
+        public TokenEditor(GameConfiguration config) : base(config)
         {
-            HeroPowerSetsList = EditorUtils.SetupReorderableList("HeroPower sets", gameConfig.HeroPowerSets, ref currentHeroPowerSet, (rect, x) =>
+            TokenSetsList = EditorUtils.SetupReorderableList("Token sets", gameConfig.tokenSets, ref currentTokenSet, (rect, x) =>
             {
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.name);
             },
             (x) =>
             {
-                currentHeroPowerSet = x;
-                currentHeroPower = null;
-                currentHeroPowerCost = null;
-                currentHeroPowerKeyword = null;
-                currentHeroPowerAbility = null;
-                CreateCurrentHeroPowerSetHeroPowersList();
+                currentTokenSet = x;
+                currentToken = null;
+                currentTokenCost = null;
+                currentTokenKeyword = null;
+                currentTokenAbility = null;
+                CreateCurrentTokenSetTokensList();
             },
             () =>
             {
-                gameConfig.HeroPowerSets.Add(new HeroPowerSet());
+                gameConfig.tokenSets.Add(new TokenSet());
             },
             (x) =>
             {
-                currentHeroPowerSet = null;
-                currentHeroPower = null;
-                currentHeroPowerCost = null;
-                currentHeroPowerKeyword = null;
-                currentHeroPowerAbility = null;
+                currentTokenSet = null;
+                currentToken = null;
+                currentTokenCost = null;
+                currentTokenKeyword = null;
+                currentTokenAbility = null;
             });
         }
 
-        private void CreateCurrentHeroPowerSetHeroPowersList()
+        private void CreateCurrentTokenSetTokensList()
         {
-            currentHeroPowerList = EditorUtils.SetupReorderableList("HeroPowers", currentHeroPowerSet.HeroPowers, ref currentHeroPower, (rect, x) =>
+            currentTokenList = EditorUtils.SetupReorderableList("Tokens", currentTokenSet.Tokens, ref currentToken, (rect, x) =>
             {
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.name);
             },
             (x) =>
             {
-                currentHeroPower = x;
-                currentHeroPowerCost = null;
-                currentHeroPowerKeyword = null;
-                currentHeroPowerAbility = null;
-                CreateCurrentHeroPowerCostsList();
-//                CreateCurrentHeroPowerKeywordsList();
-                CreateCurrentHeroPowerAbilitiesList();
+                currentToken = x;
+                currentTokenCost = null;
+                currentTokenKeyword = null;
+                currentTokenAbility = null;
+                CreateCurrentTokenCostsList();
+                CreateCurrentTokenKeywordsList();
+                CreateCurrentTokenAbilitiesList();
             },
             () =>
             {
                 var menu = new GenericMenu();
-                foreach (var HeroPowerType in gameConfig.HeroPowerTypes)
+                foreach (var TokenType in gameConfig.tokenTypes)
                 {
-                    menu.AddItem(new GUIContent(HeroPowerType.name), false, CreateHeroPowerCallback, HeroPowerType);
+                    menu.AddItem(new GUIContent(TokenType.name), false, CreateTokenCallback, TokenType);
                 }
                 menu.ShowAsContext();
             },
             (x) =>
             {
-                currentHeroPower = null;
-                currentHeroPowerCost = null;
-                currentHeroPowerKeyword = null;
-                currentHeroPowerAbility = null;
+                currentToken = null;
+                currentTokenCost = null;
+                currentTokenKeyword = null;
+                currentTokenAbility = null;
             });
         }
 
-        private void CreateCurrentHeroPowerCostsList()
+        private void CreateCurrentTokenCostsList()
         {
-            currentHeroPowerCostsList = EditorUtils.SetupReorderableList("Costs", currentHeroPower.costs, ref currentHeroPowerCost, (rect, x) =>
+            currentTokenCostsList = EditorUtils.SetupReorderableList("Costs", currentToken.costs, ref currentTokenCost, (rect, x) =>
             {
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.GetReadableString(gameConfig));
             },
             (x) =>
             {
-                currentHeroPowerCost = x;
+                currentTokenCost = x;
             },
             () =>
             {
@@ -127,20 +128,19 @@ namespace CCGKit
                 var costTypes = AppDomain.CurrentDomain.GetAllDerivedTypes(typeof(Cost));
                 foreach (var type in costTypes)
                 {
-                    menu.AddItem(new GUIContent(StringUtils.DisplayCamelCaseString(type.Name)), false, CreateHeroPowerCostCallback, type);
+                    menu.AddItem(new GUIContent(StringUtils.DisplayCamelCaseString(type.Name)), false, CreateTokenCostCallback, type);
                 }
                 menu.ShowAsContext();
             },
             (x) =>
             {
-                currentHeroPowerCost = null;
+                currentTokenCost = null;
             });
         }
 
-        /*
-        private void CreateCurrentHeroPowerKeywordsList()
+        private void CreateCurrentTokenKeywordsList()
         {
-            currentHeroPowerKeywordsList = EditorUtils.SetupReorderableList("Keywords", currentHeroPower.keywords, ref currentHeroPowerKeyword, (rect, x) =>
+            currentTokenKeywordsList = EditorUtils.SetupReorderableList("Keywords", currentToken.keywords, ref currentTokenKeyword, (rect, x) =>
             {
                 var currentKeyword = gameConfig.keywords.Find(k => k.id == x.keywordId);
                 var options = new List<string>();
@@ -152,39 +152,39 @@ namespace CCGKit
             },
             (x) =>
             {
-                currentHeroPowerKeyword = x;
+                currentTokenKeyword = x;
             },
             () =>
             {
                 var menu = new GenericMenu();
                 for (var i = 0; i < gameConfig.keywords.Count; i++)
                 {
-                    menu.AddItem(new GUIContent(gameConfig.keywords[i].name), false, CreateHeroPowerKeywordCallback, i);
+                    menu.AddItem(new GUIContent(gameConfig.keywords[i].name), false, CreateTokenKeywordCallback, i);
                 }
                 menu.ShowAsContext();
             },
             (x) =>
             {
-                currentHeroPowerKeyword = null;
+                currentTokenKeyword = null;
             });
         }
-        */
-        private void CreateCurrentHeroPowerAbilitiesList()
+
+        private void CreateCurrentTokenAbilitiesList()
         {
-            currentHeroPowerAbilitiesList = EditorUtils.SetupReorderableList("Abilities", currentHeroPower.abilities, ref currentHeroPowerAbility, (rect, x) =>
+            currentTokenAbilitiesList = EditorUtils.SetupReorderableList("Abilities", currentToken.abilities, ref currentTokenAbility, (rect, x) =>
             {
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.name);
             },
             (x) =>
             {
-                currentHeroPowerAbility = x;
+                currentTokenAbility = x;
                 currentPlayerTargetConditionsList = null;
                 currentPlayerTarget = null;
                 currentPlayerTargetCondition = null;
-                currentHeroPowerTargetConditionsList = null;
-                currentHeroPowerTarget = null;
-                currentHeroPowerTargetCondition = null;
-                if (currentHeroPowerAbility is ActivatedAbility)
+                currentTokenTargetConditionsList = null;
+                currentTokenTarget = null;
+                currentTokenTargetCondition = null;
+                if (currentTokenAbility is ActivatedAbility)
                 {
                     CreateCurrentEffectCostsList();
                 }
@@ -192,25 +192,25 @@ namespace CCGKit
             () =>
             {
                 var menu = new GenericMenu();
-                menu.AddItem(new GUIContent("Triggered ability"), false, CreateHeroPowerAbilityCallback, 0);
-                menu.AddItem(new GUIContent("Activated ability"), false, CreateHeroPowerAbilityCallback, 1);
+                menu.AddItem(new GUIContent("Triggered ability"), false, CreateTokenAbilityCallback, 0);
+                menu.AddItem(new GUIContent("Activated ability"), false, CreateTokenAbilityCallback, 1);
                 menu.ShowAsContext();
             },
             (x) =>
             {
-                currentHeroPowerAbility = null;
+                currentTokenAbility = null;
                 currentPlayerTargetConditionsList = null;
                 currentPlayerTarget = null;
                 currentPlayerTargetCondition = null;
-                currentHeroPowerTargetConditionsList = null;
-                currentHeroPowerTarget = null;
-                currentHeroPowerTargetCondition = null;
+                currentTokenTargetConditionsList = null;
+                currentTokenTarget = null;
+                currentTokenTargetCondition = null;
             });
         }
 
         private void CreateCurrentEffectCostsList()
         {
-            currentEffectCostsList = EditorUtils.SetupReorderableList("Costs", (currentHeroPowerAbility as ActivatedAbility).costs, ref currentEffectCost, (rect, x) =>
+            currentEffectCostsList = EditorUtils.SetupReorderableList("Costs", (currentTokenAbility as ActivatedAbility).costs, ref currentEffectCost, (rect, x) =>
             {
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.GetReadableString(gameConfig));
             },
@@ -260,46 +260,46 @@ namespace CCGKit
             });
         }
 
-        private void CreateCurrentHeroPowerTargetConditionsList()
+        private void CreateCurrentTokenTargetConditionsList()
         {
-            currentHeroPowerTargetConditionsList = EditorUtils.SetupReorderableList("Target HeroPower conditions", currentHeroPowerTarget.conditions, ref currentHeroPowerTargetCondition, (rect, x) =>
+            currentTokenTargetConditionsList = EditorUtils.SetupReorderableList("Target Token conditions", currentTokenTarget.conditions, ref currentTokenTargetCondition, (rect, x) =>
             {
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.GetReadableString(gameConfig));
             },
             (x) =>
             {
-                currentHeroPowerTargetCondition = x;
+                currentTokenTargetCondition = x;
             },
             () =>
             {
                 var menu = new GenericMenu();
-                var conditionTypes = AppDomain.CurrentDomain.GetAllDerivedTypes(typeof(HeroPowerCondition));
+                var conditionTypes = AppDomain.CurrentDomain.GetAllDerivedTypes(typeof(TokenCondition));
                 foreach (var type in conditionTypes)
                 {
-                    menu.AddItem(new GUIContent(StringUtils.DisplayCamelCaseString(type.Name)), false, CreateHeroPowerTargetConditionCallback, type);
+                    menu.AddItem(new GUIContent(StringUtils.DisplayCamelCaseString(type.Name)), false, CreateTokenTargetConditionCallback, type);
                 }
                 menu.ShowAsContext();
             },
             (x) =>
             {
-                currentHeroPowerTargetCondition = null;
+                currentTokenTargetCondition = null;
             });
         }
 
-        private void CreateHeroPowerCostCallback(object obj)
+        private void CreateTokenCostCallback(object obj)
         {
             var cost = Activator.CreateInstance((Type)obj);
-            currentHeroPower.costs.Add(cost as Cost);
+            currentToken.costs.Add(cost as Cost);
         }
-/*
-        private void CreateHeroPowerKeywordCallback(object obj)
+
+        private void CreateTokenKeywordCallback(object obj)
         {
             var keyword = new RuntimeKeyword();
             keyword.keywordId = (int)obj;
-            currentHeroPower.keywords.Add(keyword);
+            currentToken.keywords.Add(keyword);
         }
-*/
-        private void CreateHeroPowerAbilityCallback(object obj)
+
+        private void CreateTokenAbilityCallback(object obj)
         {
             Ability ability = null;
             switch ((int)obj)
@@ -312,35 +312,35 @@ namespace CCGKit
                     ability = new ActivatedAbility();
                     break;
             }
-            currentHeroPower.abilities.Add(ability);
+            currentToken.abilities.Add(ability);
         }
 
-        private void CreateHeroPowerCallback(object obj)
+        private void CreateTokenCallback(object obj)
         {
-            var HeroPower = new HeroPower();
-            var HeroPowerType = obj as HeroPowerType;
-            HeroPower.HeroPowerTypeId = HeroPowerType.id;
-            if (HeroPowerType != null)
+            var Token = new Token();
+            var TokenType = obj as TokenType;
+            Token.tokenTypeId = TokenType.id;
+            if (TokenType != null)
             {
-                foreach (var property in HeroPowerType.properties)
+                foreach (var property in TokenType.properties)
                 {
                     if (property is IntProperty)
                     {
                         var propertyCopy = new IntProperty();
                         propertyCopy.name = property.name;
                         propertyCopy.value = (property as IntProperty).value;
-                        HeroPower.properties.Add(propertyCopy);
+                        Token.properties.Add(propertyCopy);
                     }
                     else if (property is StringProperty)
                     {
                         var propertyCopy = new StringProperty();
                         propertyCopy.name = property.name;
                         propertyCopy.value = (property as StringProperty).value;
-                        HeroPower.properties.Add(propertyCopy);
+                        Token.properties.Add(propertyCopy);
                     }
                 }
 
-                foreach (var stat in HeroPowerType.stats)
+                foreach (var stat in TokenType.stats)
                 {
                     var statCopy = new Stat();
                     statCopy.statId = stat.id;
@@ -349,16 +349,16 @@ namespace CCGKit
                     statCopy.originalValue = stat.originalValue;
                     statCopy.minValue = stat.minValue;
                     statCopy.maxValue = stat.maxValue;
-                    HeroPower.stats.Add(statCopy);
+                    Token.stats.Add(statCopy);
                 }
             }
-            currentHeroPowerSet.HeroPowers.Add(HeroPower);
+            currentTokenSet.Tokens.Add(Token);
         }
 
         private void CreateEffectCostCallback(object obj)
         {
             var cost = Activator.CreateInstance((Type)obj);
-            (currentHeroPowerAbility as ActivatedAbility).costs.Add(cost as Cost);
+            (currentTokenAbility as ActivatedAbility).costs.Add(cost as Cost);
         }
 
         private void CreatePlayerTargetConditionCallback(object obj)
@@ -367,10 +367,10 @@ namespace CCGKit
             currentPlayerTarget.conditions.Add(condition as PlayerCondition);
         }
 
-        private void CreateHeroPowerTargetConditionCallback(object obj)
+        private void CreateTokenTargetConditionCallback(object obj)
         {
             var condition = Activator.CreateInstance((Type)obj);
-            currentHeroPowerTarget.conditions.Add(condition as HeroPowerCondition);
+            currentTokenTarget.conditions.Add(condition as TokenCondition);
         }
 
         public override void OnTabSelected()
@@ -399,12 +399,12 @@ namespace CCGKit
                 humanTargetTypeNames.Add(StringUtils.DisplayCamelCaseString(type.Name));
             }
 
-            HeroPowerTargetTypes = new List<Type>(AppDomain.CurrentDomain.GetAllDerivedTypes(typeof(HeroPowerTargetBase)));
-            HeroPowerTargetTypes.RemoveAll(x => x.IsAbstract);
-            HeroPowerTargetTypeNames = new List<string>(HeroPowerTargetTypes.Count);
-            foreach (var type in HeroPowerTargetTypes)
+            TokenTargetTypes = new List<Type>(AppDomain.CurrentDomain.GetAllDerivedTypes(typeof(TokenTargetBase)));
+            TokenTargetTypes.RemoveAll(x => x.IsAbstract);
+            TokenTargetTypeNames = new List<string>(TokenTargetTypes.Count);
+            foreach (var type in TokenTargetTypes)
             {
-                HeroPowerTargetTypeNames.Add(StringUtils.DisplayCamelCaseString(type.Name));
+                TokenTargetTypeNames.Add(StringUtils.DisplayCamelCaseString(type.Name));
             }
         }
 
@@ -413,21 +413,21 @@ namespace CCGKit
             GUILayout.BeginHorizontal();
 
             GUILayout.BeginVertical(GUILayout.MaxWidth(250));
-            if (HeroPowerSetsList != null)
+            if (TokenSetsList != null)
             {
-                HeroPowerSetsList.DoLayoutList();
+                TokenSetsList.DoLayoutList();
             }
             GUILayout.EndVertical();
 
-            if (currentHeroPowerSet != null)
+            if (currentTokenSet != null)
             {
-                DrawHeroPowerSet(currentHeroPowerSet);
+                DrawTokenSet(currentTokenSet);
             }
 
             GUILayout.EndHorizontal();
         }
 
-        private void DrawHeroPowerSet(HeroPowerSet set)
+        private void DrawTokenSet(TokenSet set)
         {
             var oldLabelWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = 50;
@@ -442,15 +442,15 @@ namespace CCGKit
             GUILayout.BeginHorizontal();
 
             GUILayout.BeginVertical(GUILayout.MaxWidth(250));
-            if (currentHeroPowerList != null)
+            if (currentTokenList != null)
             {
-                currentHeroPowerList.DoLayoutList();
+                currentTokenList.DoLayoutList();
             }
             GUILayout.EndVertical();
 
-            if (currentHeroPower != null)
+            if (currentToken != null)
             {
-                DrawHeroPower(currentHeroPower);
+                DrawToken(currentToken);
             }
 
             GUILayout.EndHorizontal();
@@ -460,7 +460,7 @@ namespace CCGKit
             EditorGUIUtility.labelWidth = oldLabelWidth;
         }
 
-        private void DrawHeroPower(HeroPower HeroPower)
+        private void DrawToken(Token Token)
         {
             var oldLabelWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = 100;
@@ -469,10 +469,10 @@ namespace CCGKit
 
             GUILayout.BeginHorizontal();
             EditorGUILayout.PrefixLabel("Name");
-            HeroPower.name = EditorGUILayout.TextField(HeroPower.name, GUILayout.MaxWidth(EditorConfig.LargeTextFieldWidth));
+            Token.name = EditorGUILayout.TextField(Token.name, GUILayout.MaxWidth(EditorConfig.LargeTextFieldWidth));
             GUILayout.EndHorizontal();
 
-            foreach (var stat in HeroPower.stats)
+            foreach (var stat in Token.stats)
             {
                 GUILayout.BeginHorizontal();
                 EditorGUILayout.PrefixLabel(stat.name);
@@ -481,7 +481,7 @@ namespace CCGKit
                 GUILayout.EndHorizontal();
             }
 
-            foreach (var property in HeroPower.properties)
+            foreach (var property in Token.properties)
             {
                 GUILayout.BeginHorizontal();
                 EditorGUILayout.PrefixLabel(property.name);
@@ -501,15 +501,15 @@ namespace CCGKit
             GUILayout.BeginHorizontal();
 
             GUILayout.BeginVertical(GUILayout.MaxWidth(250));
-            if (currentHeroPowerCostsList != null)
+            if (currentTokenCostsList != null)
             {
-                currentHeroPowerCostsList.DoLayoutList();
+                currentTokenCostsList.DoLayoutList();
             }
             GUILayout.EndVertical();
 
-            if (currentHeroPowerCost != null)
+            if (currentTokenCost != null)
             {
-                DrawCost(currentHeroPowerCost);
+                DrawCost(currentTokenCost);
             }
 
             GUILayout.EndHorizontal();
@@ -517,9 +517,9 @@ namespace CCGKit
             GUILayout.BeginHorizontal();
 
             GUILayout.BeginVertical(GUILayout.MaxWidth(250));
-            if (currentHeroPowerKeywordsList != null)
+            if (currentTokenKeywordsList != null)
             {
-                currentHeroPowerKeywordsList.DoLayoutList();
+                currentTokenKeywordsList.DoLayoutList();
             }
             GUILayout.EndVertical();
 
@@ -528,15 +528,15 @@ namespace CCGKit
             GUILayout.BeginHorizontal();
 
             GUILayout.BeginVertical(GUILayout.MaxWidth(250));
-            if (currentHeroPowerAbilitiesList != null)
+            if (currentTokenAbilitiesList != null)
             {
-                currentHeroPowerAbilitiesList.DoLayoutList();
+                currentTokenAbilitiesList.DoLayoutList();
             }
             GUILayout.EndVertical();
 
-            if (currentHeroPowerAbility != null)
+            if (currentTokenAbility != null)
             {
-                DrawAbility(currentHeroPowerAbility);
+                DrawAbility(currentTokenAbility);
             }
 
             GUILayout.EndHorizontal();
@@ -716,8 +716,8 @@ namespace CCGKit
                     }
                     else
                     {
-                        targetTypes = HeroPowerTargetTypes;
-                        targetTypeNames = HeroPowerTargetTypeNames;
+                        targetTypes = TokenTargetTypes;
+                        targetTypeNames = TokenTargetTypeNames;
                     }
 
                     var targetTypeId = 0;
@@ -759,10 +759,10 @@ namespace CCGKit
                             currentPlayerTarget = target as PlayerTargetBase;
                             CreateCurrentPlayerTargetConditionsList();
                         }
-                        else if (target is HeroPowerTargetBase && currentHeroPowerTargetConditionsList == null)
+                        else if (target is TokenTargetBase && currentTokenTargetConditionsList == null)
                         {
-                            currentHeroPowerTarget = target as HeroPowerTargetBase;
-                            CreateCurrentHeroPowerTargetConditionsList();
+                            currentTokenTarget = target as TokenTargetBase;
+                            CreateCurrentTokenTargetConditionsList();
                         }
                     }
 
@@ -784,20 +784,20 @@ namespace CCGKit
 
                         GUILayout.EndHorizontal();
                     }
-                    else if (currentHeroPowerTarget != null)
+                    else if (currentTokenTarget != null)
                     {
                         GUILayout.BeginHorizontal();
 
                         GUILayout.BeginVertical(GUILayout.MaxWidth(250));
-                        if (currentHeroPowerTargetConditionsList != null)
+                        if (currentTokenTargetConditionsList != null)
                         {
-                            currentHeroPowerTargetConditionsList.DoLayoutList();
+                            currentTokenTargetConditionsList.DoLayoutList();
                         }
                         GUILayout.EndVertical();
 
-                        if (currentHeroPowerTargetCondition != null)
+                        if (currentTokenTargetCondition != null)
                         {
-                            DrawTargetCondition(currentHeroPowerTargetCondition);
+                            DrawTargetCondition(currentTokenTargetCondition);
                         }
 
                         GUILayout.EndHorizontal();
@@ -830,6 +830,4 @@ namespace CCGKit
             EditorGUIUtility.labelWidth = oldLabelWidth;
         }
     }
-
 }
-

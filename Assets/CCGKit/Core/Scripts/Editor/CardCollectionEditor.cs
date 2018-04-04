@@ -18,6 +18,8 @@ namespace CCGKit
         private ReorderableList cardSetsList;
         private CardSet currentCardSet;
 
+        private TokenSet currentTokenSet;
+
         private ReorderableList currentCardList;
         private Card currentCard;
 
@@ -49,6 +51,11 @@ namespace CCGKit
         private List<Type> cardTargetTypes;
         private List<string> cardTargetTypeNames;
 
+        /// <summary>
+        /// コンストラクタ
+        /// エディタのCard setsの項目(紅魔館等)を選択したら呼び出される
+        /// </summary>
+        /// <param name="config"></param>
         public CardCollectionEditor(GameConfiguration config) : base(config)
         {
             cardSetsList = EditorUtils.SetupReorderableList("Card sets", gameConfig.cardSets, ref currentCardSet, (rect, x) =>
@@ -57,7 +64,13 @@ namespace CCGKit
             },
             (x) =>
             {
+                //選択されたCardSstが入る
                 currentCardSet = x;
+
+//                Debug.Log(currentCardSet.cards);
+//                Debug.Log(currentCardSet.Id);
+//                Debug.Log(currentCardSet.name);
+
                 currentCard = null;
                 currentCardCost = null;
                 currentCardKeyword = null;
@@ -67,6 +80,8 @@ namespace CCGKit
             () =>
             {
                 gameConfig.cardSets.Add(new CardSet());
+
+//                Debug.Log(gameConfig.cardSets);
             },
             (x) =>
             {
@@ -78,6 +93,9 @@ namespace CCGKit
             });
         }
 
+        /// <summary>
+        /// カードの一覧表示
+        /// </summary>
         private void CreateCurrentCardSetCardsList()
         {
             currentCardList = EditorUtils.SetupReorderableList("Cards", currentCardSet.cards, ref currentCard, (rect, x) =>
@@ -86,6 +104,7 @@ namespace CCGKit
             },
             (x) =>
             {
+                //currentCardは選択したカード
                 currentCard = x;
                 currentCardCost = null;
                 currentCardKeyword = null;
@@ -112,6 +131,9 @@ namespace CCGKit
             });
         }
 
+        /// <summary>
+        /// コスト表示
+        /// </summary>
         private void CreateCurrentCardCostsList()
         {
             currentCardCostsList = EditorUtils.SetupReorderableList("Costs", currentCard.costs, ref currentCardCost, (rect, x) =>
@@ -138,6 +160,9 @@ namespace CCGKit
             });
         }
 
+        /// <summary>
+        /// キーワード表示
+        /// </summary>
         private void CreateCurrentCardKeywordsList()
         {
             currentCardKeywordsList = EditorUtils.SetupReorderableList("Keywords", currentCard.keywords, ref currentCardKeyword, (rect, x) =>
@@ -169,6 +194,9 @@ namespace CCGKit
             });
         }
 
+        /// <summary>
+        /// 能力表示
+        /// </summary>
         private void CreateCurrentCardAbilitiesList()
         {
             currentCardAbilitiesList = EditorUtils.SetupReorderableList("Abilities", currentCard.abilities, ref currentCardAbility, (rect, x) =>
@@ -208,6 +236,10 @@ namespace CCGKit
             });
         }
 
+        /// <summary>
+        /// 能力表示内の、ActivatedAbilityを選択した時に表示するコスト
+        /// 自傷シナジーなんかもここ
+        /// </summary>
         private void CreateCurrentEffectCostsList()
         {
             currentEffectCostsList = EditorUtils.SetupReorderableList("Costs", (currentCardAbility as ActivatedAbility).costs, ref currentEffectCost, (rect, x) =>
@@ -233,7 +265,9 @@ namespace CCGKit
                 currentEffectCost = null;
             });
         }
-
+        /// <summary>
+        /// 能力内の項目表示
+        /// </summary>
         private void CreateCurrentPlayerTargetConditionsList()
         {
             currentPlayerTargetConditionsList = EditorUtils.SetupReorderableList("Target player conditions", currentPlayerTarget.conditions, ref currentPlayerTargetCondition, (rect, x) =>
@@ -259,7 +293,9 @@ namespace CCGKit
                 currentPlayerTargetCondition = null;
             });
         }
-
+        /// <summary>
+        /// 能力表示内の、ActivatedAbilityを選択した時に表示する
+        /// </summary>
         private void CreateCurrentCardTargetConditionsList()
         {
             currentCardTargetConditionsList = EditorUtils.SetupReorderableList("Target card conditions", currentCardTarget.conditions, ref currentCardTargetCondition, (rect, x) =>
@@ -286,19 +322,30 @@ namespace CCGKit
             });
         }
 
+        /// <summary>
+        /// Cardリストにコストを追加する
+        /// </summary>
+        /// <param name="obj"></param>
         private void CreateCardCostCallback(object obj)
         {
             var cost = Activator.CreateInstance((Type)obj);
             currentCard.costs.Add(cost as Cost);
         }
 
+        /// <summary>
+        /// Cardリストにキーワードを追加する
+        /// </summary>
+        /// <param name="obj"></param>
         private void CreateCardKeywordCallback(object obj)
         {
             var keyword = new RuntimeKeyword();
             keyword.keywordId = (int)obj;
             currentCard.keywords.Add(keyword);
         }
-
+        /// <summary>
+        /// Cardリストに能力を追加する
+        /// </summary>
+        /// <param name="obj"></param>
         private void CreateCardAbilityCallback(object obj)
         {
             Ability ability = null;
@@ -315,15 +362,27 @@ namespace CCGKit
             currentCard.abilities.Add(ability);
         }
 
+
+
+
+        /// <summary>
+        /// エディタの「カード設定」の頁で設定する値をCardクラスのリストに保存する
+        /// 新規にカードが作られる際呼ばれるコールバック関数
+        /// ※コールバック関数は、非同期処理(この場合、新規カード作成)が完了した時に呼ばれる関数
+        /// </summary>
+        /// <param name="obj":cardTypeクラス></param>
         private void CreateCardCallback(object obj)
         {
             var card = new Card();
             var cardType = obj as CardType;
+            //CardクラスのcardTypeIdにCardTypeクラス(ミニオンorスペル)のIDを代入
+            //内部的には各スタッツ、最大コピー数、イラスト、テキスト、破壊の定義を含む
             card.cardTypeId = cardType.id;
             if (cardType != null)
             {
                 foreach (var property in cardType.properties)
                 {
+                    //スタッツや最大コピー数
                     if (property is IntProperty)
                     {
                         var propertyCopy = new IntProperty();
@@ -331,6 +390,7 @@ namespace CCGKit
                         propertyCopy.value = (property as IntProperty).value;
                         card.properties.Add(propertyCopy);
                     }
+                    //イラストのファイル名やテキストなど
                     else if (property is StringProperty)
                     {
                         var propertyCopy = new StringProperty();
@@ -343,6 +403,7 @@ namespace CCGKit
                 foreach (var stat in cardType.stats)
                 {
                     var statCopy = new Stat();
+                    //0がアタック、1がタフネス
                     statCopy.statId = stat.id;
                     statCopy.name = stat.name;
                     statCopy.baseValue = stat.baseValue;
@@ -352,9 +413,24 @@ namespace CCGKit
                     card.stats.Add(statCopy);
                 }
             }
+            Debug.Log(currentCardSet.name);
+
+            /*
+            if (currentCardSet.name=="トークン") {
+                currentTokenSet.tokens.Add(card);
+            }
+            */
+
+
             currentCardSet.cards.Add(card);
         }
 
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
         private void CreateEffectCostCallback(object obj)
         {
             var cost = Activator.CreateInstance((Type)obj);
@@ -372,6 +448,7 @@ namespace CCGKit
             var condition = Activator.CreateInstance((Type)obj);
             currentCardTarget.conditions.Add(condition as CardCondition);
         }
+
 
         public override void OnTabSelected()
         {
@@ -408,6 +485,9 @@ namespace CCGKit
             }
         }
 
+        /// <summary>
+        /// エディタのカード設定画面描画処理
+        /// </summary>
         public override void Draw()
         {
             GUILayout.BeginHorizontal();
@@ -427,6 +507,10 @@ namespace CCGKit
             GUILayout.EndHorizontal();
         }
 
+        /// <summary>
+        /// 陣営一覧描画処理
+        /// </summary>
+        /// <param name="set"></param>
         private void DrawCardSet(CardSet set)
         {
             var oldLabelWidth = EditorGUIUtility.labelWidth;
@@ -460,6 +544,10 @@ namespace CCGKit
             EditorGUIUtility.labelWidth = oldLabelWidth;
         }
 
+        /// <summary>
+        /// カード一覧描画処理
+        /// </summary>
+        /// <param name="card"></param>
         private void DrawCard(Card card)
         {
             var oldLabelWidth = EditorGUIUtility.labelWidth;
@@ -546,6 +634,10 @@ namespace CCGKit
             EditorGUIUtility.labelWidth = oldLabelWidth;
         }
 
+        /// <summary>
+        /// カード内のコスト描画処理
+        /// </summary>
+        /// <param name="cost"></param>
         private void DrawCost(Cost cost)
         {
             var oldLabelWidth = EditorGUIUtility.labelWidth;
@@ -570,6 +662,10 @@ namespace CCGKit
             EditorGUIUtility.labelWidth = oldLabelWidth;
         }
 
+        /// <summary>
+        /// カード内の能力描画処理
+        /// </summary>
+        /// <param name="ability"></param>
         private void DrawAbility(Ability ability)
         {
             var oldLabelWidth = EditorGUIUtility.labelWidth;
