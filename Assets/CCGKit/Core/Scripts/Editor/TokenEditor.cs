@@ -33,12 +33,16 @@ namespace CCGKit
         private ReorderableList currentEffectCostsList;
         private Cost currentEffectCost;
 
-        private ReorderableList currentPlayerTargetConditionsList;
-        private PlayerTargetBase currentPlayerTarget;
-        private PlayerCondition currentPlayerTargetCondition;
-        private ReorderableList currentTokenTargetConditionsList;
-        private TokenTargetBase currentTokenTarget;
-        private TokenCondition currentTokenTargetCondition;
+        //        private ReorderableList currentPlayerTargetConditionsList;
+        //        private PlayerTargetBase currentPlayerTarget;
+        //private PlayerCondition currentPlayerTargetCondition;
+        //private ReorderableList currentTokenTargetConditionsList;
+        //private TokenTargetBase currentTokenTarget;
+        //private TokenCondition currentTokenTargetCondition;
+
+        //private ReorderableList currentCardTargetConditionsList;
+        //private CardTargetBase currentCardTarget;
+        //private CardCondition currentCardTargetCondition;
 
         private List<Type> triggerTypes;
         private List<string> triggerTypeNames;
@@ -49,9 +53,15 @@ namespace CCGKit
         private List<Type> TokenTargetTypes;
         private List<string> TokenTargetTypeNames;
 
+
+        /// <summary>
+        /// コンストラクタ
+        /// エディタのCard setsの項目(紅魔館等)を選択したら呼び出される
+        /// </summary>
+        /// <param name="config"></param>
         public TokenEditor(GameConfiguration config) : base(config)
         {
-            TokenSetsList = EditorUtils.SetupReorderableList("Token sets", gameConfig.tokenSets, ref currentTokenSet, (rect, x) =>
+            TokenSetsList = EditorUtils.SetupReorderableList("陣営", gameConfig.tokenSets, ref currentTokenSet, (rect, x) =>
             {
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.name);
             },
@@ -77,10 +87,12 @@ namespace CCGKit
                 currentTokenAbility = null;
             });
         }
-
+        /// <summary>
+        /// トークンの一覧表示
+        /// </summary>
         private void CreateCurrentTokenSetTokensList()
         {
-            currentTokenList = EditorUtils.SetupReorderableList("Tokens", currentTokenSet.Tokens, ref currentToken, (rect, x) =>
+            currentTokenList = EditorUtils.SetupReorderableList("トークン", currentTokenSet.tokens, ref currentToken, (rect, x) =>
             {
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.name);
             },
@@ -96,10 +108,11 @@ namespace CCGKit
             },
             () =>
             {
+                //+を押された時、カードタイプ(ミニオンかスペルか)の中から追加するタイプを読み込む
                 var menu = new GenericMenu();
-                foreach (var TokenType in gameConfig.tokenTypes)
+                foreach (var cardType in gameConfig.cardTypes)
                 {
-                    menu.AddItem(new GUIContent(TokenType.name), false, CreateTokenCallback, TokenType);
+                    menu.AddItem(new GUIContent(cardType.name), false, CreateTokenCallback, cardType);
                 }
                 menu.ShowAsContext();
             },
@@ -111,7 +124,9 @@ namespace CCGKit
                 currentTokenAbility = null;
             });
         }
-
+        /// <summary>
+        /// コスト表示
+        /// </summary>
         private void CreateCurrentTokenCostsList()
         {
             currentTokenCostsList = EditorUtils.SetupReorderableList("Costs", currentToken.costs, ref currentTokenCost, (rect, x) =>
@@ -137,7 +152,9 @@ namespace CCGKit
                 currentTokenCost = null;
             });
         }
-
+        /// <summary>
+        /// キーワード表示
+        /// </summary>
         private void CreateCurrentTokenKeywordsList()
         {
             currentTokenKeywordsList = EditorUtils.SetupReorderableList("Keywords", currentToken.keywords, ref currentTokenKeyword, (rect, x) =>
@@ -168,7 +185,9 @@ namespace CCGKit
                 currentTokenKeyword = null;
             });
         }
-
+        /// <summary>
+        /// 能力表示
+        /// </summary>
         private void CreateCurrentTokenAbilitiesList()
         {
             currentTokenAbilitiesList = EditorUtils.SetupReorderableList("Abilities", currentToken.abilities, ref currentTokenAbility, (rect, x) =>
@@ -178,12 +197,12 @@ namespace CCGKit
             (x) =>
             {
                 currentTokenAbility = x;
-                currentPlayerTargetConditionsList = null;
-                currentPlayerTarget = null;
-                currentPlayerTargetCondition = null;
-                currentTokenTargetConditionsList = null;
-                currentTokenTarget = null;
-                currentTokenTargetCondition = null;
+                //                currentPlayerTargetConditionsList = null;
+                //currentPlayerTarget = null;
+                //currentPlayerTargetCondition = null;
+                //currentTokenTargetConditionsList = null;
+                //currentTokenTarget = null;
+                //currentTokenTargetCondition = null;
                 if (currentTokenAbility is ActivatedAbility)
                 {
                     CreateCurrentEffectCostsList();
@@ -191,6 +210,7 @@ namespace CCGKit
             },
             () =>
             {
+                //ユーザの選択によってアビリティ表示の準備をする
                 var menu = new GenericMenu();
                 menu.AddItem(new GUIContent("Triggered ability"), false, CreateTokenAbilityCallback, 0);
                 menu.AddItem(new GUIContent("Activated ability"), false, CreateTokenAbilityCallback, 1);
@@ -199,15 +219,18 @@ namespace CCGKit
             (x) =>
             {
                 currentTokenAbility = null;
-                currentPlayerTargetConditionsList = null;
-                currentPlayerTarget = null;
-                currentPlayerTargetCondition = null;
-                currentTokenTargetConditionsList = null;
-                currentTokenTarget = null;
-                currentTokenTargetCondition = null;
+                //currentPlayerTargetConditionsList = null;
+                //currentPlayerTarget = null;
+                //currentPlayerTargetCondition = null;
+                //currentTokenTargetConditionsList = null;
+                //currentTokenTarget = null;
+                //currentTokenTargetCondition = null;
             });
         }
-
+        /// <summary>
+        /// 能力表示内の、ActivatedAbilityを選択した時に表示するコスト
+        /// 自傷シナジーなんかもここ
+        /// </summary>
         private void CreateCurrentEffectCostsList()
         {
             currentEffectCostsList = EditorUtils.SetupReorderableList("Costs", (currentTokenAbility as ActivatedAbility).costs, ref currentEffectCost, (rect, x) =>
@@ -233,9 +256,13 @@ namespace CCGKit
                 currentEffectCost = null;
             });
         }
-
+        /// <summary>
+        /// 能力内の項目表示
+        /// 行動を起こすプレイヤーを指定する
+        /// </summary>
         private void CreateCurrentPlayerTargetConditionsList()
         {
+            /*
             currentPlayerTargetConditionsList = EditorUtils.SetupReorderableList("Target player conditions", currentPlayerTarget.conditions, ref currentPlayerTargetCondition, (rect, x) =>
             {
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.GetReadableString(gameConfig));
@@ -258,10 +285,16 @@ namespace CCGKit
             {
                 currentPlayerTargetCondition = null;
             });
+            */
         }
-
+        /// <summary>
+        /// 能力表示内の、ActivatedAbilityを選択した時に表示する
+        /// 能力発動の条件を表示する
+        /// </summary>
         private void CreateCurrentTokenTargetConditionsList()
         {
+
+           /*
             currentTokenTargetConditionsList = EditorUtils.SetupReorderableList("Target Token conditions", currentTokenTarget.conditions, ref currentTokenTargetCondition, (rect, x) =>
             {
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.GetReadableString(gameConfig));
@@ -284,41 +317,61 @@ namespace CCGKit
             {
                 currentTokenTargetCondition = null;
             });
+            */
         }
-
+        /// <summary>
+        /// tokenリストにコストを追加する
+        /// </summary>
+        /// <param name="obj"></param>
         private void CreateTokenCostCallback(object obj)
         {
             var cost = Activator.CreateInstance((Type)obj);
             currentToken.costs.Add(cost as Cost);
         }
-
+        /// <summary>
+        /// tokenリストにキーワードを追加する
+        /// </summary>
+        /// <param name="obj"></param>
         private void CreateTokenKeywordCallback(object obj)
         {
             var keyword = new RuntimeKeyword();
             keyword.keywordId = (int)obj;
             currentToken.keywords.Add(keyword);
         }
-
+        /// <summary>
+        /// tokenリストに能力を追加する
+        /// </summary>
+        /// <param name="obj"></param>
         private void CreateTokenAbilityCallback(object obj)
         {
             Ability ability = null;
             switch ((int)obj)
             {
                 case 0:
+                    // Ability.typeに0を代入
                     ability = new TriggeredAbility();
                     break;
 
                 case 1:
+                    // Ability.typeに1を代入
                     ability = new ActivatedAbility();
                     break;
             }
-            currentToken.abilities.Add(ability);
-        }
 
+            currentToken.abilities.Add(ability);
+
+//            Debug.Log(currentToken.abilities[2]);
+        }
+        /// <summary>
+        /// エディタの「カード設定」の頁で設定する値をCardクラスのリストに保存する。
+        /// 新規にカードが作られる際呼ばれるコールバック関数
+        /// ※コールバック関数は、非同期処理(この場合、新規カード作成)が完了した時に呼ばれる関数
+        /// </summary>
+        /// <param name="obj":cardTypeクラス></param>
         private void CreateTokenCallback(object obj)
         {
             var Token = new Token();
-            var TokenType = obj as TokenType;
+            var TokenType = obj as CardType;
             Token.tokenTypeId = TokenType.id;
             if (TokenType != null)
             {
@@ -352,27 +405,38 @@ namespace CCGKit
                     Token.stats.Add(statCopy);
                 }
             }
-            currentTokenSet.Tokens.Add(Token);
+            currentTokenSet.tokens.Add(Token);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
         private void CreateEffectCostCallback(object obj)
         {
             var cost = Activator.CreateInstance((Type)obj);
             (currentTokenAbility as ActivatedAbility).costs.Add(cost as Cost);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
         private void CreatePlayerTargetConditionCallback(object obj)
         {
             var condition = Activator.CreateInstance((Type)obj);
-            currentPlayerTarget.conditions.Add(condition as PlayerCondition);
+//            currentPlayerTarget.conditions.Add(condition as PlayerCondition);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
         private void CreateTokenTargetConditionCallback(object obj)
         {
             var condition = Activator.CreateInstance((Type)obj);
-            currentTokenTarget.conditions.Add(condition as TokenCondition);
+//            currentTokenTarget.conditions.Add(condition as TokenCondition);
         }
-
+        /// <summary>
+        /// /タブ選択された時の挙動？
+        /// </summary>
         public override void OnTabSelected()
         {
             triggerTypes = new List<Type>(AppDomain.CurrentDomain.GetAllDerivedTypes(typeof(Trigger)));
@@ -407,7 +471,9 @@ namespace CCGKit
                 TokenTargetTypeNames.Add(StringUtils.DisplayCamelCaseString(type.Name));
             }
         }
-
+        /// <summary>
+        /// エディタのカード設定画面描画処理
+        /// </summary>
         public override void Draw()
         {
             GUILayout.BeginHorizontal();
@@ -426,7 +492,10 @@ namespace CCGKit
 
             GUILayout.EndHorizontal();
         }
-
+        /// <summary>
+        /// 陣営一覧描画処理
+        /// </summary>
+        /// <param name="set"></param>
         private void DrawTokenSet(TokenSet set)
         {
             var oldLabelWidth = EditorGUIUtility.labelWidth;
@@ -459,7 +528,10 @@ namespace CCGKit
 
             EditorGUIUtility.labelWidth = oldLabelWidth;
         }
-
+        /// <summary>
+        /// トークンの一覧描画処理
+        /// </summary>
+        /// <param name="Token"></param>
         private void DrawToken(Token Token)
         {
             var oldLabelWidth = EditorGUIUtility.labelWidth;
@@ -545,7 +617,10 @@ namespace CCGKit
 
             EditorGUIUtility.labelWidth = oldLabelWidth;
         }
-
+        /// <summary>
+        /// カード内のコスト描画処理
+        /// </summary>
+        /// <param name="cost"></param>
         private void DrawCost(Cost cost)
         {
             var oldLabelWidth = EditorGUIUtility.labelWidth;
@@ -569,7 +644,10 @@ namespace CCGKit
 
             EditorGUIUtility.labelWidth = oldLabelWidth;
         }
-
+        /// <summary>
+        /// カード内の能力描画処理
+        /// </summary>
+        /// <param name="ability"></param>
         private void DrawAbility(Ability ability)
         {
             var oldLabelWidth = EditorGUIUtility.labelWidth;
@@ -618,7 +696,8 @@ namespace CCGKit
                         GUILayout.EndHorizontal();
                     }
                 }
-
+                // 参照渡しをする場合には、引数にref修飾子をつけます。
+                // http://albatrus.com/main/unity/7611
                 DrawEffect(ref triggeredAbility.effect, ref triggeredAbility.target);
             }
             else if (ability is ActivatedAbility)
@@ -667,7 +746,11 @@ namespace CCGKit
 
             EditorGUIUtility.labelWidth = oldLabelWidth;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="effect"></param>
+        /// <param name="target"></param>
         private void DrawEffect(ref Effect effect, ref Target target)
         {
             var effectTypeId = 0;
@@ -728,7 +811,7 @@ namespace CCGKit
                     }
 
                     var prevTargetTypeId = targetTypeId;
-
+/*
                     GUILayout.BeginHorizontal();
                     EditorGUILayout.PrefixLabel("Target");
                     targetTypeId = EditorGUILayout.Popup(prevTargetTypeId, targetTypeNames.ToArray(), GUILayout.MaxWidth(EditorConfig.RegularComboBoxWidth));
@@ -751,7 +834,7 @@ namespace CCGKit
                             GUILayout.EndHorizontal();
                         }
                     }
-
+                    
                     if (target != null)
                     {
                         if (target is PlayerTargetBase && currentPlayerTargetConditionsList == null)
@@ -759,6 +842,7 @@ namespace CCGKit
                             currentPlayerTarget = target as PlayerTargetBase;
                             CreateCurrentPlayerTargetConditionsList();
                         }
+                        //Targetの値をセットする？
                         else if (target is TokenTargetBase && currentTokenTargetConditionsList == null)
                         {
                             currentTokenTarget = target as TokenTargetBase;
@@ -802,17 +886,21 @@ namespace CCGKit
 
                         GUILayout.EndHorizontal();
                     }
+*/
                 }
             }
         }
-
+        /// <summary>
+        /// TargetConditionの描画処理
+        /// </summary>
+        /// <param name="condition"></param>
         private void DrawTargetCondition(Condition condition)
         {
             var oldLabelWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = EditorConfig.RegularLabelWidth;
 
             GUILayout.BeginVertical();
-
+            //BindingFlagsはint型を返すEnum
             var fields = condition.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public).OrderBy(x => ((OrderAttribute)x.GetCustomAttributes(typeof(OrderAttribute), false)[0]).Order).ToArray();
             for (var i = 0; i < fields.Length; i++)
             {

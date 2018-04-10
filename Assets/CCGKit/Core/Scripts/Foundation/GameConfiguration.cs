@@ -343,7 +343,7 @@ namespace CCGKit
 
              */
 
-//            Debug.Log(cardLibrary[2].Id);
+            //            Debug.Log(cardLibrary[2].Id);
 
             //カードの一覧作成
             if (cardLibrary != null)
@@ -357,6 +357,24 @@ namespace CCGKit
                     }
                 }
             }
+
+            //トークン一覧を読み込む。
+            var tokenLibraryJSON = Resources.Load<TextAsset>("token_library");
+            Assert.IsTrue(cardLibraryJSON != null);
+            var tokenLibrary = LoadJSONString<List<TokenSet>>(tokenLibraryJSON.text);
+            //トークンの一覧作成
+            if (tokenLibrary != null)
+            {
+                tokenSets = tokenLibrary;
+                foreach (var set in tokenSets)
+                {
+                    foreach (var token in set.tokens)
+                    {
+                        tokens.Add(token);
+                    }
+                }
+            }
+
         }
 
         /// <summary>

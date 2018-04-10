@@ -15,25 +15,42 @@ namespace CCGKit
     /// </summary>
     public class CardCollectionEditor : EditorTab
     {
+        //陣営毎に分けたカードの一覧
         private ReorderableList cardSetsList;
         private CardSet currentCardSet;
 
+        //トークンの一覧
         private TokenSet currentTokenSet;
 
+        //カード
         private ReorderableList currentCardList;
         private Card currentCard;
 
+        private Token currentToken;
+
+        //カードのコスト
         private ReorderableList currentCardCostsList;
         private Cost currentCardCost;
 
+        private Cost currentTokenCost;
+
+        //カードのキーワード
         private ReorderableList currentCardKeywordsList;
         private RuntimeKeyword currentCardKeyword;
 
+        private RuntimeKeyword currentTokenKeyword;
+
+        //カードのアビリティ
         private ReorderableList currentCardAbilitiesList;
         private Ability currentCardAbility;
 
+        private Ability currentTokenAbility;
+
+        //効果で使用するコスト
         private ReorderableList currentEffectCostsList;
         private Cost currentEffectCost;
+
+        private Cost currentTokenEffectCost;
 
         private ReorderableList currentPlayerTargetConditionsList;
         private PlayerTargetBase currentPlayerTarget;
@@ -58,7 +75,7 @@ namespace CCGKit
         /// <param name="config"></param>
         public CardCollectionEditor(GameConfiguration config) : base(config)
         {
-            cardSetsList = EditorUtils.SetupReorderableList("Card sets", gameConfig.cardSets, ref currentCardSet, (rect, x) =>
+            cardSetsList = EditorUtils.SetupReorderableList("card sets", gameConfig.cardSets, ref currentCardSet, (rect, x) =>
             {
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.name);
             },
@@ -98,7 +115,7 @@ namespace CCGKit
         /// </summary>
         private void CreateCurrentCardSetCardsList()
         {
-            currentCardList = EditorUtils.SetupReorderableList("Cards", currentCardSet.cards, ref currentCard, (rect, x) =>
+            currentCardList = EditorUtils.SetupReorderableList("cards", currentCardSet.cards, ref currentCard, (rect, x) =>
             {
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.name);
             },
@@ -299,6 +316,7 @@ namespace CCGKit
         private void CreateCurrentCardTargetConditionsList()
         {
             currentCardTargetConditionsList = EditorUtils.SetupReorderableList("Target card conditions", currentCardTarget.conditions, ref currentCardTargetCondition, (rect, x) =>
+
            {
                EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.GetReadableString(gameConfig));
            },
@@ -329,7 +347,18 @@ namespace CCGKit
         private void CreateCardCostCallback(object obj)
         {
             var cost = Activator.CreateInstance((Type)obj);
-            currentCard.costs.Add(cost as Cost);
+
+            //            Debug.Log(currentCardSet.name);
+
+            if (currentCardSet.name == "トークン")
+            {
+                currentToken.costs.Add(cost as Cost);
+            }
+            else {
+                currentCard.costs.Add(cost as Cost);
+            }
+
+
         }
 
         /// <summary>
@@ -341,6 +370,7 @@ namespace CCGKit
             var keyword = new RuntimeKeyword();
             keyword.keywordId = (int)obj;
             currentCard.keywords.Add(keyword);
+            
         }
         /// <summary>
         /// Cardリストに能力を追加する
@@ -359,7 +389,14 @@ namespace CCGKit
                     ability = new ActivatedAbility();
                     break;
             }
-            currentCard.abilities.Add(ability);
+            if (currentCardSet.name == "トークン")
+            {
+                currentToken.abilities.Add(ability);
+            }
+            else
+            {
+                currentCard.abilities.Add(ability);
+            }
         }
 
 
@@ -374,12 +411,26 @@ namespace CCGKit
         private void CreateCardCallback(object obj)
         {
             var card = new Card();
+            var token = new Token();
             var cardType = obj as CardType;
+//            var tokenType = obj as TokenType;
             //CardクラスのcardTypeIdにCardTypeクラス(ミニオンorスペル)のIDを代入
             //内部的には各スタッツ、最大コピー数、イラスト、テキスト、破壊の定義を含む
             card.cardTypeId = cardType.id;
+//            token.tokenTypeId = tokenType.id;
+/*
+            if (tokenType != null && currentCardSet.name == "トークン")
+            {
+
+            }
+*/           
+
+
+
             if (cardType != null)
             {
+                Debug.Log(currentCardSet.name);
+
                 foreach (var property in cardType.properties)
                 {
                     //スタッツや最大コピー数
@@ -388,7 +439,18 @@ namespace CCGKit
                         var propertyCopy = new IntProperty();
                         propertyCopy.name = property.name;
                         propertyCopy.value = (property as IntProperty).value;
-                        card.properties.Add(propertyCopy);
+
+                        if (currentCardSet.name == "トークン")
+                        {
+                            token.properties.Add(propertyCopy);
+                        }
+                        else
+                        {
+                            card.properties.Add(propertyCopy);
+                        }
+                         
+
+                        
                     }
                     //イラストのファイル名やテキストなど
                     else if (property is StringProperty)
@@ -396,7 +458,16 @@ namespace CCGKit
                         var propertyCopy = new StringProperty();
                         propertyCopy.name = property.name;
                         propertyCopy.value = (property as StringProperty).value;
-                        card.properties.Add(propertyCopy);
+
+                        if (currentCardSet.name == "トークン")
+                        {
+                            token.properties.Add(propertyCopy);
+                        }
+                        else
+                        {
+                            card.properties.Add(propertyCopy);
+                        }
+
                     }
                 }
 
@@ -410,19 +481,34 @@ namespace CCGKit
                     statCopy.originalValue = stat.originalValue;
                     statCopy.minValue = stat.minValue;
                     statCopy.maxValue = stat.maxValue;
-                    card.stats.Add(statCopy);
+                    if (currentCardSet.name == "トークン")
+                    {
+                        token.stats.Add(statCopy);
+                    }
+                    else
+                    {
+                        card.stats.Add(statCopy);
+                    }
+
                 }
             }
-            Debug.Log(currentCardSet.name);
+            //           Debug.Log(currentCardSet.name);
 
             /*
             if (currentCardSet.name=="トークン") {
                 currentTokenSet.tokens.Add(card);
             }
             */
+            if (currentCardSet.name == "トークン")
+            {
+                currentTokenSet.tokens.Add(token);
+            }
+            else
+            {
+                currentCardSet.cards.Add(card);
+            }
 
 
-            currentCardSet.cards.Add(card);
         }
 
 
@@ -437,19 +523,34 @@ namespace CCGKit
             (currentCardAbility as ActivatedAbility).costs.Add(cost as Cost);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
         private void CreatePlayerTargetConditionCallback(object obj)
         {
             var condition = Activator.CreateInstance((Type)obj);
             currentPlayerTarget.conditions.Add(condition as PlayerCondition);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
         private void CreateCardTargetConditionCallback(object obj)
         {
             var condition = Activator.CreateInstance((Type)obj);
             currentCardTarget.conditions.Add(condition as CardCondition);
+
+            //            Debug.Log(currentCardTargetConditionsList);
+            Debug.Log(currentCardTarget);
+
+
         }
 
-
+        /// <summary>
+        /// /タブ選択された時の挙動？
+        /// </summary>
         public override void OnTabSelected()
         {
             triggerTypes = new List<Type>(AppDomain.CurrentDomain.GetAllDerivedTypes(typeof(Trigger)));
@@ -764,6 +865,11 @@ namespace CCGKit
             EditorGUIUtility.labelWidth = oldLabelWidth;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="effect"></param>
+        /// <param name="target"></param>
         private void DrawEffect(ref Effect effect, ref Target target)
         {
             var effectTypeId = 0;
@@ -902,6 +1008,10 @@ namespace CCGKit
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="condition"></param>
         private void DrawTargetCondition(Condition condition)
         {
             var oldLabelWidth = EditorGUIUtility.labelWidth;

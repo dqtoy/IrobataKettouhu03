@@ -87,6 +87,9 @@ namespace CCGKit
             Keyword.currentId = 0;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void OpenGameConfiguration()
         {
             var path = EditorUtility.OpenFolderPanel("Select game configuration folder", "", "");
