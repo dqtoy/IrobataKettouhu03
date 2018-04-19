@@ -328,6 +328,7 @@ public class DeckBuilderScene : BaseScene
         }
     }
 
+    ///デッキにカードを追加する処理
     public void AddCardToDeck(Card card)
     {
         if (currentDeckButton == null)
@@ -379,6 +380,9 @@ public class DeckBuilderScene : BaseScene
         currentDeckButton.UpdateDeckInfo();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void OnClearAllButtonPressed()
     {
         currentDeckButton.deck.cards.Clear();

@@ -1,32 +1,29 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 using TMPro;
 
 using CCGKit;
 
 /// <summary>
-/// \’z’†‚ÌƒfƒbƒL‚Ì•\¦‚ğ•\Œ»‚·‚éƒNƒ‰ƒX
+/// æ§‹ç¯‰ä¸­ã®ãƒ‡ãƒƒã‚­ã®è¡¨ç¤ºã‚’è¡¨ç¾ã™ã‚‹ã‚¯ãƒ©ã‚¹
 /// </summary>
-public class CardListItem : MonoBehaviour
+public class TokenPoolListItem : MonoBehaviour
 {
     public DeckButton deckButton;
-    public Card card;
+    public Token card;
     public TextMeshProUGUI cardNameText;
     public TextMeshProUGUI cardCostText;
-    public TextMeshProUGUI cardAmountText;
 
     public int count = 1;
 
     public void AddCard()
     {
         ++count;
-        cardAmountText.text = "x" + count;
     }
 
     public void RemoveCard()
     {
         --count;
-        cardAmountText.text = "x" + count;
     }
 
 

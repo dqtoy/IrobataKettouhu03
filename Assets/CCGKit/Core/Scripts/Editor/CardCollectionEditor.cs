@@ -413,17 +413,20 @@ namespace CCGKit
             var card = new Card();
             var token = new Token();
             var cardType = obj as CardType;
-//            var tokenType = obj as TokenType;
+            var tokenType = obj as CardType;
+            //            var tokenType = obj as TokenType;
             //CardクラスのcardTypeIdにCardTypeクラス(ミニオンorスペル)のIDを代入
             //内部的には各スタッツ、最大コピー数、イラスト、テキスト、破壊の定義を含む
             card.cardTypeId = cardType.id;
-//            token.tokenTypeId = tokenType.id;
-/*
-            if (tokenType != null && currentCardSet.name == "トークン")
-            {
+            token.tokenTypeId = tokenType.id;
 
-            }
-*/           
+            //            token.tokenTypeId = tokenType.id;
+            /*
+                        if (tokenType != null && currentCardSet.name == "トークン")
+                        {
+
+                        }
+            */
 
 
 
@@ -474,7 +477,7 @@ namespace CCGKit
                 foreach (var stat in cardType.stats)
                 {
                     var statCopy = new Stat();
-                    //0がアタック、1がタフネス
+                    //StatIDの0がアタック、1がタフネス
                     statCopy.statId = stat.id;
                     statCopy.name = stat.name;
                     statCopy.baseValue = stat.baseValue;
@@ -543,7 +546,7 @@ namespace CCGKit
             currentCardTarget.conditions.Add(condition as CardCondition);
 
             //            Debug.Log(currentCardTargetConditionsList);
-            Debug.Log(currentCardTarget);
+//            Debug.Log(currentCardTarget);
 
 
         }
@@ -933,7 +936,11 @@ namespace CCGKit
 
                     GUILayout.BeginHorizontal();
                     EditorGUILayout.PrefixLabel("Target");
+                    //既に指定してあるターゲットを表示
                     targetTypeId = EditorGUILayout.Popup(prevTargetTypeId, targetTypeNames.ToArray(), GUILayout.MaxWidth(EditorConfig.RegularComboBoxWidth));
+
+//                    Debug.Log(targetTypeId);
+
                     GUILayout.EndHorizontal();
 
                     if (target == null || targetTypeId != prevTargetTypeId)

@@ -28,6 +28,12 @@ namespace CCGKit
         public List<Deck> playerDecks = new List<Deck>();
 
         /// <summary>
+        /// ゲーム中にトークンを召喚する際参照するトークンのプール
+        /// ヒロパやランダムスペルを手札に加える際にも使う
+        /// </summary>
+        public List<TokenPool> AllPlayerTokens = new List<TokenPool>();
+
+        /// <summary>
         /// The player's nickname of this game.
         /// プレイヤー名
         /// </summary>

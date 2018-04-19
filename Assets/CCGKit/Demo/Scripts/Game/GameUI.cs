@@ -35,6 +35,8 @@ public class GameUI : MonoBehaviour
     public TextMeshPro playerGraveyardText;
     public TextMeshPro opponentGraveyardText;
 
+    public TextMeshPro boardTokenText;
+
     public PlayerManaBar playerManaBar;
     public TextMeshPro opponentManaText;
 
@@ -63,6 +65,7 @@ public class GameUI : MonoBehaviour
         Assert.IsNotNull(opponentHandText);
         Assert.IsNotNull(playerGraveyardText);
         Assert.IsNotNull(opponentGraveyardText);
+        Assert.IsNotNull(boardTokenText);
         Assert.IsNotNull(playerManaBar);
         Assert.IsNotNull(opponentManaText);
         Assert.IsNotNull(endTurnSprite);
@@ -126,6 +129,11 @@ public class GameUI : MonoBehaviour
     public void SetPlayerHandCards(int cards)
     {
         playerHandText.text = cards.ToString();
+    }
+
+    public void SetBoardToken(int cards)
+    {
+        boardTokenText.text = cards.ToString();
     }
 
     public void SetPlayerGraveyardCards(int cards)

@@ -27,7 +27,7 @@ namespace CCGKit
         {
             // 条件にあった最初の要素を返します。
             // // 要素に4があれば
-            // var num = list.Find(x => x.Equals(4));
+            // 例：var num = list.Find(x => x.Equals(4));
             ///移動元のゾーンIDを代入
             var originZone = state.config.gameZones.Find(x => x.id == originGameZoneId);
             ///移動先のゾーンIDを代入
@@ -35,9 +35,18 @@ namespace CCGKit
             state.effectSolver.MoveCard(card.ownerPlayer.netId, card, originZone.name, destinationZone.name);
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="state"：ゲームの現在の完全な状態></param>
+        /// <param name="sourceCard"：効果を発動するカード></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
         public override bool AreTargetsAvailable(GameState state, RuntimeCard sourceCard, Target target)
         {
             var cards = new List<RuntimeCard>();
+            var tokens = new List<RuntimeToken>();
             switch (target.GetTarget())
             {
                 case EffectTarget.ThisCard:
@@ -48,6 +57,7 @@ namespace CCGKit
                 case EffectTarget.AllPlayerCards:
                 case EffectTarget.RandomPlayerCard:
                     {
+                        //移動元のゾーン
                         foreach (var card in state.currentPlayer.zones[originGameZoneId].cards)
                         {
                             cards.Add(card);
@@ -83,6 +93,17 @@ namespace CCGKit
                 case EffectTarget.OpponentOrOpponentCreature:
                 case EffectTarget.AnyPlayerOrCreature:
                     return true;
+                case EffectTarget.Token_insect:
+                    {
+
+
+                        foreach (var card in state.currentPlayer.zones[originGameZoneId].cards)
+                        {
+                            cards.Add(card);
+                        }
+                        break;
+
+                    }
 
                 default:
                     return false;

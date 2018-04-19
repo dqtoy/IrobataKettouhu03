@@ -23,6 +23,7 @@ namespace CCGKit
     {
         /// <summary>
         /// The current state of the game.
+        /// ゲームの現在の状態。
         /// </summary>
         public GameState gameState;
 
@@ -47,15 +48,19 @@ namespace CCGKit
 
         /// <summary>   
         /// This method is automatically called when the turn starts.
-        /// このメソッドは、順番が始まると自動的に呼び出されます。
+        /// このメソッドは、各プレイヤーのターンが始まると自動的に呼び出されます。
         /// </summary>
         public void OnTurnStarted()
         {
+            //Deck,Hand,Board,Braveyard,tokenpoolの順でループ
             foreach (var zone in gameState.currentPlayer.zones)
             {
+                //zoneを探す定型文
                 var zoneDefinition = gameState.config.gameZones.Find(x => x.id == zone.Value.zoneId);
+                //zoneが動的 且つ 相手のzoneの内容が見える設定の場合
                 if (zoneDefinition.type == ZoneType.Dynamic && zoneDefinition.opponentVisibility == ZoneOpponentVisibility.Visible)
                 {
+                    //各カードターン開始時の能力発動
                     foreach (var card in zone.Value.cards)
                     {
                         TriggerEffect<OnPlayerTurnStartedTrigger>(gameState.currentPlayer, card, x => { return true; });
@@ -130,8 +135,8 @@ namespace CCGKit
         /// <param name = "playerNetId">カード所有者のプレーヤーのネットワーク識別子</ param>
         /// <param name="card">The card to move.</param>
         /// <param name = "card" > 移動するカード </ param >
-        /// <param name="originZone">The origin zone.</param>
-        /// <param name="destinationZone">The destination zone.</param>
+        /// <param name="originZone">The origin(元) zone.</param>
+        /// <param name="destinationZone">The destination(先) zone.</param>
         /// <param name="targetInfo">The optional target information.</param>
         /// <param name = "targetInfo">オプションのターゲット情報</ param>
         public void MoveCard(NetworkInstanceId playerNetId, RuntimeCard card, string originZone, string destinationZone, List<int> targetInfo = null)
@@ -139,13 +144,65 @@ namespace CCGKit
             var player = gameState.players.Find(x => x.netId == playerNetId);
             if (player != null)
             {
+                //移動元からカードを消す
                 player.namedZones[originZone].RemoveCard(card);
+                //移動先にカードを追加する
                 player.namedZones[destinationZone].AddCard(card);
+                //プレイヤー、カード、カードがゾーンから出た時に発動する能力があるかの判定、ターゲットの情報をそれぞれ渡す
+                //ラムダ式は以下の書き方
+                //引数リスト => 式
+                //http://ufcpp.net/study/csharp/sp3_lambda.html
                 TriggerEffect<OnCardLeftZoneTrigger>(player, card, x => { return x.IsTrue(gameState, originZone); }, targetInfo);
+                // TriggerEffect<OnCardLeftZoneTrigger>と逆。カードが入った時の能力(バトルクライ)
                 TriggerEffect<OnCardEnteredZoneTrigger>(player, card, x => { return x.IsTrue(gameState, destinationZone); }, targetInfo);
 
                 var libraryCard = gameState.config.GetCard(card.cardId);
                 var cardType = gameState.config.cardTypes.Find(x => x.id == libraryCard.cardTypeId);
+                //カードがスペルだったらすぐにカードを墓地へ
+                //ヒロパ実装時にも使うかも
+                if (cardType.moveAfterTriggeringEffect)
+                {
+                    var finalDestinationZone = gameState.config.gameZones.Find(x => x.id == cardType.zoneId);
+                    // We do not use the MoveCards function here, because we do not want to trigger any effects
+                    // (which would cause an infinite recursion).
+                    //ここではMoveCards関数を使用しません。なぜなら、（無限再帰を引き起こす）エフェクトをトリガーしたくないからです。
+                    player.namedZones[destinationZone].RemoveCard(card);
+                    player.namedZones[finalDestinationZone.name].AddCard(card);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Moves the specified card from the specified origin zone to the specified destination zone.
+        /// 指定したトークンを指定された起点ゾーンから指定された目的地ゾーンにコピーします。
+        /// </summary>
+        /// <param name="playerNetId">The network identifier of the card's owner player.</param>
+        /// <param name = "playerNetId">カード所有者のプレーヤーのネットワーク識別子</ param>
+        /// <param name="card">The card to move.</param>
+        /// <param name = "card" > 移動するカード </ param >
+        /// <param name="originZone">The origin(元) zone.</param>
+        /// <param name="destinationZone">The destination(先) zone.</param>
+        /// <param name="targetInfo">The optional target information.</param>
+        /// <param name = "targetInfo">オプションのターゲット情報</ param>
+        public void SummonToken(NetworkInstanceId playerNetId, RuntimeCard card, string originZone, string destinationZone, List<int> targetInfo = null)
+        {
+            var player = gameState.players.Find(x => x.netId == playerNetId);
+            if (player != null)
+            {
+                //移動先にカードを追加する
+                player.namedZones[destinationZone].AddCard(card);
+                //プレイヤー、カード、カードがゾーンから出た時に発動する能力があるかの判定、ターゲットの情報をそれぞれ渡す
+                //ラムダ式は以下の書き方
+                //引数リスト => 式
+                //http://ufcpp.net/study/csharp/sp3_lambda.html
+                TriggerEffect<OnCardLeftZoneTrigger>(player, card, x => { return x.IsTrue(gameState, originZone); }, targetInfo);
+                // TriggerEffect<OnCardLeftZoneTrigger>と逆。カードが入った時の能力(バトルクライ)
+                TriggerEffect<OnCardEnteredZoneTrigger>(player, card, x => { return x.IsTrue(gameState, destinationZone); }, targetInfo);
+
+                var libraryCard = gameState.config.GetCard(card.cardId);
+                var cardType = gameState.config.cardTypes.Find(x => x.id == libraryCard.cardTypeId);
+                //カードがスペルだったらすぐにカードを墓地へ
+                //ヒロパ実装時にも使うかも
                 if (cardType.moveAfterTriggeringEffect)
                 {
                     var finalDestinationZone = gameState.config.gameZones.Find(x => x.id == cardType.zoneId);
@@ -160,23 +217,30 @@ namespace CCGKit
 
         /// <summary>
         /// Triggers the triggered effects of the specified card.
-        /// 指定したカードのトリガーに指定された効果のトリガー
+        /// 指定したカードのトリガーによって起こる能力発動
         /// </summary>
-        /// <typeparam name="T">The type of the trigger.</typeparam>
-        /// <param name="player">The owner player of the card that is triggering the effect.</param>
-        /// <param name="card">The card that is triggering the effect.</param>
-        /// <param name="predicate">The predicate that needs to be satisfied in order to trigger the effect.</param>
-        /// <param name="targetInfo">The optional target information.</param>
+        /// <typeparam name="T">The type of the trigger.トリガーのタイプ。</typeparam>
+        /// <param name="player">The owner player of the card that is triggering the effect.効果を引き起こしているカードの所有者のプレイヤー。</param>
+        /// <param name="card">The card that is triggering the effect.効果を引き起こしているカード。</param>
+        /// <param name="predicate">The predicate that needs to be satisfied in order to trigger the effect.効果を引き起こすために満足する必要のあるプレディケート(boolを返す関数のこと)。</param>
+        /// ※プレディケートは関数オブジェクトの中でも「 ( ) 演算子のオーバーロード関数の引数がひとつ以上あり、戻り値が bool のもの」
+        /// http://d.hatena.ne.jp/hekominn/20100903/1283525542 参照
+        /// <param name="targetInfo">The optional target information.オプションのターゲット情報</param>
         public void TriggerEffect<T>(PlayerInfo player, RuntimeCard card, Predicate<T> predicate, List<int> targetInfo = null) where T : Trigger
         {
+            //libraryCardにカードのIDを代入
             var libraryCard = gameState.config.GetCard(card.cardId);
+            //カードの能力一覧を検索
             var triggeredAbilities = libraryCard.abilities.FindAll(x => x is TriggeredAbility);
+            //inはジェネリック修飾子 http://ufcpp.net/study/csharp/sp4_variance.html
             foreach (var ability in triggeredAbilities)
             {
                 var triggeredAbility = ability as TriggeredAbility;
                 var trigger = triggeredAbility.trigger as T;
+                //トリガーになる条件に合致した時
                 if (trigger != null && predicate(trigger) == true)
                 {
+                    //プレイヤーをターゲットに取る能力
                     if (triggeredAbility.effect is PlayerEffect && AreTargetsAvailable(triggeredAbility.effect, card, triggeredAbility.target))
                     {
                         var targets = GetPlayerTargets(player, triggeredAbility.target, targetInfo);
@@ -185,6 +249,7 @@ namespace CCGKit
                             (triggeredAbility.effect as PlayerEffect).Resolve(gameState, t);
                         }
                     }
+                    //カードをターゲットに取る効果(【要編集】別途トークンも追加する必要がある)
                     else if (triggeredAbility.effect is CardEffect && AreTargetsAvailable(triggeredAbility.effect, card, triggeredAbility.target))
                     {
                         var cardEffect = triggeredAbility.effect as CardEffect;

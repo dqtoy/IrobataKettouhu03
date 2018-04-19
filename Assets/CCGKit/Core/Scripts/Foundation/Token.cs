@@ -8,7 +8,7 @@ namespace CCGKit
     /// This class represents a single Token in the game.
     /// このクラスは、ゲーム内の1枚のカードを表します。
     /// </summary>
-    public class Token : Resource
+    public class Token : Card
     {
         /// <summary>
         /// The current resource identifier.
@@ -58,11 +58,18 @@ namespace CCGKit
         /// </summary>
         public List<Ability> abilities = new List<Ability>();
 
+        private int v;
+
         /// <summary>
         /// Constructor.
         /// </summary>
-        public Token() : base(currentId++)
+        public Token() : this(currentId++)
         {
+        }
+
+        public Token(int v)
+        {
+            this.v = v;
         }
 
         /// <summary>

@@ -106,6 +106,8 @@ namespace CCGKit
         /// </summary>
         private fsSerializer serializer = new fsSerializer();
 
+        private TokenPool currentTokenPool;
+
         /// <summary>
         /// Loads the game configuration from the specified path.
         /// 指定されたパスからゲーム設定をロードします。
@@ -358,6 +360,7 @@ namespace CCGKit
                 }
             }
 
+
             //トークン一覧を読み込む。
             var tokenLibraryJSON = Resources.Load<TextAsset>("token_library");
             Assert.IsTrue(cardLibraryJSON != null);
@@ -371,6 +374,10 @@ namespace CCGKit
                     foreach (var token in set.tokens)
                     {
                         tokens.Add(token);
+//                        Debug.Log(tokens[0]);
+ //                       currentTokenPool.AddCard(token);
+
+
                     }
                 }
             }

@@ -25,7 +25,12 @@ namespace CCGKit
         AllCards,
         PlayerOrPlayerCreature,
         OpponentOrOpponentCreature,
-        AnyPlayerOrCreature
+        AnyPlayerOrCreature,
+        TokenCard,
+        Coin,
+        Token_insect,
+        Token_rabbit
+
     }
 
     /// <summary>
@@ -204,4 +209,37 @@ namespace CCGKit
             return EffectTarget.AllCards;
         }
     }
+
+    public class TokenCard : CardTargetBase, IComputedTarget
+    {
+        public override EffectTarget GetTarget()
+        {
+            return EffectTarget.TokenCard;
+        }
+    }
+
+    public class Coin : CardTargetBase, IComputedTarget
+    {
+        public override EffectTarget GetTarget()
+        {
+            return EffectTarget.Coin;
+        }
+    }
+
+    public class Token_insect : CardTargetBase, IComputedTarget
+    {
+        public override EffectTarget GetTarget()
+        {
+            return EffectTarget.Token_insect;
+        }
+    }
+
+    public class Token_rabbit : CardTargetBase, IComputedTarget
+    {
+        public override EffectTarget GetTarget()
+        {
+            return EffectTarget.Token_rabbit;
+        }
+    }
+
 }

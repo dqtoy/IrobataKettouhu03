@@ -34,10 +34,22 @@ namespace CCGKit
         public List<RuntimeCard> cards = new List<RuntimeCard>();
 
         /// <summary>
+        /// The cards of this zone.
+        /// このゾーンのカード。
+        /// </summary>
+        public List<RuntimeToken> tokens = new List<RuntimeToken>();
+
+        /// <summary>
         /// The number of cards of this zone.
         /// このゾーンのカード数。
         /// </summary>
         protected int _numCards;
+
+        /// <summary>
+        /// The number of cards of this zone.
+        /// このゾーンのカード数。
+        /// </summary>
+        protected int _numTokens;
 
         /// <summary>
         /// The number of cards of this zone.
@@ -78,10 +90,22 @@ namespace CCGKit
         public Action<RuntimeCard> onCardAdded;
 
         /// <summary>
+        /// The callback that is called when a card is added to this zone.
+        /// このゾーンにカードが追加されたときに呼び出されるコールバック。
+        /// </summary>
+        public Action<RuntimeToken> onTokenAdded;
+
+        /// <summary>
         /// The callback that is called when a card is removed from this zone.
         /// このゾーンからカードが削除されたときに呼び出されるコールバック。
         /// </summary>
         public Action<RuntimeCard> onCardRemoved;
+
+        /// <summary>
+        /// The callback that is called when a card is removed from this zone.
+        /// このゾーンからカードが削除されたときに呼び出されるコールバック。
+        /// </summary>
+        public Action<RuntimeToken> onTokenRemoved;
 
         /// <summary>
         /// Adds a card to this zone.
@@ -101,6 +125,28 @@ namespace CCGKit
                 if (onCardAdded != null)
                 {
                     onCardAdded(card);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds a card to this zone.
+        /// このゾーンにトークンを追加します。
+        /// </summary>
+        /// <param name="card">The card to add.</param>
+        public void AddToken(RuntimeToken token)
+        {
+            if (tokens.Count < maxCards && !tokens.Contains(token))
+            {
+                tokens.Add(token);
+                _numCards += 1;
+                if (onZoneChanged != null)
+                {
+                    onZoneChanged(numCards);
+                }
+                if (onTokenAdded != null)
+                {
+                    onTokenAdded(token);
                 }
             }
         }

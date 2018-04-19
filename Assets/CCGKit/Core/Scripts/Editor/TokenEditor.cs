@@ -110,9 +110,9 @@ namespace CCGKit
             {
                 //+を押された時、カードタイプ(ミニオンかスペルか)の中から追加するタイプを読み込む
                 var menu = new GenericMenu();
-                foreach (var cardType in gameConfig.cardTypes)
+                foreach (var tokenType in gameConfig.cardTypes)
                 {
-                    menu.AddItem(new GUIContent(cardType.name), false, CreateTokenCallback, cardType);
+                    menu.AddItem(new GUIContent(tokenType.name), false, CreateTokenCallback, tokenType);
                 }
                 menu.ShowAsContext();
             },

@@ -10,6 +10,7 @@ public class DeckBuilderCard : MonoBehaviour
 
     private void Update()
     {
+        //左クリックされて且つポップアップが出ていなかったら
         if (Input.GetMouseButtonDown(0) && scene.currentPopup == null)
         {
             var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);

@@ -72,6 +72,7 @@ namespace CCGKit
             networkClient.AddLocalPlayer(this);
 
             var gameConfig = GameManager.Instance.config;
+            //プレイヤーのライフ設定
             foreach (var stat in gameConfig.playerStats)
             {
                 var statCopy = new Stat();
@@ -84,6 +85,7 @@ namespace CCGKit
                 playerInfo.stats[stat.id] = statCopy;
                 playerInfo.namedStats[stat.name] = statCopy;
             }
+            //対戦相手のライフ設定
             foreach (var stat in gameConfig.playerStats)
             {
                 var statCopy = new Stat();
@@ -96,12 +98,14 @@ namespace CCGKit
                 opponentInfo.stats[stat.id] = statCopy;
                 opponentInfo.namedStats[stat.name] = statCopy;
             }
-
+            //プレイヤーのゾーン設定
             foreach (var zone in gameConfig.gameZones)
             {
                 var zoneCopy = new RuntimeZone();
                 zoneCopy.zoneId = zone.id;
                 zoneCopy.name = zone.name;
+                //手札やボードの最大値設定
+                //バグ？要編集
                 if (zone.hasMaxSize)
                 {
                     zoneCopy.maxCards = zone.maxSize;
@@ -113,7 +117,7 @@ namespace CCGKit
                 playerInfo.zones[zone.id] = zoneCopy;
                 playerInfo.namedZones[zone.name] = zoneCopy;
             }
-
+            //対戦相手のゾーン設定
             foreach (var zone in gameConfig.gameZones)
             {
                 var zoneCopy = new RuntimeZone();
@@ -135,6 +139,9 @@ namespace CCGKit
             gameState.players.Add(opponentInfo);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         protected virtual void RegisterWithServer()
         {
             var decks = GameManager.Instance.playerDecks;
@@ -180,7 +187,10 @@ namespace CCGKit
             msg.deck = msgDefaultDeck.ToArray();
             client.Send(NetworkProtocol.RegisterPlayer, msg);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="msg"></param>
         public virtual void OnStartGame(StartGameMessage msg)
         {
             gameStarted = true;
@@ -193,13 +203,20 @@ namespace CCGKit
 
             LoadPlayerStates(msg.player, msg.opponent);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="msg"></param>
         public virtual void OnEndGame(EndGameMessage msg)
         {
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="msg"></param>
         public virtual void OnStartTurn(StartTurnMessage msg)
         {
+            //isRecipientTheActivePlayer:メッセージの受信者がアクティブなプレイヤーであるか
             if (msg.isRecipientTheActivePlayer)
             {
                 isActivePlayer = true;
@@ -218,7 +235,11 @@ namespace CCGKit
 
             LoadPlayerStates(msg.player, msg.opponent);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="playerState"></param>
+        /// <param name="opponentState"></param>
         public void LoadPlayerStates(NetPlayerInfo playerState, NetPlayerInfo opponentState)
         {
             var players = new Dictionary<NetPlayerInfo, PlayerInfo>();
@@ -425,14 +446,28 @@ namespace CCGKit
             opponentInfo.zones[msg.destinationZoneId].AddCard(runtimeCard);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="msg"></param>
         public virtual void OnPlayerAttacked(PlayerAttackedMessage msg)
         {
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="msg"></param>
         public virtual void OnCreatureAttacked(CreatureAttackedMessage msg)
         {
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="zoneId"></param>
+        /// <param name="cardInstanceId"></param>
+        /// <param name="abilityIndex"></param>
         public void ActivateAbility(int zoneId, int cardInstanceId, int abilityIndex)
         {
             var card = playerInfo.zones[zoneId].cards.Find(x => x.instanceId == cardInstanceId);
@@ -464,6 +499,10 @@ namespace CCGKit
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="msg"></param>
         public virtual void OnActivateAbility(ActivateAbilityMessage msg)
         {
             var card = opponentInfo.zones[msg.zoneId].cards.Find(x => x.instanceId == msg.cardInstanceId);
@@ -484,6 +523,11 @@ namespace CCGKit
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="card"></param>
+        /// <param name="targetInfo"></param>
         public void PlayCreatureCard(RuntimeCard card, List<int> targetInfo = null)
         {
             var libraryCard = GameManager.Instance.config.GetCard(card.cardId);
@@ -507,6 +551,11 @@ namespace CCGKit
             client.Send(NetworkProtocol.MoveCard, msg);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="card"></param>
+        /// <param name="targetInfo"></param>
         public void PlaySpellCard(RuntimeCard card, List<int> targetInfo = null)
         {
             var libraryCard = GameManager.Instance.config.GetCard(card.cardId);
@@ -530,6 +579,10 @@ namespace CCGKit
             client.Send(NetworkProtocol.MoveCard, msg);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cardInstanceId"></param>
         public void FightPlayer(int cardInstanceId)
         {
             effectSolver.FightPlayer(netId, cardInstanceId);
@@ -540,6 +593,11 @@ namespace CCGKit
             client.Send(NetworkProtocol.FightPlayer, msg);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="attackingCard"></param>
+        /// <param name="attackedCard"></param>
         public void FightCreature(RuntimeCard attackingCard, RuntimeCard attackedCard)
         {
             effectSolver.FightCreature(netId, attackingCard, attackedCard);

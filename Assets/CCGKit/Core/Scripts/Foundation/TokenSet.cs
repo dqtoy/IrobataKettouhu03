@@ -7,7 +7,7 @@ namespace CCGKit
     /// a big collection of Tokens into smaller, more manageable sub-groups.
     /// カードセットは名前付きのカードの集合です。 彼らの主な目的は、大規模なカードのコレクションを、より小さく、より管理しやすいサブグループに編成することです。
     /// </summary>
-    public class TokenSet
+    public class TokenSet : CardSet
     {
         /// <summary>
         /// The name of this Token set.

@@ -163,16 +163,19 @@ public class DemoHumanPlayer : DemoPlayer
             gameUI.SetPlayerDeckCards(numCards);
         };
 
+        //手札作成
         handZone = playerInfo.namedZones["Hand"];
         handZone.onZoneChanged += numCards =>
         {
             gameUI.SetPlayerHandCards(numCards);
         };
+        //手札にカード追加
         handZone.onCardAdded += card =>
         {
             AddCardToHand(card);
             RearrangeHand();
         };
+        //手札のカード削除
         handZone.onCardRemoved += card =>
         {
             var handCard = playerHandCards.Find(x => x.card == card);
@@ -856,7 +859,6 @@ public class DemoHumanPlayer : DemoPlayer
     }
 
     /// <summary>
-    /// 
     /// エリア間のカードの移動を処理する
     /// プレハブのインスタンス等も含む。
     /// ドローなどもここ
@@ -870,9 +872,11 @@ public class DemoHumanPlayer : DemoPlayer
 
             var gameConfig = GameManager.Instance.config;
             var libraryCard = gameConfig.GetCard(card.card.cardId);
+            //スペルかミニオンか
             var cardType = gameConfig.cardTypes.Find(x => x.id == libraryCard.cardTypeId);
             if (cardType.name == "Creature")
             {
+                //ミニオンをボード上にプレハブ化
                 var boardCreature = Instantiate(boardCreaturePrefab);
 
                 var board = GameObject.Find("PlayerBoard");
@@ -882,17 +886,18 @@ public class DemoHumanPlayer : DemoPlayer
                 boardCreature.GetComponent<BoardCreature>().ownerPlayer = this;
                 boardCreature.GetComponent<BoardCreature>().PopulateWithInfo(card.card);
 
+                //手札からプレイしたカードを消す
                 playerHandCards.Remove(card);
                 RearrangeHand();
                 playerBoardCards.Add(boardCreature.GetComponent<BoardCreature>());
 
+                //手札のカードのオブジェクトを削除
                 Destroy(card.gameObject);
 
                 currentCreature = boardCreature.GetComponent<BoardCreature>();
 
-                RearrangeBottomBoard(() =>
-                {
-                    var triggeredAbilities = libraryCard.abilities.FindAll(x => x is TriggeredAbility);
+                //ボードの描画処理。()内はActionクラスで、カードの能力を探してる
+                RearrangeBottomBoard(() =>{var triggeredAbilities = libraryCard.abilities.FindAll(x => x is TriggeredAbility);
                     TriggeredAbility targetableAbility = null;
                     foreach (var ability in triggeredAbilities)
                     {
@@ -911,6 +916,7 @@ public class DemoHumanPlayer : DemoPlayer
                     playerInfo.namedZones["Hand"].RemoveCard(card.card);
                     playerInfo.namedZones["Board"].AddCard(card.card);
 
+                    //ターゲットを取るアビリティがあり、且つターゲットがいる場合
                     if (targetableAbility != null && effectSolver.AreTargetsAvailable(targetableAbility.effect, card.card, targetableAbility.target))
                     {
                         var targetingArrow = Instantiate(spellTargetingArrowPrefab).GetComponent<SpellTargetingArrow>();
@@ -1045,7 +1051,7 @@ public class DemoHumanPlayer : DemoPlayer
                 }
 
                 //追記
-                                SceneManager.LoadScene("Home");  
+                SceneManager.LoadScene("Home");  
             }
             
             

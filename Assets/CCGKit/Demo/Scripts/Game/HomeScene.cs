@@ -65,6 +65,7 @@ public class HomeScene : BaseScene
         versionText.text = "Ver" + CCGKitInfo.version;
         //C:\Users\imoho\AppData\LocalLow\chorimpoo\囲炉端決闘符/decks.json
         var decksPath = Application.persistentDataPath + "/decks.json";
+        var tokensPath = Application.persistentDataPath + "/token_library.json";
 
         // デッキデータが存在する場合、GameManager.Instance.playerDecksにデッキデータを代入する処理
         if (File.Exists(decksPath))
@@ -80,6 +81,22 @@ public class HomeScene : BaseScene
             serializer.TryDeserialize(data, typeof(List<Deck>), ref deserialized).AssertSuccessWithoutWarnings();
             file.Close();
             GameManager.Instance.playerDecks = deserialized as List<Deck>;
+        }
+
+        // トークンデータが存在する場合、GameManager.Instance.playerDecksにデッキデータを代入する処理
+        if (File.Exists(tokensPath))
+        {
+            //外部データ(デッキファイル)の読み込み
+            var file = new StreamReader(tokensPath);
+            var fileContents = file.ReadToEnd();
+            //fsJsonParserはJSONの単純な再帰的降下パーサー。
+            //トークンデータの解析をする
+            var data = fsJsonParser.Parse(fileContents);
+            object deserialized = null;
+            //トークンデータをマシン上で使える形に変換してる
+            serializer.TryDeserialize(data, typeof(List<Deck>), ref deserialized).AssertSuccessWithoutWarnings();
+            file.Close();
+            GameManager.Instance.AllPlayerTokens = deserialized as List<TokenPool>;
         }
 
         GameNetworkManager.Instance.Initialize();

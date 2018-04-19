@@ -38,5 +38,15 @@
         "hasMaxSize": false,
         "maxSize": 0,
         "id": 3
+    },
+    {
+        "name": "tokenPool",
+        "owner": "Shared",
+        "type": "Dynamic",
+        "ownerVisibility": "Hidden",
+        "opponentVisibility": "Hidden",
+        "hasMaxSize": false,
+        "maxSize": 0,
+        "id": 4
     }
 ]

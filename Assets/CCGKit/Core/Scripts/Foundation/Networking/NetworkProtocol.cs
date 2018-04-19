@@ -58,6 +58,7 @@ namespace CCGKit
     public class StartTurnMessage : MessageBase
     {
         public NetworkInstanceId recipientNetId;
+        //isRecipientTheActivePlayer:メッセージの受信者がアクティブなプレイヤーであるか
         public bool isRecipientTheActivePlayer;
         public int turn;
         public NetPlayerInfo player;
