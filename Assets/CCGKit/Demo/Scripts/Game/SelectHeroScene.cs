@@ -33,21 +33,27 @@ public class SelectHeroScene : BaseScene {
  */
 
 	// Use this for initialization
-	void Start () {
+	public void Start () {
+
+        //フェードインから開始
+        FadeScript fadeout = GameObject.Find("fadein_out_panel").GetComponent<FadeScript>();
+        fadeout.InitIn();
+        fadeout.isFadeIn = true;
+
         SoundController.setloopDefine=5.454f;
         SoundController.setendDefine=101.818f;
-	//BGM再生。AUDIO.BGM_BATTLEがBGMのファイル名
-	SoundController.Instance.PlayBGM ("GS-premaster",SoundController.BGM_FADE_SPEED_RATE_HIGH);
-	SoundController.Instance.ChangeVolume (0.2F,0.2F);
+    	//BGM再生。AUDIO.BGM_BATTLEがBGMのファイル名
+	    SoundController.Instance.PlayBGM ("GS-premaster",SoundController.BGM_FADE_SPEED_RATE_HIGH);
+    	SoundController.Instance.ChangeVolume (0.2F,0.2F);
 
 
 
-/*
-		rButton     = GameObject.Find ("/Canvas/RenkoButton").GetComponent<Button> ();
-		mButton   = GameObject.Find ("/Canvas/MerryButton").GetComponent<Button> ();
 
-		rButton.Select();
- */
+//		rButton     = GameObject.Find ("/Canvas/RenkoButton").GetComponent<Button> ();
+//		mButton   = GameObject.Find ("/Canvas/MerryButton").GetComponent<Button> ();
+
+//		rButton.Select();
+
 	}
 
     public void OnRenkoButtonPressed()
@@ -65,7 +71,7 @@ public class SelectHeroScene : BaseScene {
 //		SetRenkoNameFlag();
 	}
 
-	    public void OnMerryButtonPressed()
+	public void OnMerryButtonPressed()
     {
 		if(renkoFlag==false&&merryFlag==false){
 			renkoFlag=false;

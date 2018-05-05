@@ -44,6 +44,8 @@ public class GameUI : MonoBehaviour
     public TextMeshPro endTurnTitleText;
     public TextMeshPro endTurnTimeText;
     public EndTurnButton endTurnButton;
+    public HeroPower heroPower;
+
 
     private void Awake()
     {
@@ -65,13 +67,14 @@ public class GameUI : MonoBehaviour
         Assert.IsNotNull(opponentHandText);
         Assert.IsNotNull(playerGraveyardText);
         Assert.IsNotNull(opponentGraveyardText);
-        Assert.IsNotNull(boardTokenText);
+//        Assert.IsNotNull(boardTokenText);
         Assert.IsNotNull(playerManaBar);
         Assert.IsNotNull(opponentManaText);
         Assert.IsNotNull(endTurnSprite);
         Assert.IsNotNull(endTurnTitleText);
         Assert.IsNotNull(endTurnTimeText);
         Assert.IsNotNull(endTurnButton);
+//        Assert.IsNotNull(heroPower);
     }
 
     public void SetPlayerActive(bool active)
@@ -169,6 +172,11 @@ public class GameUI : MonoBehaviour
     public void SetEndTurnButtonEnabled(bool enabled)
     {
         endTurnButton.SetEnabled(enabled);
+    }
+
+    public void SetHeroPowerEnabled(bool enabled)
+    {
+//        heroPower.SetEnabled(enabled);
     }
 
     public void StartTurnCountdown(int time)

@@ -16,10 +16,10 @@ namespace CCGKit
     public class TokenEditor : EditorTab
     {
         private ReorderableList TokenSetsList;
-        private TokenSet currentTokenSet;
+        private CardSet currentTokenSet;
 
         private ReorderableList currentTokenList;
-        private Token currentToken;
+        private Card currentToken;
 
         private ReorderableList currentTokenCostsList;
         private Cost currentTokenCost;
@@ -33,16 +33,18 @@ namespace CCGKit
         private ReorderableList currentEffectCostsList;
         private Cost currentEffectCost;
 
-        //        private ReorderableList currentPlayerTargetConditionsList;
-        //        private PlayerTargetBase currentPlayerTarget;
-        //private PlayerCondition currentPlayerTargetCondition;
-        //private ReorderableList currentTokenTargetConditionsList;
-        //private TokenTargetBase currentTokenTarget;
-        //private TokenCondition currentTokenTargetCondition;
+        private Cost currentTokenEffectCost;
 
-        //private ReorderableList currentCardTargetConditionsList;
-        //private CardTargetBase currentCardTarget;
-        //private CardCondition currentCardTargetCondition;
+        private ReorderableList currentPlayerTargetConditionsList;
+        private PlayerTargetBase currentPlayerTarget;
+        private PlayerCondition currentPlayerTargetCondition;
+        private ReorderableList currentTokenTargetConditionsList;
+        private CardTargetBase currentTokenTarget;
+        private CardCondition currentTokenTargetCondition;
+
+        private ReorderableList currentCardTargetConditionsList;
+        private CardTargetBase currentCardTarget;
+        private CardCondition currentCardTargetCondition;
 
         private List<Type> triggerTypes;
         private List<string> triggerTypeNames;
@@ -76,7 +78,7 @@ namespace CCGKit
             },
             () =>
             {
-                gameConfig.tokenSets.Add(new TokenSet());
+                gameConfig.tokenSets.Add(new CardSet());
             },
             (x) =>
             {
@@ -92,7 +94,7 @@ namespace CCGKit
         /// </summary>
         private void CreateCurrentTokenSetTokensList()
         {
-            currentTokenList = EditorUtils.SetupReorderableList("トークン", currentTokenSet.tokens, ref currentToken, (rect, x) =>
+            currentTokenList = EditorUtils.SetupReorderableList("トークン", currentTokenSet.cards, ref currentToken, (rect, x) =>
             {
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.name);
             },
@@ -190,6 +192,7 @@ namespace CCGKit
         /// </summary>
         private void CreateCurrentTokenAbilitiesList()
         {
+            
             currentTokenAbilitiesList = EditorUtils.SetupReorderableList("Abilities", currentToken.abilities, ref currentTokenAbility, (rect, x) =>
             {
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.name);
@@ -197,12 +200,12 @@ namespace CCGKit
             (x) =>
             {
                 currentTokenAbility = x;
-                //                currentPlayerTargetConditionsList = null;
-                //currentPlayerTarget = null;
-                //currentPlayerTargetCondition = null;
-                //currentTokenTargetConditionsList = null;
-                //currentTokenTarget = null;
-                //currentTokenTargetCondition = null;
+                currentPlayerTargetConditionsList = null;
+                currentPlayerTarget = null;
+                currentPlayerTargetCondition = null;
+                currentTokenTargetConditionsList = null;
+                currentTokenTarget = null;
+                currentTokenTargetCondition = null;
                 if (currentTokenAbility is ActivatedAbility)
                 {
                     CreateCurrentEffectCostsList();
@@ -219,13 +222,14 @@ namespace CCGKit
             (x) =>
             {
                 currentTokenAbility = null;
-                //currentPlayerTargetConditionsList = null;
-                //currentPlayerTarget = null;
-                //currentPlayerTargetCondition = null;
-                //currentTokenTargetConditionsList = null;
-                //currentTokenTarget = null;
-                //currentTokenTargetCondition = null;
+                currentPlayerTargetConditionsList = null;
+                currentPlayerTarget = null;
+                currentPlayerTargetCondition = null;
+                currentTokenTargetConditionsList = null;
+                currentTokenTarget = null;
+                currentTokenTargetCondition = null;
             });
+            
         }
         /// <summary>
         /// 能力表示内の、ActivatedAbilityを選択した時に表示するコスト
@@ -262,7 +266,8 @@ namespace CCGKit
         /// </summary>
         private void CreateCurrentPlayerTargetConditionsList()
         {
-            /*
+            
+            
             currentPlayerTargetConditionsList = EditorUtils.SetupReorderableList("Target player conditions", currentPlayerTarget.conditions, ref currentPlayerTargetCondition, (rect, x) =>
             {
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.GetReadableString(gameConfig));
@@ -285,7 +290,7 @@ namespace CCGKit
             {
                 currentPlayerTargetCondition = null;
             });
-            */
+            
         }
         /// <summary>
         /// 能力表示内の、ActivatedAbilityを選択した時に表示する
@@ -293,8 +298,9 @@ namespace CCGKit
         /// </summary>
         private void CreateCurrentTokenTargetConditionsList()
         {
+            
 
-           /*
+           
             currentTokenTargetConditionsList = EditorUtils.SetupReorderableList("Target Token conditions", currentTokenTarget.conditions, ref currentTokenTargetCondition, (rect, x) =>
             {
                 EditorGUI.LabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), x.GetReadableString(gameConfig));
@@ -306,7 +312,7 @@ namespace CCGKit
             () =>
             {
                 var menu = new GenericMenu();
-                var conditionTypes = AppDomain.CurrentDomain.GetAllDerivedTypes(typeof(TokenCondition));
+                var conditionTypes = AppDomain.CurrentDomain.GetAllDerivedTypes(typeof(CardCondition));
                 foreach (var type in conditionTypes)
                 {
                     menu.AddItem(new GUIContent(StringUtils.DisplayCamelCaseString(type.Name)), false, CreateTokenTargetConditionCallback, type);
@@ -317,7 +323,7 @@ namespace CCGKit
             {
                 currentTokenTargetCondition = null;
             });
-            */
+           
         }
         /// <summary>
         /// tokenリストにコストを追加する
@@ -370,9 +376,9 @@ namespace CCGKit
         /// <param name="obj":cardTypeクラス></param>
         private void CreateTokenCallback(object obj)
         {
-            var Token = new Token();
+            var Token = new Card();
             var TokenType = obj as CardType;
-            Token.tokenTypeId = TokenType.id;
+            Token.cardTypeId = TokenType.id;
             if (TokenType != null)
             {
                 foreach (var property in TokenType.properties)
@@ -405,7 +411,7 @@ namespace CCGKit
                     Token.stats.Add(statCopy);
                 }
             }
-            currentTokenSet.tokens.Add(Token);
+            currentTokenSet.cards.Add(Token);
         }
         /// <summary>
         /// 
@@ -423,7 +429,7 @@ namespace CCGKit
         private void CreatePlayerTargetConditionCallback(object obj)
         {
             var condition = Activator.CreateInstance((Type)obj);
-//            currentPlayerTarget.conditions.Add(condition as PlayerCondition);
+            currentPlayerTarget.conditions.Add(condition as PlayerCondition);
         }
         /// <summary>
         /// 
@@ -432,7 +438,7 @@ namespace CCGKit
         private void CreateTokenTargetConditionCallback(object obj)
         {
             var condition = Activator.CreateInstance((Type)obj);
-//            currentTokenTarget.conditions.Add(condition as TokenCondition);
+            currentTokenTarget.conditions.Add(condition as CardCondition);
         }
         /// <summary>
         /// /タブ選択された時の挙動？
@@ -463,7 +469,7 @@ namespace CCGKit
                 humanTargetTypeNames.Add(StringUtils.DisplayCamelCaseString(type.Name));
             }
 
-            TokenTargetTypes = new List<Type>(AppDomain.CurrentDomain.GetAllDerivedTypes(typeof(TokenTargetBase)));
+            TokenTargetTypes = new List<Type>(AppDomain.CurrentDomain.GetAllDerivedTypes(typeof(CardTargetBase)));
             TokenTargetTypes.RemoveAll(x => x.IsAbstract);
             TokenTargetTypeNames = new List<string>(TokenTargetTypes.Count);
             foreach (var type in TokenTargetTypes)
@@ -496,7 +502,7 @@ namespace CCGKit
         /// 陣営一覧描画処理
         /// </summary>
         /// <param name="set"></param>
-        private void DrawTokenSet(TokenSet set)
+        private void DrawTokenSet(CardSet set)
         {
             var oldLabelWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = 50;
@@ -532,7 +538,7 @@ namespace CCGKit
         /// トークンの一覧描画処理
         /// </summary>
         /// <param name="Token"></param>
-        private void DrawToken(Token Token)
+        private void DrawToken(Card Token)
         {
             var oldLabelWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = 100;
@@ -753,6 +759,7 @@ namespace CCGKit
         /// <param name="target"></param>
         private void DrawEffect(ref Effect effect, ref Target target)
         {
+            /*
             var effectTypeId = 0;
             if (effect != null)
             {
@@ -811,7 +818,7 @@ namespace CCGKit
                     }
 
                     var prevTargetTypeId = targetTypeId;
-/*
+
                     GUILayout.BeginHorizontal();
                     EditorGUILayout.PrefixLabel("Target");
                     targetTypeId = EditorGUILayout.Popup(prevTargetTypeId, targetTypeNames.ToArray(), GUILayout.MaxWidth(EditorConfig.RegularComboBoxWidth));
@@ -843,9 +850,9 @@ namespace CCGKit
                             CreateCurrentPlayerTargetConditionsList();
                         }
                         //Targetの値をセットする？
-                        else if (target is TokenTargetBase && currentTokenTargetConditionsList == null)
+                        else if (target is CardTargetBase && currentTokenTargetConditionsList == null)
                         {
-                            currentTokenTarget = target as TokenTargetBase;
+                            currentTokenTarget = target as CardTargetBase;
                             CreateCurrentTokenTargetConditionsList();
                         }
                     }
@@ -886,9 +893,10 @@ namespace CCGKit
 
                         GUILayout.EndHorizontal();
                     }
-*/
+
                 }
             }
+            */
         }
         /// <summary>
         /// TargetConditionの描画処理

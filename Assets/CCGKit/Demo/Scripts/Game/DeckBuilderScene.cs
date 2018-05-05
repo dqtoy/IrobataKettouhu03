@@ -53,8 +53,13 @@ public class DeckBuilderScene : BaseScene
 
     private fsSerializer serializer = new fsSerializer();
 
+    private bool goSelectTeam = false;
+
     private int numPages;
     private int currentPage;
+
+    [SerializeField]
+    private int maxDeckSize=30;
 
     private void Awake()
     {
@@ -69,15 +74,24 @@ public class DeckBuilderScene : BaseScene
         Assert.IsNotNull(cardListItemPrefab);
         Assert.IsNotNull(numCardsText);
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     private void Start()
     {
 
+//        System.Threading.Thread.Sleep(1000);
+
+        //フェードインから開始
+        FadeScript fadeout = GameObject.Find("fadein_out_panel").GetComponent<FadeScript>();
+        fadeout.InitIn();
+        fadeout.isFadeIn = true;
+
         //BGMのループ地点指定
-        SoundController.setloopDefine=5.454f;
-        SoundController.setendDefine=101.818f;
+        SoundController.setloopDefine = 0.493f;
+        SoundController.setendDefine = 87.767f;
         //BGM再生。AUDIO.BGM_BATTLEがBGMのファイル名
-	    SoundController.Instance.PlayBGM ("GS-premaster",SoundController.BGM_FADE_SPEED_RATE_HIGH);
+        SoundController.Instance.PlayBGM ("DeckBuild", SoundController.BGM_FADE_SPEED_RATE_HIGH);
     	SoundController.Instance.ChangeVolume (0.2F,0.2F);
 
 
@@ -116,7 +130,9 @@ public class DeckBuilderScene : BaseScene
             SetActiveDeck(firstDeckButton);
         }
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public void OnBackButtonPressed()
     {
         SceneManager.LoadScene("Home");
@@ -126,9 +142,8 @@ public class DeckBuilderScene : BaseScene
     /// </summary>
     public void OnCreateDeckButtonPressed()
     {
-        
-        SceneManager.LoadScene("SelectTeam");
         CreateNewDeck();
+        SceneManager.LoadScene("SelectTeam");
     }
     /// <summary>
     /// 新しいデッキを作成する
@@ -147,7 +162,9 @@ public class DeckBuilderScene : BaseScene
         deckButton.SetDeck(deck);
         SetActiveDeck(deckButton);
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public void OnDeckNameInputFieldEndedEdit()
     {
         currentDeckButton.SetDeckName(deckNameInputField.text);
@@ -279,12 +296,16 @@ public class DeckBuilderScene : BaseScene
         }
     }
 
+
+
     /// <summary>
     /// トークン一覧を読み込む
     /// </summary>
     /// <param name="page":カード一覧を読み込みたいページ></param>
     public void LoadTokens(int page)
     {
+        /*
+
         //初期化
         var gameConfig = GameManager.Instance.config;
         //ページ数✕カードポジションの数(8個)を取得する
@@ -326,9 +347,15 @@ public class DeckBuilderScene : BaseScene
             deckBuilderCard.scene = this;
             deckBuilderCard.card = card;
         }
+
+        */
     }
 
-    ///デッキにカードを追加する処理
+
+    /// <summary>
+    /// デッキにカードを追加する処理
+    /// </summary>
+    /// <param name="card"></param>
     public void AddCardToDeck(Card card)
     {
         if (currentDeckButton == null)
@@ -376,8 +403,32 @@ public class DeckBuilderScene : BaseScene
             }
         }
 
-        currentDeckButton.deck.AddCard(card);
-        currentDeckButton.UpdateDeckInfo();
+        //デッキが30枚だったら警告を出してカードを追加しない
+        var config = GameManager.Instance.config;
+        var maxDeckSize = config.properties.maxDeckSize;
+        var currentDeck = currentDeckButton.deck;
+
+
+            var numCards = currentDeck.GetNumCards();
+            if (numCards == maxDeckSize)
+            {
+                OpenPopup<PopupOneButton>("PopupOneButton", popup =>
+                {
+                    popup.text.text = "デッキを構築するカードの総数が30枚を超えています";
+                    popup.buttonText.text = "閉じる";
+                    popup.button.onClickEvent.AddListener(() => { popup.Close(); });
+                });
+                return;
+            }
+            else {
+                 currentDeckButton.deck.AddCard(card);
+                 currentDeckButton.UpdateDeckInfo();
+        }
+
+
+        //編集ここまで
+        //currentDeckButton.deck.AddCard(card);
+        //currentDeckButton.UpdateDeckInfo();
     }
 
     /// <summary>
@@ -450,7 +501,7 @@ public class DeckBuilderScene : BaseScene
         }
 
         var decksPath = Application.persistentDataPath + "/decks.json";
-        Debug.Log(decksPath);
+//        Debug.Log(decksPath);
         fsData serializedData;
         serializer.TrySerialize(GameManager.Instance.playerDecks, out serializedData).AssertSuccessWithoutWarnings();
         var file = new StreamWriter(decksPath);

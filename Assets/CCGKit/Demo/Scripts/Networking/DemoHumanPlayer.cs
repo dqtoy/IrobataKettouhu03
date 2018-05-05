@@ -107,7 +107,9 @@ public class DemoHumanPlayer : DemoPlayer
 
 //        chatPopup = GameObject.Find("PopupChat").GetComponent<PopupChat>();
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
@@ -169,12 +171,15 @@ public class DemoHumanPlayer : DemoPlayer
         {
             gameUI.SetPlayerHandCards(numCards);
         };
+
         //手札にカード追加
+        //handZone.onCardAdded = handZone.onCardAdded + cardのこと
         handZone.onCardAdded += card =>
         {
             AddCardToHand(card);
             RearrangeHand();
         };
+        
         //手札のカード削除
         handZone.onCardRemoved += card =>
         {
@@ -319,8 +324,9 @@ public class DemoHumanPlayer : DemoPlayer
         // Set the player nicknames in the UI.
         //プレイヤーのニックネームをUIで設定します。
 
-            SelectHeroScene shc = new SelectHeroScene();
-            bool rFlag = shc.GetRenkoNameFlag();
+        
+        SelectHeroScene shc = new SelectHeroScene();
+        bool rFlag = shc.GetRenkoNameFlag();
         if(rFlag){
                 gameUI.SetPlayerName("宇佐見蓮子");
                 gameUI.SetOpponentName("マエリベリー・ハーン");
@@ -328,8 +334,9 @@ public class DemoHumanPlayer : DemoPlayer
                 gameUI.SetPlayerName("マエリベリー・ハーン");
                 gameUI.SetOpponentName("宇佐見蓮子");
         }
+        
+        
 
-/*
         for (var i = 0; i < msg.nicknames.Length; i++)
         {
             var nickname = msg.nicknames[i];
@@ -343,7 +350,7 @@ public class DemoHumanPlayer : DemoPlayer
                 gameUI.SetOpponentName(nickname);
             }
         }
-*/
+
         var gameScene = GameObject.Find("GameScene");
         if (gameScene != null)
         {
@@ -359,12 +366,20 @@ public class DemoHumanPlayer : DemoPlayer
             }
 #endif
         }
-
+        //ターン終了ボタンの描画
         var endTurnButton = GameObject.Find("EndTurnButton");
         if (endTurnButton != null)
         {
             endTurnButton.GetComponent<EndTurnButton>().player = this;
         }
+
+        //ヒロパボタンの描画
+        var heroPowerButton = GameObject.Find("PlayerHeroPower");
+        if (heroPowerButton != null)
+        {
+//            heroPowerButton.GetComponent<HeroPower>().player = this;
+        }
+
     }
     /// <summary>
     /// ターン開始時の処理
@@ -374,9 +389,11 @@ public class DemoHumanPlayer : DemoPlayer
     {
         base.OnStartTurn(msg);
 
+        //各ヒーロー、ターンエンドボタン、ヒロパ活性化
         gameUI.SetPlayerActive(msg.isRecipientTheActivePlayer);
         gameUI.SetOpponentActive(!msg.isRecipientTheActivePlayer);
         gameUI.SetEndTurnButtonEnabled(msg.isRecipientTheActivePlayer);
+        gameUI.SetHeroPowerEnabled(msg.isRecipientTheActivePlayer);
 
         foreach (var card in opponentHandCards)
         {
@@ -616,12 +633,18 @@ public class DemoHumanPlayer : DemoPlayer
         gameUI.StopCountdown();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public override void StopTurn()
     {
         var msg = new StopTurnMessage();
         client.Send(NetworkProtocol.StopTurn, msg);
     }
 
+    /// <summary>
+    /// 毎フレーム呼び出される
+    /// </summary>
     protected virtual void Update()
     {
         if (!isLocalPlayer)
@@ -640,21 +663,29 @@ public class DemoHumanPlayer : DemoPlayer
             return;
         }
 */
+
+        //マウスの場所を検知
         var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //左クリックされたら
         if (Input.GetMouseButtonDown(0))
         {
+            //今プレイヤーのターン中且つスペカが発動中でなければ
             if (isActivePlayer && currentSpellCard == null)
             {
+                //マウスがクリックしたポジションとRaycast(オブジェクト)がぶつかってないか確認(Vector2.zeroはオブジェクトの原点)
                 var hits = Physics2D.RaycastAll(mousePos, Vector2.zero);
+                //Objectを用意(中身は空)
                 var hitCards = new List<GameObject>();
                 foreach (var hit in hits)
                 {
+                    //hit.colliderは内部のプロパティをチェックして衝突があったかbooleanで返す
                     if (hit.collider != null &&
                         hit.collider.gameObject != null &&
                         hit.collider.gameObject.GetComponent<CardView>() != null &&
                         !hit.collider.gameObject.GetComponent<CardView>().isPreview &&
                         hit.collider.gameObject.GetComponent<CardView>().CanBePlayed(this))
                     {
+                        //活性化しているカードだった場合、gameObjectをhitcardに加える
                         hitCards.Add(hit.collider.gameObject);
                     }
                 }
@@ -671,14 +702,18 @@ public class DemoHumanPlayer : DemoPlayer
                 }
             }
         }
+        //カードが選択されてなければ
         else if (!isCardSelected)
         {
             var hits = Physics2D.RaycastAll(mousePos, Vector2.zero);
             var hitCards = new List<GameObject>();
+            //選択中のハンドのカード
             var hitHandCard = false;
+            //選択中の、ボードのカード
             var hitBoardCard = false;
             foreach (var hit in hits)
             {
+                //オブジェクト上でクリックしたなら
                 if (hit.collider != null &&
                     hit.collider.gameObject != null &&
                     hit.collider.gameObject.GetComponent<CardView>() != null)
@@ -687,6 +722,7 @@ public class DemoHumanPlayer : DemoPlayer
                     hitHandCard = true;
                 }
             }
+            //クリックしたのがハンドのカードでなければボードのミニオンを選択
             if (!hitHandCard)
             {
                 foreach (var hit in hits)
@@ -700,7 +736,7 @@ public class DemoHumanPlayer : DemoPlayer
                     }
                 }
             }
-
+            //ハンドのカードを選択中であれば
             if (hitHandCard)
             {
                 if (hitCards.Count > 0)
@@ -737,15 +773,23 @@ public class DemoHumanPlayer : DemoPlayer
         }
     }
 
+    /// <summary>
+    /// カードのプレハブの描画
+    /// </summary>
+    /// <param name="card"></param>
+    /// <param name="pos"></param>
+    /// <param name="highlight"></param>
     public virtual void CreateCardPreview(RuntimeCard card, Vector3 pos, bool highlight = false)
     {
         isPreviewActive = true;
         currentPreviewedCardId = card.instanceId;
+        //カードの描画
         createPreviewCoroutine = StartCoroutine(CreateCardPreviewAsync(card, pos, highlight));
     }
 
     /// <summary>
-    /// カードの非同期のプレビュー
+    /// カードの非同期のプレビュー(原文ママ)
+    /// カードを召喚する際、描画する処理
     /// </summary>
     /// <param name="card"></param>
     /// <param name="pos"></param>
@@ -753,6 +797,7 @@ public class DemoHumanPlayer : DemoPlayer
     /// <returns></returns>
     protected virtual IEnumerator CreateCardPreviewAsync(RuntimeCard card, Vector3 pos, bool highlight)
     {
+        //yield:コルーチンの途中で一定時間(この場合0.3秒)待つための記法
         yield return new WaitForSeconds(0.3f);
 
         var gameConfig = GameManager.Instance.config;
@@ -761,6 +806,8 @@ public class DemoHumanPlayer : DemoPlayer
         ///カードのタイプがCreatureだったらCreature用Prefabを表示
         if (cardType.name == "Creature")
         {
+            //Instantiateはこのクラス内の変数が紐付けられたPrefabを描画するための処理
+            //この場合はDemoPlayerPrefab内のCreatureCard
             currentCardPreview = Instantiate(creatureCardViewPrefab as GameObject);
         }
         ///カードのタイプがSpellだったらSpell用Prefabを表示
@@ -786,6 +833,9 @@ public class DemoHumanPlayer : DemoPlayer
         currentCardPreview.transform.DOMoveY(newPos.y + 1.0f, 0.1f);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public virtual void DestroyCardPreview()
     {
         StartCoroutine(DestroyCardPreviewAsync());
@@ -798,12 +848,13 @@ public class DemoHumanPlayer : DemoPlayer
 
 
     /// <summary>
-    /// 非同期にカードを消す処理
+    /// 非同期でカードを消す処理
     /// </summary>
     /// <returns></returns>
-    /// IEnumeratorやyieldは遅延評価(あとで値や型が決まるやつ)するループを簡単に書くための記述法
+    /// ※IEnumeratorやyieldは遅延評価(あとで値や型が決まるやつ)するループを簡単に書くための記述法
     protected virtual IEnumerator DestroyCardPreviewAsync()
     {
+        //currentCardPreviewは今選択しているカード(ハンドやボード関係なし)
         if (currentCardPreview != null)
         {
             var oldCardPreview = currentCardPreview;
@@ -815,12 +866,13 @@ public class DemoHumanPlayer : DemoPlayer
             {
                 text.DOFade(0.0f, 0.2f);
             }
+            //0.5秒待ってから次の処理
             yield return new WaitForSeconds(0.5f);
             Destroy(oldCardPreview.gameObject);
         }
     }
     /// <summary>
-    /// カードを手札に加える
+    /// 呼び出し元から受け取ったRuntimeCardのカードを手札に加える
     /// </summary>
     /// <param name="card"></param>
     protected virtual void AddCardToHand(RuntimeCard card)
@@ -859,7 +911,7 @@ public class DemoHumanPlayer : DemoPlayer
     }
 
     /// <summary>
-    /// エリア間のカードの移動を処理する
+    /// エリア間(ハンドからボードに)のカードの移動を処理する
     /// プレハブのインスタンス等も含む。
     /// ドローなどもここ
     /// </summary>
@@ -896,7 +948,7 @@ public class DemoHumanPlayer : DemoPlayer
 
                 currentCreature = boardCreature.GetComponent<BoardCreature>();
 
-                //ボードの描画処理。()内はActionクラスで、カードの能力を探してる
+                //ボードの描画処理。RearrangeBottomBoardの()内はActionクラスで、カードの能力を探してる
                 RearrangeBottomBoard(() =>{var triggeredAbilities = libraryCard.abilities.FindAll(x => x is TriggeredAbility);
                     TriggeredAbility targetableAbility = null;
                     foreach (var ability in triggeredAbilities)
@@ -942,6 +994,7 @@ public class DemoHumanPlayer : DemoPlayer
                     boardCreature.GetComponent<BoardCreature>().fightTargetingArrowPrefab = fightTargetingArrowPrefab;
                 });
             }
+            //スペルの場合
             else if (cardType.name == "Spell")
             {
                 var spellsPivot = GameObject.Find("PlayerSpellsPivot");
@@ -961,6 +1014,7 @@ public class DemoHumanPlayer : DemoPlayer
                     {
                         var triggeredAbility = ability as TriggeredAbility;
                         var trigger = triggeredAbility.trigger as OnCardEnteredZoneTrigger;
+                        //トリガーがあり、ボードに入ることがトリガーで、且つユーザーがターゲットを指定している場合
                         if (trigger != null && trigger.zoneId == boardZone.zoneId && triggeredAbility.target is IUserTarget)
                         {
                             targetableAbility = triggeredAbility;
@@ -969,7 +1023,7 @@ public class DemoHumanPlayer : DemoPlayer
                     }
 
                     currentSpellCard = card;
-
+                    //ターゲットを取るアビリティがあり、且つターゲットがいる場合、ターゲットを指定してスペルの処理をする
                     if (targetableAbility != null && effectSolver.AreTargetsAvailable(targetableAbility.effect, card.card, targetableAbility.target))
                     {
                         var targetingArrow = Instantiate(spellTargetingArrowPrefab).GetComponent<SpellTargetingArrow>();
@@ -986,6 +1040,7 @@ public class DemoHumanPlayer : DemoPlayer
                         targetingArrow.Begin(boardSpell.transform.localPosition);
                     }
                     else
+                    //そうでなければそのまま処理
                     {
                         PlaySpellCard(card.card);
                         effectSolver.MoveCard(netId, card.card, "Hand", "Board");
@@ -999,6 +1054,143 @@ public class DemoHumanPlayer : DemoPlayer
         {
             card.GetComponent<HandCard>().ResetToInitialPosition();
         }
+    }
+    /// <summary>
+    /// 受け取ったカードIDからカードをボードに召喚する
+    /// </summary>
+    /// <param name="card">指定中のカードの固有ID</param>
+    public void SummonMinion(int cardId) {
+       
+        /*
+            gameUI.endTurnButton.SetEnabled(false);
+
+            var gameConfig = GameManager.Instance.config;
+            var libraryCard = gameConfig.GetCard(cardId);
+            //スペルかミニオンか
+            var cardType = gameConfig.cardTypes.Find(x => x.id == libraryCard.cardTypeId);
+            if (cardType.name == "Creature")
+            {
+                //ミニオンをボード上にプレハブ化
+                var boardCreature = Instantiate(boardCreaturePrefab);
+
+                var board = GameObject.Find("PlayerBoard");
+                boardCreature.tag = "PlayerOwned";
+                boardCreature.transform.parent = board.transform;
+                boardCreature.transform.position = new Vector2(1.9f * playerBoardCards.Count, 0);
+                boardCreature.GetComponent<BoardCreature>().ownerPlayer = this;
+//                boardCreature.GetComponent<BoardCreature>().PopulateWithInfo(card.card);
+
+            currentCreature = boardCreature.GetComponent<BoardCreature>();
+
+                //ボードの描画処理。RearrangeBottomBoardの()内はActionクラスで、カードの能力を探してる
+                RearrangeBottomBoard(() => {
+                    var triggeredAbilities = libraryCard.abilities.FindAll(x => x is TriggeredAbility);
+                    TriggeredAbility targetableAbility = null;
+                    foreach (var ability in triggeredAbilities)
+                    {
+                        var triggeredAbility = ability as TriggeredAbility;
+                        var trigger = triggeredAbility.trigger as OnCardEnteredZoneTrigger;
+                        if (trigger != null && trigger.zoneId == boardZone.zoneId && triggeredAbility.target is IUserTarget)
+                        {
+                            targetableAbility = triggeredAbility;
+                            break;
+                        }
+                    }
+
+                    // Preemptively move the card so that the effect solver can properly check the availability of targets
+                    // by also taking into account this card (that is trying to be played).
+                    //プレイしようとしているカードも考慮して、エフェクトソルバーがターゲットの使用可能性を適切にチェックできるように、先制してカードを移動します。
+                    playerInfo.namedZones["Hand"].RemoveCard(card.card);
+                    playerInfo.namedZones["Board"].AddCard(card.card);
+
+                    //ターゲットを取るアビリティがあり、且つターゲットがいる場合
+                    if (targetableAbility != null && effectSolver.AreTargetsAvailable(targetableAbility.effect, card.card, targetableAbility.target))
+                    {
+                        var targetingArrow = Instantiate(spellTargetingArrowPrefab).GetComponent<SpellTargetingArrow>();
+                        boardCreature.GetComponent<BoardCreature>().abilitiesTargetingArrow = targetingArrow;
+                        targetingArrow.effectTarget = targetableAbility.target;
+                        targetingArrow.targetType = targetableAbility.target.GetTarget();
+                        targetingArrow.onTargetSelected += () =>
+                        {
+                            PlayCreatureCard(card.card, targetingArrow.targetInfo);
+                            effectSolver.MoveCard(netId, card.card, "Hand", "Board", targetingArrow.targetInfo);
+                            currentCreature = null;
+                            gameUI.endTurnButton.SetEnabled(true);
+                        };
+                        targetingArrow.Begin(boardCreature.transform.localPosition);
+                    }
+                    else
+                    {
+                        PlayCreatureCard(card.card);
+                        effectSolver.MoveCard(netId, card.card, "Hand", "Board");
+                        currentCreature = null;
+                        gameUI.endTurnButton.SetEnabled(true);
+                    }
+                    boardCreature.GetComponent<BoardCreature>().fightTargetingArrowPrefab = fightTargetingArrowPrefab;
+                });
+            }
+            //スペルの場合
+            else if (cardType.name == "Spell")
+            {
+                var spellsPivot = GameObject.Find("PlayerSpellsPivot");
+                var sequence = DOTween.Sequence();
+                sequence.Append(card.transform.DOMove(spellsPivot.transform.position, 0.5f));
+                sequence.Insert(0, card.transform.DORotate(Vector3.zero, 0.2f));
+                sequence.Play().OnComplete(() =>
+                {
+                    card.GetComponent<SortingGroup>().sortingLayerName = "BoardCards";
+                    card.GetComponent<SortingGroup>().sortingOrder = 1000;
+
+                    var boardSpell = card.gameObject.AddComponent<BoardSpell>();
+
+                    var triggeredAbilities = libraryCard.abilities.FindAll(x => x is TriggeredAbility);
+                    TriggeredAbility targetableAbility = null;
+                    foreach (var ability in triggeredAbilities)
+                    {
+                        var triggeredAbility = ability as TriggeredAbility;
+                        var trigger = triggeredAbility.trigger as OnCardEnteredZoneTrigger;
+                        //トリガーがあり、ボードに入ることがトリガーで、且つユーザーがターゲットを指定している場合
+                        if (trigger != null && trigger.zoneId == boardZone.zoneId && triggeredAbility.target is IUserTarget)
+                        {
+                            targetableAbility = triggeredAbility;
+                            break;
+                        }
+                    }
+
+                    currentSpellCard = card;
+                    //ターゲットを取るアビリティがあり、且つターゲットがいる場合、ターゲットを指定してスペルの処理をする
+                    if (targetableAbility != null && effectSolver.AreTargetsAvailable(targetableAbility.effect, card.card, targetableAbility.target))
+                    {
+                        var targetingArrow = Instantiate(spellTargetingArrowPrefab).GetComponent<SpellTargetingArrow>();
+                        boardSpell.targetingArrow = targetingArrow;
+                        targetingArrow.effectTarget = targetableAbility.target;
+                        targetingArrow.targetType = targetableAbility.target.GetTarget();
+                        targetingArrow.onTargetSelected += () =>
+                        {
+                            PlaySpellCard(card.card, targetingArrow.targetInfo);
+                            effectSolver.MoveCard(netId, card.card, "Hand", "Board", targetingArrow.targetInfo);
+                            currentSpellCard = null;
+                            gameUI.endTurnButton.SetEnabled(true);
+                        };
+                        targetingArrow.Begin(boardSpell.transform.localPosition);
+                    }
+                    else
+                    //そうでなければそのまま処理
+                    {
+                        PlaySpellCard(card.card);
+                        effectSolver.MoveCard(netId, card.card, "Hand", "Board");
+                        currentSpellCard = null;
+                        gameUI.endTurnButton.SetEnabled(true);
+                    }
+                });
+            }
+        
+        else
+        {
+            card.GetComponent<HandCard>().ResetToInitialPosition();
+        }
+            */
+        
     }
 
     /// <summary>
@@ -1066,16 +1258,20 @@ public class DemoHumanPlayer : DemoPlayer
     /// <summary>
     /// カード移動時の処理
     /// </summary>
-    /// <param name="msg"></param>
+    /// <param name="msg">カードの固有ID等を持ったメッセージ。ネットワーク越しに受け渡しをする</param>
+    /// Playerクラスのオーバーライド
     public override void OnCardMoved(CardMovedMessage msg)
     {
         base.OnCardMoved(msg);
 
+        //カード設定読み込み
         var gameConfig = GameManager.Instance.config;
         var libraryCard = gameConfig.GetCard(msg.card.cardId);
         var cardType = gameConfig.cardTypes.Find(x => x.id == libraryCard.cardTypeId);
 
+        //ランダムな値
         var randomIndex = UnityEngine.Random.Range(0, opponentHandCards.Count);
+        //ランダムなカード
         var randomCard = opponentHandCards[randomIndex];
         opponentHandCards.Remove(randomCard);
         Destroy(randomCard);
@@ -1176,12 +1372,21 @@ public class DemoHumanPlayer : DemoPlayer
             }
         }
     }
-
+    /// <summary>
+    /// 相手のスペカを消すために2秒待つ
+    /// </summary>
+    /// <param name="spellCard"></param>
+    /// <returns></returns>
     private IEnumerator RemoveOpponentSpellCard(SpellCardView spellCard)
     {
         yield return new WaitForSeconds(2.0f);
     }
 
+    /// <summary>
+    /// 相手の矢印を消すため2秒待つ
+    /// </summary>
+    /// <param name="arrow"></param>
+    /// <returns></returns>
     private IEnumerator RemoveOpponentTargetingArrow(TargetingArrow arrow)
     {
         yield return new WaitForSeconds(2.0f);
@@ -1223,9 +1428,19 @@ public class DemoHumanPlayer : DemoPlayer
             });
         }
     }
-
+    /// <summary>
+    /// チャット受け取った時の処理
+    /// </summary>
+    /// <param name="senderNetId"></param>
+    /// <param name="text"></param>
     public override void OnReceiveChatText(NetworkInstanceId senderNetId, string text)
     {
         chatPopup.SendText(senderNetId, text);
     }
+
+
+
+
+
+
 }

@@ -28,13 +28,17 @@ public class PlayCardHandler : ServerHandler
         NetworkServer.UnregisterHandler(NetworkProtocol.MoveCard);
         base.UnregisterNetworkHandlers();
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="netMsg"></param>
     protected virtual void OnMoveCard(NetworkMessage netMsg)
     {
         var msg = netMsg.ReadMessage<MoveCardMessage>();
         if (msg != null)
         {
             // Only the current player can summon cards.
+            //今のプレイヤーでなかったらリターンする
             if (netMsg.conn.connectionId != server.gameState.currentPlayer.connectionId)
             {
                 return;

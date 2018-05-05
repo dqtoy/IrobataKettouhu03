@@ -56,9 +56,9 @@ namespace CCGKit
 
         /// <summary>
         /// The card types.
-        /// カードの種類。
+        /// トークンの種類。
         /// </summary>
-        public List<TokenType> tokenTypes = new List<TokenType>();
+        public List<CardType> tokenTypes = new List<CardType>();
 
         /// <summary>
         /// The keywords of the game.
@@ -82,7 +82,7 @@ namespace CCGKit
         /// The card sets of the game.
         /// ゲームのカードセット。
         /// </summary>
-        public List<TokenSet> tokenSets = new List<TokenSet>();
+        public List<CardSet> tokenSets = new List<CardSet>();
 
         /// <summary>
         /// The cards of the game.
@@ -98,7 +98,7 @@ namespace CCGKit
         /// <summary>
         /// トークンの一覧。
         /// </summary>
-        public List<Token> tokens = new List<Token>();
+        public List<Card> tokens = new List<Card>();
 
         /// <summary>
         /// The JSON serializer.
@@ -183,13 +183,13 @@ namespace CCGKit
                         var KoumaCardLibraryPath = path + "/Kcard_library.json";
                         var HakugyokuCardLibraryPath = path + "/Hcard_library.json";
                         var EienCardLibraryPath = path + "/Ecard_library.json";
-                        var tokenLibraryPath = path + "/token_library.json";
+            var tokenLibraryPath = path + "/token_library.json";
             //カードの一覧をIDで取得、Listにして返す
             var cardLibrary = LoadJSONFile<List<CardSet>>(cardLibraryPath);
             //           var KoumaCardLibrary = LoadJSONFile<List<CardSet>>(KoumaCardLibraryPath);
             //            var HakugyokuCardLibrary = LoadJSONFile<List<CardSet>>(HakugyokuCardLibraryPath);
             //          var EienCardLibrary = LoadJSONFile<List<CardSet>>(EienCardLibraryPath);
-            var tokenLibrary = LoadJSONFile<List<TokenSet>>(tokenLibraryPath);
+            var tokenLibrary = LoadJSONFile<List<CardSet>>(tokenLibraryPath);
             if (cardLibrary != null)
             {
                 cardSets = cardLibrary;
@@ -325,8 +325,10 @@ namespace CCGKit
 //            var hakugyokuCardLibraryJSON = Resources.Load<TextAsset>("hakugyoku_card_library"); 
 //            var eienCardLibraryJSON = Resources.Load<TextAsset>("eien_card_library");        
 
-
+            //nullでないことを確認
             Assert.IsTrue(cardLibraryJSON != null);
+            //CardSetのListに読み込んだカード一覧のテキストを代入
+            //カードセットには陣営の情報とカードの一覧情報を所持
             var cardLibrary = LoadJSONString<List<CardSet>>(cardLibraryJSON.text);
 
             /*
@@ -347,7 +349,7 @@ namespace CCGKit
 
             //            Debug.Log(cardLibrary[2].Id);
 
-            //カードの一覧作成
+            //Cardクラスのリストでカードの一覧作成
             if (cardLibrary != null)
             {
                 cardSets = cardLibrary;
@@ -364,18 +366,18 @@ namespace CCGKit
             //トークン一覧を読み込む。
             var tokenLibraryJSON = Resources.Load<TextAsset>("token_library");
             Assert.IsTrue(cardLibraryJSON != null);
-            var tokenLibrary = LoadJSONString<List<TokenSet>>(tokenLibraryJSON.text);
+            var tokenLibrary = LoadJSONString<List<CardSet>>(tokenLibraryJSON.text);
             //トークンの一覧作成
             if (tokenLibrary != null)
             {
                 tokenSets = tokenLibrary;
                 foreach (var set in tokenSets)
                 {
-                    foreach (var token in set.tokens)
+                    foreach (var token in set.cards)
                     {
                         tokens.Add(token);
 //                        Debug.Log(tokens[0]);
- //                       currentTokenPool.AddCard(token);
+//                       currentTokenPool.AddCard(token);
 
 
                     }
@@ -517,9 +519,9 @@ namespace CCGKit
         /// <summary>
         /// 指定された識別子を持つトークンを返す。
         /// </summary>
-        public Token GetToken(int id)
+        public Card GetToken(int id)
         {
-            var libraryToken = tokens.Find(x => x.id == id);
+            var libraryToken = cards.Find(x => x.id == id);
             return libraryToken;
         }
 

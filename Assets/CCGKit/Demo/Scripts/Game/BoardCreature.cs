@@ -85,7 +85,9 @@ public class BoardCreature : MonoBehaviour
         Assert.IsNotNull(healthText);
         Assert.IsNotNull(sleepingParticles);
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     protected virtual void OnDestroy()
     {
         healthStat.onValueChanged -= onHealthStatChangedDelegate;

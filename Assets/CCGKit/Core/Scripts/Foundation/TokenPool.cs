@@ -27,16 +27,9 @@ namespace CCGKit
     /// デッキとは、プレイヤーがゲームに参加する際に使用するカードの集まりです。
     /// </summary>
     [Serializable]
-    public class TokenPool : Deck
+    public class TokenPool
     {
         /// <summary>
-        /// The name of this deck.
-        /// デッキ名
-        /// </summary>
-        public string name = "新しいデッキ";
-
-        /// <summary>
-        /// The entries of this deck.
         /// デッキの入り口
         /// デッキに含まれるカードの固有IDとその所持枚数
         /// </summary>
@@ -57,6 +50,7 @@ namespace CCGKit
         /// カードの属性
         /// <returns>The number of cards of the specified type in this deck.</returns>
         /// このデッキの指定されたタイプのカードの数。
+/*
         public int GetNumCards(GameConfiguration config, int tokenTypeId)
         {
             var total = 0;
@@ -74,14 +68,14 @@ namespace CCGKit
             }
             return total;
         }
-
+*/
         /// <summary>
         /// Adds the specified card to this deck.
         /// 指定されたカードをこのデッキに追加します。
         /// </summary>
         /// <param name="card">The card to add to this deck.</param>
         /// このデッキに追加するカード。
-        public void AddCard(Token token)
+        public void AddCard(Card token)
         {
             var existingToken = tokens.Find(x => x.id == token.id);
             if (existingToken != null)
@@ -99,7 +93,7 @@ namespace CCGKit
         /// このカードをこのデッキから取り外す。
         /// </summary>
         /// <param name="card">The card to remove from this deck.</param>
-        public void RemoveCards(Token token)
+        public void RemoveCards(Card token)
         {
             var existingToken = tokens.Find(x => x.id == token.id);
             if (existingToken != null)

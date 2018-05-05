@@ -216,7 +216,11 @@ public class DemoAIPlayer : DemoPlayer
         yield return new WaitForSeconds(1.0f);
         StopTurn();
     }
-
+    /// <summary>
+    /// カードが使える時は使おうとする
+    /// </summary>
+    /// <param name="card"></param>
+    /// <returns></returns>
     protected bool TryToPlayCard(RuntimeCard card)
     {
         var availableMana = playerInfo.namedStats["Mana"].effectiveValue;
@@ -248,7 +252,11 @@ public class DemoAIPlayer : DemoPlayer
         }
         return false;
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="card"></param>
+    /// <returns></returns>
     protected List<int> GetAbilityTarget(RuntimeCard card)
     {
         var config = GameManager.Instance.config;
@@ -267,7 +275,7 @@ public class DemoAIPlayer : DemoPlayer
                 break;
             }
         }
-
+        
         if (needsToSelectTarget)
         {
             var targetInfo = new List<int>();
@@ -322,7 +330,10 @@ public class DemoAIPlayer : DemoPlayer
             return null;
         }
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     protected int GetPlayerAttackingPower()
     {
         var power = 0;
@@ -336,7 +347,10 @@ public class DemoAIPlayer : DemoPlayer
         }
         return power;
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     protected int GetOpponentAttackingPower()
     {
         var power = 0;
@@ -346,29 +360,45 @@ public class DemoAIPlayer : DemoPlayer
         }
         return power;
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="effect"></param>
+    /// <returns></returns>
     protected bool IsBuffEffect(Effect effect)
     {
         return effect is IncreasePlayerStatEffect || effect is IncreaseCardStatEffect;
     }
-
+    /// <summary>
+    /// PlayerInfoクラスから対戦相手の手札にあるミニオンを全て検索してList<RuntimeCard>
+    /// </summary>
+    /// <returns>RuntimeCardのリストをリターンする</returns>
     protected List<RuntimeCard> GetCreatureCardsInHand()
     {
         return playerInfo.namedZones["Hand"].cards.FindAll(x => x.cardType.name == "Creature");
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     protected List<RuntimeCard> GetSpellCardsInHand()
     {
         return playerInfo.namedZones["Hand"].cards.FindAll(x => x.cardType.name == "Spell");
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     protected List<RuntimeCard> GetBoardCreatures()
     {
         var board = playerInfo.namedZones["Board"].cards;
         var eligibleCreatures = board.FindAll(x => x.namedStats["Life"].effectiveValue > 0);
         return eligibleCreatures;
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     protected RuntimeCard GetRandomCreature()
     {
         var board = playerInfo.namedZones["Board"].cards;
@@ -398,7 +428,10 @@ public class DemoAIPlayer : DemoPlayer
         }
         return null;
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     protected RuntimeCard GetRandomOpponentCreature()
     {
         var board = opponentInfo.namedZones["Board"].cards;
@@ -409,7 +442,10 @@ public class DemoAIPlayer : DemoPlayer
         }
         return null;
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     protected bool OpponentHasProvokeCreatures()
     {
         var opponentBoard = opponentInfo.namedZones["Board"].cards;

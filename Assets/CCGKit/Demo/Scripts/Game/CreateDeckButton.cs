@@ -21,9 +21,10 @@ public class CreateDeckButton : MonoBehaviour
  /// </summary>
     public void OnButtonPressed()
     {
+
+        scene.CreateNewDeck();
         //陣営わけのため追加
         SceneManager.LoadScene("SelectTeam");
 
-        scene.CreateNewDeck();
     }
 }

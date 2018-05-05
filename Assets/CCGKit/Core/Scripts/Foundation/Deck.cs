@@ -43,6 +43,7 @@ namespace CCGKit
         /// </summary>
         public List<DeckEntry> cards = new List<DeckEntry>();
 
+
         /// <summary>
         /// Returns the number of cards in this deck.
         /// このデッキのカード数を返します。
@@ -65,7 +66,7 @@ namespace CCGKit
         /// <param name="config">The game's configuration.</param>
         /// ゲームの設定
         /// <param name="cardTypeId">The card type.</param>
-        /// カードの属性
+        /// カードの属性(ミニオンかスペルか)
         /// <returns>The number of cards of the specified type in this deck.</returns>
         /// このデッキの指定されたタイプのカードの数。
         public int GetNumCards(GameConfiguration config, int cardTypeId)

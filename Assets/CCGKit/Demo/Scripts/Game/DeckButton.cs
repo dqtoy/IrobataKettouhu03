@@ -75,7 +75,10 @@ public class DeckButton : MonoBehaviour
         nameText.text = deck.name;
         UpdateDeckInfo();
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="name"></param>
     public void SetDeckName(string name)
     {
         deck.name = name;

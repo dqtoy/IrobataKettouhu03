@@ -176,12 +176,16 @@ namespace CCGKit
             msg.netId = netId;
             if (isHuman)
             {
+                //var playerName = PlayerPrefs.GetString("player_name");
+                //msg.name = string.IsNullOrEmpty(playerName) ? "Unnamed Wizard" : playerName;
+
                 var playerName = PlayerPrefs.GetString("player_name");
-                msg.name = string.IsNullOrEmpty(playerName) ? "Unnamed Wizard" : playerName;
+                msg.name = string.IsNullOrEmpty(playerName) ? "Maribel Hearn" : playerName;
             }
             else
             {
-                msg.name = "Turing Machine";
+                //msg.name = "Turing Machine";
+                msg.name = "Renko Usami";
             }
             msg.isHuman = isHuman;
             msg.deck = msgDefaultDeck.ToArray();
@@ -424,9 +428,9 @@ namespace CCGKit
             return new RuntimeCard();
         }
         /// <summary>
-        /// 
+        /// 相手ミニオンをゾーン間移動する
         /// </summary>
-        /// <param name="msg"></param>
+        /// <param name="msg">カードのIDやスタッツなど、情報が入った変数</param>
         /// virtualは仮想関数。派生クラスでoverrideによる上書きが必要
         public virtual void OnCardMoved(CardMovedMessage msg)
         {

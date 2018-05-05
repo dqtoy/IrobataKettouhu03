@@ -5,13 +5,19 @@ using TMPro;
 
 using CCGKit;
 
+/// <summary>
+/// カードの描画情報
+/// RuntimeCardクラスも持ってる。各スタッツ、使用可能の光とか
+/// </summary>
 public class CardView : MonoBehaviour
 {
     public RuntimeCard card { get; private set; }
 
+    //使用可能の青い光
     [SerializeField]
     protected SpriteRenderer glowSprite;
 
+    //イラスト
     [SerializeField]
     protected SpriteRenderer pictureSprite;
 
@@ -78,6 +84,10 @@ public class CardView : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// ライブラリーの情報を移行
+    /// </summary>
+    /// <param name="card"></param>
     public virtual void PopulateWithLibraryInfo(Card card)
     {
         nameText.text = card.name;
@@ -99,16 +109,29 @@ public class CardView : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// プレイできるか
+    /// </summary>
+    /// <param name="owner"></param>
+    /// <returns></returns>
     public virtual bool CanBePlayed(DemoHumanPlayer owner)
     {
         return owner.isActivePlayer && owner.manaStat.effectiveValue >= manaCost;
     }
 
+    /// <summary>
+    /// ハイライト付いてるか判定
+    /// </summary>
+    /// <returns></returns>
     public bool IsHighlighted()
     {
         return glowSprite.enabled;
     }
 
+    /// <summary>
+    /// ハイライトをセット
+    /// </summary>
+    /// <param name="enabled"></param>
     public void SetHighlightingEnabled(bool enabled)
     {
         glowSprite.enabled = enabled;

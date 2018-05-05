@@ -30,6 +30,7 @@ namespace CCGKit
         /// <summary>
         /// The stats of this card, indexed by name.
         /// このカードのスタッツは名前で示されます。
+        /// card.namedStats["Attack"];みたいな書き方で値を取得できる
         /// </summary>
         public Dictionary<string, Stat> namedStats = new Dictionary<string, Stat>();
 
@@ -48,6 +49,7 @@ namespace CCGKit
         /// <summary>
         /// The type of this card.
         /// カードタイプ
+        /// ミニオン or スペル
         /// </summary>
         public CardType cardType
         {

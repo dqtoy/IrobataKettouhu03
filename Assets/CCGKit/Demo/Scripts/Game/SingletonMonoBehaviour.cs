@@ -70,6 +70,12 @@ public class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour {
         Instance = null;
     }
 
+    /// <summary>
+    /// 初期化(Awake時かその前の初アクセス、どちらかの一度しか行われない)
+    /// </summary>
+    protected virtual void Init() { }
+
+
     // コンストラクタをprotectedにすることでインスタンスを生成出来なくする
     protected SingletonMonoBehaviour () {}
 }

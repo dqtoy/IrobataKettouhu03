@@ -46,6 +46,12 @@ public class SelectDeckScene : BaseScene {
 
 	// Use this for initialization
 	void Start () {
+
+        //フェードインから開始
+        FadeScript fadeout = GameObject.Find("fadein_out_panel").GetComponent<FadeScript>();
+        fadeout.InitIn();
+        fadeout.isFadeIn = true;
+
         SoundController.setloopDefine=5.454f;
         SoundController.setendDefine=101.818f;
 	    //BGM再生。AUDIO.BGM_BATTLEがBGMのファイル名
@@ -110,6 +116,7 @@ public class SelectDeckScene : BaseScene {
 	
     public void OnSinglePlayerButtonPressed()
     {
+
         GameNetworkManager.Instance.isSinglePlayer = true;
         GameNetworkManager.Instance.StartHost();
     }

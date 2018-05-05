@@ -74,7 +74,9 @@ namespace CCGKit
     {
         public NetPlayerInfo[] opponents;
     }
-
+    /// <summary>
+    /// カードの移動に必要な情報郡
+    /// </summary>
     public class MoveCardMessage : MessageBase
     {
         public NetworkInstanceId playerNetId;
@@ -84,9 +86,14 @@ namespace CCGKit
         public int[] targetInfo;
     }
 
+    /// <summary>
+    /// カードを移動した際クライアント・サーバ間で送受信する変数
+    /// </summary>
     public class CardMovedMessage : MessageBase
     {
+        //NetworkInstanceId:ネットワークのすべての参加者にわたってネットワーク化されたオブジェクトを識別するために使用されます。オブジェクトが生成されたときにサーバーによって実行時に割り当てられます。
         public NetworkInstanceId playerNetId;
+        //CCGKitで利用する、カード情報をネットワーク上でやり取りするための値が入ったクラス
         public NetCard card;
         public int originZoneId;
         public int destinationZoneId;

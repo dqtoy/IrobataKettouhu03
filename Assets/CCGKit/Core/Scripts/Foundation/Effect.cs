@@ -41,6 +41,7 @@ namespace CCGKit
         /// <summary>
         /// Returns true if there are any targets available for this effect and false otherwise.
         /// このエフェクトに使用可能なターゲットがあればtrueを返し、そうでない場合はfalseを返します。
+        /// ターゲットとなるプレイヤーを指定する
         /// </summary>
         /// <param name="state">The game's state.</param>
         /// <param name="sourceCard">The card containing the effect.</param>
@@ -65,7 +66,12 @@ namespace CCGKit
                 case EffectTarget.AllPlayers:
                     players.AddRange(state.players);
                     break;
-
+                case EffectTarget.TokenCard:
+                case EffectTarget.Coin:
+                case EffectTarget.Token_insect:
+//                    players.Add(sourceCard.ownerPlayer);
+//                    break;
+                case EffectTarget.Token_rabbit:
                 default:
                     break;
             }
@@ -129,6 +135,7 @@ namespace CCGKit
         /// <summary>
         /// Returns true if there are any targets available for this effect and false otherwise.
         /// このエフェクトに使用可能なターゲットがあればtrueを返し、そうでない場合はfalseを返します。
+        /// 
         /// </summary>
         /// <param name="state">The game's state.</param>
         /// <param name="sourceCard">The card containing the effect.</param>
@@ -182,7 +189,10 @@ namespace CCGKit
                 case EffectTarget.OpponentOrOpponentCreature:
                 case EffectTarget.AnyPlayerOrCreature:
                     return true;
-
+                case EffectTarget.TokenCard:
+                case EffectTarget.Coin:
+                case EffectTarget.Token_insect:
+                case EffectTarget.Token_rabbit:
                 default:
                     return false;
             }

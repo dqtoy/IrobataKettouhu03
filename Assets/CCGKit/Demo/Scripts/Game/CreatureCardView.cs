@@ -35,10 +35,14 @@ public class CreatureCardView : CardView
         Assert.IsNotNull(defenseText);
         //Assert.IsNotNull(KeywordsText);
     }
-
+    /// <summary>
+    /// スタッツの修正
+    /// </summary>
+    /// <param name="card"></param>
     public override void PopulateWithInfo(RuntimeCard card)
     {
         base.PopulateWithInfo(card);
+        //アタックのスタッツに文字列「Attack」に紐付けられた値(Dictionary)を代入する
         attackStat = card.namedStats["Attack"];
         defenseStat = card.namedStats["Life"];
         attackText.text = attackStat.effectiveValue.ToString();
@@ -48,6 +52,10 @@ public class CreatureCardView : CardView
         defenseStat.onValueChanged += (oldValue, newValue) => { defenseText.text = defenseStat.effectiveValue.ToString(); };
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="card"></param>
     public override void PopulateWithLibraryInfo(Card card)
     {
         base.PopulateWithLibraryInfo(card);

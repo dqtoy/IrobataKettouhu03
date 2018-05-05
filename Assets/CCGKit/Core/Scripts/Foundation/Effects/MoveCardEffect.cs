@@ -46,7 +46,23 @@ namespace CCGKit
         public override bool AreTargetsAvailable(GameState state, RuntimeCard sourceCard, Target target)
         {
             var cards = new List<RuntimeCard>();
-            var tokens = new List<RuntimeToken>();
+            var tokens = new List<RuntimeCard>();
+
+//            List<RuntimeCard> insect = new List<RuntimeCard>();
+//            insect.Add(new RuntimeCard(groupId=1, 1,1)());
+            /*
+            //トークンプールにトークン一覧を追加
+            foreach (var card in state.currentPlayer.zones[originGameZoneId].cards)
+            {
+                if (card.cardId == 327)
+                {
+                    TokenPool.AddCard(card);
+                }
+            }
+            */
+
+
+
             switch (target.GetTarget())
             {
                 case EffectTarget.ThisCard:
@@ -96,11 +112,20 @@ namespace CCGKit
                 case EffectTarget.Token_insect:
                     {
 
-
-                        foreach (var card in state.currentPlayer.zones[originGameZoneId].cards)
+                        //ハンドの分ループする
+                        foreach (var card in state.currentPlayer.zones[4].cards)
                         {
-                            cards.Add(card);
+                            //リグルだったら召喚する
+                         //   if (card.instanceId == 327) {
+                                if (card.instanceId == 52)
+                                {
+                                    var originZone = state.config.gameZones.Find(x => x.id == 4);
+                                ///移動先のゾーンIDを代入
+                                var destinationZone = state.config.gameZones.Find(x => x.id == destinationGameZoneId);
+                                state.effectSolver.MoveCard(sourceCard.ownerPlayer.netId, sourceCard, originZone.name, destinationZone.name);
+                            }
                         }
+
                         break;
 
                     }

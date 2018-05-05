@@ -6,6 +6,8 @@ using UnityEngine.Assertions;
 using UnityEngine.Networking.Match;
 using UnityEngine.SceneManagement;
 
+using System.Threading;
+
 using FullSerializer;
 using TMPro;
 
@@ -41,6 +43,8 @@ public class HomeScene : BaseScene
     [SerializeField]
     private TMP_InputField passwordInputField;
 
+
+
     /// <summary>
     /// プログラムの前提として満たされるべき条件を記述し、実行時にそれが満たされていない場合にエラーや例外を発生させたり、メッセージを表示して処理を中断したりする機能
     /// アサーションチェック
@@ -52,6 +56,10 @@ public class HomeScene : BaseScene
 
     private void Start()
     {
+        //フェードインから開始
+        FadeScript fadeout = GameObject.Find("fadein_out_panel").GetComponent<FadeScript>();
+        fadeout.InitIn();
+        fadeout.isFadeIn = true;
 
         SoundController.setloopDefine=5.454f;
         SoundController.setendDefine=101.818f;
@@ -65,7 +73,7 @@ public class HomeScene : BaseScene
         versionText.text = "Ver" + CCGKitInfo.version;
         //C:\Users\imoho\AppData\LocalLow\chorimpoo\囲炉端決闘符/decks.json
         var decksPath = Application.persistentDataPath + "/decks.json";
-        var tokensPath = Application.persistentDataPath + "/token_library.json";
+//        var tokensPath = Application.persistentDataPath + "/token_library.json";
 
         // デッキデータが存在する場合、GameManager.Instance.playerDecksにデッキデータを代入する処理
         if (File.Exists(decksPath))
@@ -82,7 +90,7 @@ public class HomeScene : BaseScene
             file.Close();
             GameManager.Instance.playerDecks = deserialized as List<Deck>;
         }
-
+/*
         // トークンデータが存在する場合、GameManager.Instance.playerDecksにデッキデータを代入する処理
         if (File.Exists(tokensPath))
         {
@@ -98,7 +106,7 @@ public class HomeScene : BaseScene
             file.Close();
             GameManager.Instance.AllPlayerTokens = deserialized as List<TokenPool>;
         }
-
+*/
         GameNetworkManager.Instance.Initialize();
 
 #if ENABLE_MASTER_SERVER_KIT
@@ -135,11 +143,15 @@ public class HomeScene : BaseScene
 
     public void OnPlayButtonPressed()
     {
+        //シーンの遷移とフェードを管理するオブジェクトの作成
+        new GameObject().AddComponent<FadeScript>();
         SceneManager.LoadScene("SelectHero");
     }
 
     public void OnOnlinePlayButtonPressed()
     {
+        
+        
         OpenPopup<PopupTwoButtons>("PopupTwoButtons", popup =>
         {
             popup.text.text = "接続";
@@ -156,10 +168,18 @@ public class HomeScene : BaseScene
         });
 
         //SceneManager.LoadScene("SelectHero");
+
+        
     }
 
     public void OnDecksButtonPressed()
     {
+        //newでインスタンス作るのと一緒
+        FadeScript fadeout = GameObject.Find("fadein_out_panel").GetComponent<FadeScript>();
+        fadeout.InitOut();
+//        var task = Task.WaitAll();
+
+
         SceneManager.LoadScene("DeckBuilder");
     }
 

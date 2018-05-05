@@ -49,6 +49,7 @@ namespace CCGKit
         /// The type of this Token.
         /// カードタイプ
         /// </summary>
+        /*
         public TokenType TokenType
         {
             get
@@ -58,7 +59,7 @@ namespace CCGKit
                 return gameConfig.tokenTypes.Find(x => x.id == libraryToken.tokenTypeId);
             }
         }
-
+        */
         /// <summary>
         /// The callback that is called when a keyword is added to this Token.
         /// このカードにキーワードが追加されたときに呼び出されるコールバック。

@@ -260,7 +260,7 @@ namespace CCGKit
             });
         }
 
-        private void CreateCurrentHeroPowerTargetConditionsList()
+/*        private void CreateCurrentHeroPowerTargetConditionsList()
         {
             currentHeroPowerTargetConditionsList = EditorUtils.SetupReorderableList("Target HeroPower conditions", currentHeroPowerTarget.conditions, ref currentHeroPowerTargetCondition, (rect, x) =>
             {
@@ -285,7 +285,7 @@ namespace CCGKit
                 currentHeroPowerTargetCondition = null;
             });
         }
-
+*/
         private void CreateHeroPowerCostCallback(object obj)
         {
             var cost = Activator.CreateInstance((Type)obj);
@@ -367,11 +367,13 @@ namespace CCGKit
             currentPlayerTarget.conditions.Add(condition as PlayerCondition);
         }
 
+        /*
         private void CreateHeroPowerTargetConditionCallback(object obj)
         {
             var condition = Activator.CreateInstance((Type)obj);
             currentHeroPowerTarget.conditions.Add(condition as HeroPowerCondition);
         }
+        */
 
         public override void OnTabSelected()
         {
@@ -670,6 +672,8 @@ namespace CCGKit
 
         private void DrawEffect(ref Effect effect, ref Target target)
         {
+
+            /*
             var effectTypeId = 0;
             if (effect != null)
             {
@@ -804,6 +808,7 @@ namespace CCGKit
                     }
                 }
             }
+            */
         }
 
         private void DrawTargetCondition(Condition condition)

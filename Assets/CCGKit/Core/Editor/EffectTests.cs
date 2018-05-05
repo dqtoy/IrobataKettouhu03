@@ -12,6 +12,10 @@ using CCGKit;
 /// </summary>
 public class EffectTests
 {
+
+    /// <summary>
+    /// プレイヤーのスタッツを特定値に変更
+    /// </summary>
     [Test]
     public void TestSetPlayerStatEffect()
     {
@@ -27,7 +31,9 @@ public class EffectTests
         Assert.AreEqual(gameState.currentPlayer.stats[0].effectiveValue, 5);
         Assert.AreEqual(gameState.currentOpponent.stats[0].effectiveValue, 20);
     }
-
+    /// <summary>
+    /// プレイヤーのステータスをリセット
+    /// </summary>
     [Test]
     public void TestResetPlayerStatEffect()
     {
@@ -50,7 +56,9 @@ public class EffectTests
         Assert.AreEqual(gameState.currentPlayer.stats[0].effectiveValue, 20);
         Assert.AreEqual(gameState.currentOpponent.stats[0].effectiveValue, 20);
     }
-
+    /// <summary>
+    /// プレイヤーのスタッツをバフ
+    /// </summary>
     [Test]
     public void TestIncreasePlayerStatEffect()
     {
@@ -66,7 +74,9 @@ public class EffectTests
         Assert.AreEqual(gameState.currentPlayer.stats[0].effectiveValue, 21);
         Assert.AreEqual(gameState.currentOpponent.stats[0].effectiveValue, 20);
     }
-
+    /// <summary>
+    /// プレイヤーのスタッツをデバフ
+    /// </summary>
     [Test]
     public void TestDecreasePlayerStatEffect()
     {
@@ -83,6 +93,9 @@ public class EffectTests
         Assert.AreEqual(gameState.currentOpponent.stats[0].effectiveValue, 20);
     }
 
+    /// <summary>
+    /// カードのスタッツを固定値に変更
+    /// </summary>
     [Test]
     public void TestSetCardStatEffect()
     {
@@ -99,7 +112,9 @@ public class EffectTests
 
         Assert.AreEqual(card.stats[0].effectiveValue, 5);
     }
-
+    /// <summary>
+    /// サイレンステスト
+    /// </summary>
     [Test]
     public void TestResetCardStatEffect()
     {
@@ -122,7 +137,9 @@ public class EffectTests
 
         Assert.AreEqual(card.stats[0].effectiveValue, 2);
     }
-
+    /// <summary>
+    /// バフテスト
+    /// </summary>
     [Test]
     public void TestIncreaseCardStatEffect()
     {
@@ -140,6 +157,9 @@ public class EffectTests
         Assert.AreEqual(card.stats[0].effectiveValue, 3);
     }
 
+    /// <summary>
+    /// デバフテスト
+    /// </summary>
     [Test]
     public void TestDecreaseCardStatEffect()
     {
@@ -157,6 +177,10 @@ public class EffectTests
         Assert.AreEqual(card.stats[0].effectiveValue, 1);
     }
 
+    /// <summary>
+    /// ゲーム開始時に設定する値
+    /// </summary>
+    /// <returns></returns>
     private GameState CreateTestGameState()
     {
         var gameState = new GameState();

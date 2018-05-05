@@ -14,8 +14,8 @@ public class SoundController : SingletonMonoBehaviour<SoundController> {
    	private const string BGM_PATH = "AUDIO/BGM";
 	private const string SE_PATH  = "AUDIO/SE";
 	//BGMがフェードするのにかかる時間
-	public const float BGM_FADE_SPEED_RATE_HIGH = 0.9f;
-	public const float BGM_FADE_SPEED_RATE_LOW  = 0.3f;
+	public const float BGM_FADE_SPEED_RATE_HIGH = 3.0f;
+	public const float BGM_FADE_SPEED_RATE_LOW  = 3.0f;
 	private float _bgmFadeSpeedRate = BGM_FADE_SPEED_RATE_HIGH;
 
 	//次流すBGM名、SE名

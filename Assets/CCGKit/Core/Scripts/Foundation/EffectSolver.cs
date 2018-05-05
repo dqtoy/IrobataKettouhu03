@@ -144,10 +144,20 @@ namespace CCGKit
             var player = gameState.players.Find(x => x.netId == playerNetId);
             if (player != null)
             {
+
                 //移動元からカードを消す
                 player.namedZones[originZone].RemoveCard(card);
                 //移動先にカードを追加する
                 player.namedZones[destinationZone].AddCard(card);
+
+                
+                /*
+                //リグルの蟲召喚
+                if (card.cardId == 52) {
+                    player.namedZones[destinationZone].AddCard(card);
+                }
+                */
+                
                 //プレイヤー、カード、カードがゾーンから出た時に発動する能力があるかの判定、ターゲットの情報をそれぞれ渡す
                 //ラムダ式は以下の書き方
                 //引数リスト => 式
@@ -191,13 +201,6 @@ namespace CCGKit
             {
                 //移動先にカードを追加する
                 player.namedZones[destinationZone].AddCard(card);
-                //プレイヤー、カード、カードがゾーンから出た時に発動する能力があるかの判定、ターゲットの情報をそれぞれ渡す
-                //ラムダ式は以下の書き方
-                //引数リスト => 式
-                //http://ufcpp.net/study/csharp/sp3_lambda.html
-                TriggerEffect<OnCardLeftZoneTrigger>(player, card, x => { return x.IsTrue(gameState, originZone); }, targetInfo);
-                // TriggerEffect<OnCardLeftZoneTrigger>と逆。カードが入った時の能力(バトルクライ)
-                TriggerEffect<OnCardEnteredZoneTrigger>(player, card, x => { return x.IsTrue(gameState, destinationZone); }, targetInfo);
 
                 var libraryCard = gameState.config.GetCard(card.cardId);
                 var cardType = gameState.config.cardTypes.Find(x => x.id == libraryCard.cardTypeId);
@@ -546,6 +549,16 @@ namespace CCGKit
                     cardTargets.AddRange(opponent.zones[zoneId].cards);
                     cardTargets.RemoveAll(x => x.cardType.id != effectCardType);
                     break;
+                    /*
+                case EffectTarget.TokenCard:
+                    break;
+                case EffectTarget.Coin:
+                    break;
+                case EffectTarget.Token_insect:
+                    break;
+                case EffectTarget.Token_rabbit:
+                    break;
+                    */
 
                 default:
                     break;

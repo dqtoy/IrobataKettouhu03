@@ -28,22 +28,51 @@ public class SelectTeamScene : BaseScene {
 	[SerializeField]
 	public static string flag;
 
-	Button kButton;
+    [SerializeField]
+    public static int BGMflag;
+
+    Button kButton;
 	Button hButton;
 	Button eButton;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    private void Start () {
 
-	SoundController.setloopDefine=5.454f;
-    SoundController.setendDefine=101.818f;
-	//BGM再生。AUDIO.BGM_BATTLEがBGMのファイル名
-	SoundController.Instance.PlayBGM ("GS-premaster",SoundController.BGM_FADE_SPEED_RATE_HIGH);
-	SoundController.Instance.ChangeVolume (0.2F,0.2F);
-		
-	}
+        BGMflag = 0;
 
-	    public void OnKoumaButtonPressed()
+
+
+        //フェードインから開始
+        FadeScript fadeout = GameObject.Find("fadein_out_panel").GetComponent<FadeScript>();
+        fadeout.InitIn();
+        fadeout.isFadeIn = true;
+
+        SoundController.setloopDefine = 0.493f;
+        SoundController.setendDefine = 87.767f;
+        //BGM再生。AUDIO.BGM_BATTLEがBGMのファイル名
+        SoundController.Instance.PlayBGM("DeckBuild", SoundController.BGM_FADE_SPEED_RATE_HIGH);
+        SoundController.Instance.ChangeVolume(0.2F, 0.2F);
+
+    }
+
+    
+    // Update is called once per frame
+    private void Update()
+    {
+        
+        if (BGMflag < 1) {
+            SoundController.setloopDefine = 0.493f;
+            SoundController.setendDefine = 87.767f;
+            //BGM再生。AUDIO.BGM_BATTLEがBGMのファイル名
+            SoundController.Instance.PlayBGM("DeckBuild", SoundController.BGM_FADE_SPEED_RATE_HIGH);
+                SoundController.Instance.ChangeVolume(0.2F, 0.2F);
+                BGMflag++;
+        }
+        
+
+    }
+    
+    public void OnKoumaButtonPressed()
     {
 		bool FlagCheck = checkFlag();
 		if(FlagCheck){
@@ -85,10 +114,7 @@ public class SelectTeamScene : BaseScene {
 		return tfFlag;
 
 	}
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
     public void OnGoSelectClassButtonPressed()
     {
 		if(koumaFlag==false){

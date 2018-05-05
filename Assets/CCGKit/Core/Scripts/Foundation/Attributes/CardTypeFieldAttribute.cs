@@ -31,7 +31,7 @@ namespace CCGKit
         /// Draws this attribute.
         /// 属性を描画
         /// </summary>
-        /// <param name="gameConfig">The configuration of the game.</param>
+        /// <param name="gameConfig">The configuration of the game.CaradTypeを作るために使う</param>
         /// <param name="instance">The instance.</param>
         /// <param name="field">The field information.</param>
         public override void Draw(GameConfiguration gameConfig, object instance, ref FieldInfo field)

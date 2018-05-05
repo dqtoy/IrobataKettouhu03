@@ -208,7 +208,7 @@
                 ],
                 "properties": [
                     {
-                        "value": "<b>\u6311\u767a(\u672a\u5b9f\u88c5)</b>",
+                        "value": "<b>\u6311\u767a</b>(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -415,7 +415,7 @@
                 ],
                 "properties": [
                     {
-                        "value": "<b>\u5ba3\u6226</b>\u76f8\u624b\u306e\u7121\u50b7\u306e\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u5168\u3066\u306b\uff12\u306e\u30c0\u30e1\u30fc\u30b8\u3092\u4e0e\u3048\u308b\uff08\u672a\u5b9f\u88c5\uff09",
+                        "value": "<b>\u5ba3\u6226</b>\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u5168\u3066\u306b\uff12\u306e\u30c0\u30e1\u30fc\u30b8\u3092\u4e0e\u3048\u308b",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -456,7 +456,56 @@
                     }
                 ],
                 "keywords": [],
-                "abilities": [],
+                "abilities": [
+                    {
+                        "trigger": {
+                            "zoneId": 2,
+                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
+                        },
+                        "name": "\u5168\u4f53\u30c0\u30e1",
+                        "type": "Triggered",
+                        "effect": {
+                            "value": {
+                                "constant": 2,
+                                "$type": "CCGKit.ConstantValue"
+                            },
+                            "duration": 0,
+                            "statId": 1,
+                            "gameZoneId": 2,
+                            "cardTypeId": 0,
+                            "$type": "CCGKit.DecreaseCardStatEffect"
+                        },
+                        "target": {
+                            "conditions": [],
+                            "$type": "CCGKit.AllCards"
+                        },
+                        "$type": "CCGKit.TriggeredAbility"
+                    },
+                    {
+                        "trigger": {
+                            "zoneId": 2,
+                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
+                        },
+                        "name": "2\u56de\u5fa9",
+                        "type": "Triggered",
+                        "effect": {
+                            "value": {
+                                "constant": 2,
+                                "$type": "CCGKit.ConstantValue"
+                            },
+                            "duration": 0,
+                            "statId": 1,
+                            "gameZoneId": 2,
+                            "cardTypeId": 0,
+                            "$type": "CCGKit.IncreaseCardStatEffect"
+                        },
+                        "target": {
+                            "conditions": [],
+                            "$type": "CCGKit.ThisCard"
+                        },
+                        "$type": "CCGKit.TriggeredAbility"
+                    }
+                ],
                 "id": 38
             },
             {
@@ -694,62 +743,6 @@
                 "id": 9
             },
             {
-                "cardTypeId": 0,
-                "name": "\u5996\u7cbe\u30e1\u30a4\u30c9",
-                "costs": [
-                    {
-                        "statId": 1,
-                        "value": 1,
-                        "$type": "CCGKit.PayResourceCost"
-                    }
-                ],
-                "properties": [
-                    {
-                        "value": "",
-                        "name": "Text",
-                        "$type": "CCGKit.StringProperty"
-                    },
-                    {
-                        "value": "Creature",
-                        "name": "Picture",
-                        "$type": "CCGKit.StringProperty"
-                    },
-                    {
-                        "value": 2,
-                        "name": "MaxCopies",
-                        "$type": "CCGKit.IntProperty"
-                    },
-                    {
-                        "value": null,
-                        "name": "Material",
-                        "$type": "CCGKit.StringProperty"
-                    }
-                ],
-                "stats": [
-                    {
-                        "baseValue": 2,
-                        "statId": 0,
-                        "name": "Attack",
-                        "originalValue": 2,
-                        "minValue": 0,
-                        "maxValue": 99,
-                        "modifiers": []
-                    },
-                    {
-                        "baseValue": 1,
-                        "statId": 1,
-                        "name": "Life",
-                        "originalValue": 1,
-                        "minValue": 0,
-                        "maxValue": 99,
-                        "modifiers": []
-                    }
-                ],
-                "keywords": [],
-                "abilities": [],
-                "id": 172
-            },
-            {
                 "cardTypeId": 1,
                 "name": "\u95c7\u7b26\u300c\u30c7\u30a3\u30de\u30fc\u30b1\u30a4\u30b7\u30e7\u30f3\u300d",
                 "costs": [
@@ -800,7 +793,7 @@
                             "statId": 1,
                             "gameZoneId": 2,
                             "cardTypeId": 0,
-                            "$type": "CCGKit.IncreaseCardStatEffect"
+                            "$type": "CCGKit.DecreaseCardStatEffect"
                         },
                         "target": {
                             "conditions": [],
@@ -838,10 +831,16 @@
             {
                 "cardTypeId": 1,
                 "name": "\u5947\u8853\u300c\u5e7b\u60d1\u30df\u30b9\u30c7\u30a3\u30ec\u30af\u30b7\u30e7\u30f3\u300d",
-                "costs": [],
+                "costs": [
+                    {
+                        "statId": 1,
+                        "value": 2,
+                        "$type": "CCGKit.PayResourceCost"
+                    }
+                ],
                 "properties": [
                     {
-                        "value": "\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c91\u4f53\u3092\u6226\u5834\u304b\u3089\u6240\u6709\u8005\u306e\u624b\u672d\u306b\u623b\u3059",
+                        "value": "\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c91\u4f53\u3092\u6226\u5834\u304b\u3089\u6240\u6709\u8005\u306e\u624b\u672d\u306b\u623b\u3059(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -863,27 +862,7 @@
                 ],
                 "stats": [],
                 "keywords": [],
-                "abilities": [
-                    {
-                        "trigger": {
-                            "zoneId": 2,
-                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
-                        },
-                        "name": "sap",
-                        "type": "Triggered",
-                        "effect": {
-                            "originGameZoneId": 2,
-                            "destinationGameZoneId": 1,
-                            "cardTypeId": 0,
-                            "$type": "CCGKit.MoveCardEffect"
-                        },
-                        "target": {
-                            "conditions": [],
-                            "$type": "CCGKit.TargetCard"
-                        },
-                        "$type": "CCGKit.TriggeredAbility"
-                    }
-                ],
+                "abilities": [],
                 "id": 278
             },
             {
@@ -1006,28 +985,6 @@
                             "$type": "CCGKit.TargetCard"
                         },
                         "$type": "CCGKit.TriggeredAbility"
-                    },
-                    {
-                        "trigger": {
-                            "zoneId": 2,
-                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
-                        },
-                        "name": "4\u30c0\u30e1",
-                        "type": "Triggered",
-                        "effect": {
-                            "statId": 0,
-                            "value": {
-                                "constant": 4,
-                                "$type": "CCGKit.ConstantValue"
-                            },
-                            "duration": 0,
-                            "$type": "CCGKit.DecreasePlayerStatEffect"
-                        },
-                        "target": {
-                            "conditions": [],
-                            "$type": "CCGKit.TargetPlayer"
-                        },
-                        "$type": "CCGKit.TriggeredAbility"
                     }
                 ],
                 "id": 6
@@ -1044,7 +1001,7 @@
                 ],
                 "properties": [
                     {
-                        "value": "\u30af\u30e9\u30f3\u30d9\u30ea\u30fc\u30c8\u30e9\u30c3\u30d7\u3092\u5f15\u304f\u3068\u30d7\u30ec\u30a4\u30e4\u30fc\u306b10\u30c0\u30e1\u30fc\u30b8",
+                        "value": "\u30af\u30e9\u30f3\u30d9\u30ea\u30fc\u30c8\u30e9\u30c3\u30d7\u3092\u5f15\u304f\u3068\u30d7\u30ec\u30a4\u30e4\u30fc\u306b10\u30c0\u30e1\u30fc\u30b8(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -1072,7 +1029,7 @@
                             "zoneId": 1,
                             "$type": "CCGKit.OnCardEnteredZoneTrigger"
                         },
-                        "name": "\u5730\u96f7",
+                        "name": "\u5f15\u3044\u305f\u308910\u30c0\u30e1",
                         "type": "Triggered",
                         "effect": {
                             "statId": 0,
@@ -1085,7 +1042,7 @@
                         },
                         "target": {
                             "conditions": [],
-                            "$type": "CCGKit.PlayerTarget"
+                            "$type": "CCGKit.TargetPlayer"
                         },
                         "$type": "CCGKit.TriggeredAbility"
                     }
@@ -1104,7 +1061,7 @@
                 ],
                 "properties": [
                     {
-                        "value": "\u4e21\u30d7\u30ec\u30a4\u30e4\u30fc\u624b\u672d\u304c10\u679a\u306b\u306a\u308b\u307e\u3067\u30ab\u30fc\u30c9\u3092\u30c9\u30ed\u30fc\u3059\u308b",
+                        "value": "\u4e21\u30d7\u30ec\u30a4\u30e4\u30fc\u624b\u672d\u304c10\u679a\u306b\u306a\u308b\u307e\u3067\u30ab\u30fc\u30c9\u3092\u30c9\u30ed\u30fc\u3059\u308b(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -1114,7 +1071,7 @@
                         "$type": "CCGKit.StringProperty"
                     },
                     {
-                        "value": 2,
+                        "value": 1,
                         "name": "MaxCopies",
                         "$type": "CCGKit.IntProperty"
                     },
@@ -1167,7 +1124,7 @@
                 ],
                 "properties": [
                     {
-                        "value": "",
+                        "value": "<b>\u6311\u767a</b>(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -1263,29 +1220,13 @@
                         "modifiers": []
                     }
                 ],
-                "keywords": [],
-                "abilities": [
+                "keywords": [
                     {
-                        "trigger": {
-                            "zoneId": 2,
-                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
-                        },
-                        "name": "charge",
-                        "type": "Triggered",
-                        "effect": {
-                            "keywordTypeId": 0,
-                            "keywordValueId": 0,
-                            "gameZoneId": 2,
-                            "cardTypeId": 0,
-                            "$type": "CCGKit.AddKeywordEffect"
-                        },
-                        "target": {
-                            "conditions": [],
-                            "$type": "CCGKit.ThisCard"
-                        },
-                        "$type": "CCGKit.TriggeredAbility"
+                        "keywordId": 0,
+                        "valueId": 0
                     }
                 ],
+                "abilities": [],
                 "id": 42
             },
             {
@@ -1300,12 +1241,12 @@
                 ],
                 "properties": [
                     {
-                        "value": "\u30e9\u30f3\u30c0\u30e0\u306a\u4eba\u5f62\u30922\u4f53\u53ec\u559a\u3059\u308b",
+                        "value": "\u30e9\u30f3\u30c0\u30e0\u306a\u4eba\u5f62\u30922\u4f53\u53ec\u559a\u3059\u308b(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
                     {
-                        "value": "Creature",
+                        "value": "alice",
                         "name": "Picture",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -1451,10 +1392,15 @@
                         "name": "1\u56de\u5fa9",
                         "type": "Triggered",
                         "effect": {
+                            "value": {
+                                "constant": 1,
+                                "$type": "CCGKit.ConstantValue"
+                            },
+                            "duration": 0,
                             "statId": 1,
                             "gameZoneId": 2,
                             "cardTypeId": 0,
-                            "$type": "CCGKit.ResetCardStatEffect"
+                            "$type": "CCGKit.IncreaseCardStatEffect"
                         },
                         "target": {
                             "conditions": [],
@@ -1477,7 +1423,7 @@
                 ],
                 "properties": [
                     {
-                        "value": "<b>\u5ba3\u6226</b>\u4ed6\u306e\u59c9\u59b9\u304c\u624b\u672d\u306b\u3042\u308b\u5834\u5408\u3001\u6575\u306e\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u5168\u3066\u306b\u653b\u6483\u529b-2\u3092\u4ed8\u4e0e\u3059\u308b",
+                        "value": "<b>\u5ba3\u6226</b>\u4ed6\u306e\u59c9\u59b9\u304c\u624b\u672d\u306b\u3042\u308b\u5834\u5408\u3001\u6575\u306e\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u5168\u3066\u306b\u653b\u6483\u529b-2\u3092\u4ed8\u4e0e\u3059\u308b(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -1533,7 +1479,7 @@
                 ],
                 "properties": [
                     {
-                        "value": "<b>\u5ba3\u6226</b>\u4ed6\u306e\u59c9\u59b9\u304c\u624b\u672d\u306b\u3042\u308b\u5834\u5408\u3001\u5bfe\u8c61\u306e\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u306b4\u30c0\u30e1\u30fc\u30b8\u3092\u4e0e\u3048\u308b",
+                        "value": "<b>\u5ba3\u6226</b>\u4ed6\u306e\u59c9\u59b9\u304c\u624b\u672d\u306b\u3042\u308b\u5834\u5408\u3001\u5bfe\u8c61\u306e\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u306b4\u30c0\u30e1\u30fc\u30b8\u3092\u4e0e\u3048\u308b(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -1589,7 +1535,7 @@
                 ],
                 "properties": [
                     {
-                        "value": "<b>\u5ba3\u6226</b>\u4ed6\u306e\u59c9\u59b9\u304c\u624b\u672d\u306b\u3042\u308b\u5834\u5408\u3001\u4ed6\u306e\u59c9\u59b9\u3092\u624b\u672d\u304b\u30891\u4eba\u53ec\u559a\u3059\u308b",
+                        "value": "<b>\u5ba3\u6226</b>\u4ed6\u306e\u59c9\u59b9\u304c\u624b\u672d\u306b\u3042\u308b\u5834\u5408\u3001\u4ed6\u306e\u59c9\u59b9\u3092\u624b\u672d\u304b\u30891\u4eba\u53ec\u559a\u3059\u308b(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -1691,28 +1637,7 @@
                         "valueId": 0
                     }
                 ],
-                "abilities": [
-                    {
-                        "trigger": {
-                            "zoneId": 2,
-                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
-                        },
-                        "name": "charge",
-                        "type": "Triggered",
-                        "effect": {
-                            "keywordTypeId": 0,
-                            "keywordValueId": 0,
-                            "gameZoneId": 2,
-                            "cardTypeId": 0,
-                            "$type": "CCGKit.AddKeywordEffect"
-                        },
-                        "target": {
-                            "conditions": [],
-                            "$type": "CCGKit.ThisCard"
-                        },
-                        "$type": "CCGKit.TriggeredAbility"
-                    }
-                ],
+                "abilities": [],
                 "id": 48
             },
             {
@@ -1727,7 +1652,7 @@
                 ],
                 "properties": [
                     {
-                        "value": "<b>\u81e8\u6b7b</b>\u76f8\u624b\u306e\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u3092\u30e9\u30f3\u30c0\u30e0\u306b2\u4f53\u7834\u58ca\u3059\u308b(\u672a\u5b9f\u88c5)",
+                        "value": "<b>\u81e8\u6b7b</b>\u76f8\u624b\u306e\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u3092\u30e9\u30f3\u30c0\u30e0\u306b2\u4f53\u7834\u58ca\u3059\u308b",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -1777,11 +1702,15 @@
                         "name": "\u6697\u6bba",
                         "type": "Triggered",
                         "effect": {
-                            "keywordTypeId": 0,
-                            "keywordValueId": 0,
+                            "value": {
+                                "constant": 0,
+                                "$type": "CCGKit.ConstantValue"
+                            },
+                            "duration": 0,
+                            "statId": 1,
                             "gameZoneId": 2,
                             "cardTypeId": 0,
-                            "$type": "CCGKit.AddKeywordEffect"
+                            "$type": "CCGKit.SetCardStatEffect"
                         },
                         "target": {
                             "conditions": [],
@@ -1797,11 +1726,15 @@
                         "name": "\u6697\u6bba",
                         "type": "Triggered",
                         "effect": {
-                            "keywordTypeId": 0,
-                            "keywordValueId": 0,
+                            "value": {
+                                "constant": 0,
+                                "$type": "CCGKit.ConstantValue"
+                            },
+                            "duration": 0,
+                            "statId": 1,
                             "gameZoneId": 2,
                             "cardTypeId": 0,
-                            "$type": "CCGKit.AddKeywordEffect"
+                            "$type": "CCGKit.SetCardStatEffect"
                         },
                         "target": {
                             "conditions": [],
@@ -1824,7 +1757,7 @@
                 ],
                 "properties": [
                     {
-                        "value": "<b>\u5ba3\u6226</b>\u6a59\u3092\u53ec\u559a\u3059\u308b",
+                        "value": "<b>\u5ba3\u6226</b>\u6a59\u3092\u53ec\u559a\u3059\u308b(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -1865,27 +1798,7 @@
                     }
                 ],
                 "keywords": [],
-                "abilities": [
-                    {
-                        "trigger": {
-                            "zoneId": 2,
-                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
-                        },
-                        "name": "\u6a59\u53ec\u559a",
-                        "type": "Triggered",
-                        "effect": {
-                            "originGameZoneId": 0,
-                            "destinationGameZoneId": 2,
-                            "cardTypeId": 0,
-                            "$type": "CCGKit.MoveCardEffect"
-                        },
-                        "target": {
-                            "conditions": [],
-                            "$type": "CCGKit.ThisCard"
-                        },
-                        "$type": "CCGKit.TriggeredAbility"
-                    }
-                ],
+                "abilities": [],
                 "id": 50
             },
             {
@@ -1900,7 +1813,7 @@
                 ],
                 "properties": [
                     {
-                        "value": "\u81ea\u30d7\u30ec\u30a4\u30e4\u30fc\u306b\u7121\u6575\u3092\u4ed8\u4e0e\u3059\u308b",
+                        "value": "\u81ea\u30d7\u30ec\u30a4\u30e4\u30fc\u306b\u7121\u6575\u3092\u4ed8\u4e0e\u3059\u308b(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -1945,62 +1858,6 @@
                 "id": 51
             },
             {
-                "cardTypeId": 0,
-                "name": "\u6028\u970a",
-                "costs": [
-                    {
-                        "statId": 1,
-                        "value": 2,
-                        "$type": "CCGKit.PayResourceCost"
-                    }
-                ],
-                "properties": [
-                    {
-                        "value": "",
-                        "name": "Text",
-                        "$type": "CCGKit.StringProperty"
-                    },
-                    {
-                        "value": "Creature",
-                        "name": "Picture",
-                        "$type": "CCGKit.StringProperty"
-                    },
-                    {
-                        "value": 2,
-                        "name": "MaxCopies",
-                        "$type": "CCGKit.IntProperty"
-                    },
-                    {
-                        "value": null,
-                        "name": "Material",
-                        "$type": "CCGKit.StringProperty"
-                    }
-                ],
-                "stats": [
-                    {
-                        "baseValue": 1,
-                        "statId": 0,
-                        "name": "Attack",
-                        "originalValue": 1,
-                        "minValue": 0,
-                        "maxValue": 99,
-                        "modifiers": []
-                    },
-                    {
-                        "baseValue": 2,
-                        "statId": 1,
-                        "name": "Life",
-                        "originalValue": 2,
-                        "minValue": 0,
-                        "maxValue": 99,
-                        "modifiers": []
-                    }
-                ],
-                "keywords": [],
-                "abilities": [],
-                "id": 173
-            },
-            {
                 "cardTypeId": 1,
                 "name": "\u4ed9\u7b26\u300c\u9cf3\u51f0\u5375\u300d",
                 "costs": [
@@ -2012,12 +1869,12 @@
                 ],
                 "properties": [
                     {
-                        "value": "\u6307\u5b9a\u3057\u305f\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c91\u4f53\u306b \u300c\u81e8\u6b7b\uff1a\u6575\u306e\u5168\u3066\u306e\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u306b1\u30c0\u30e1\u30fc\u30b8\u3092\u4e0e\u3048\u308b\u300d\u3092\u4ed8\u4e0e\u3059\u308b",
+                        "value": "\u6307\u5b9a\u3057\u305f\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c91\u4f53\u306b \u300c\u81e8\u6b7b\uff1a\u6575\u306e\u5168\u3066\u306e\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u306b1\u30c0\u30e1\u30fc\u30b8\u3092\u4e0e\u3048\u308b\u300d\u3092\u4ed8\u4e0e\u3059\u308b(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
                     {
-                        "value": "houou",
+                        "value": "Spell",
                         "name": "Picture",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -2049,7 +1906,7 @@
                 ],
                 "properties": [
                     {
-                        "value": "\u3053\u306e\u30bf\u30fc\u30f3\u306e\u7d42\u308f\u308a\u307e\u3067\u653b\u6483\u529b4\u4ee5\u4e0b\u306e\u6575\u306e\u30df\u30cb\u30aa\u30f31\u4f53\u3092\u5473\u65b9\u306b\u3059\u308b",
+                        "value": "\u3053\u306e\u30bf\u30fc\u30f3\u306e\u7d42\u308f\u308a\u307e\u3067\u653b\u6483\u529b4\u4ee5\u4e0b\u306e\u6575\u306e\u30df\u30cb\u30aa\u30f31\u4f53\u3092\u5473\u65b9\u306b\u3059\u308b(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -2077,10 +1934,16 @@
             {
                 "cardTypeId": 1,
                 "name": "\u5927\u5408\u846c\u300c\u970a\u8eca\u30b3\u30f3\u30c1\u30a7\u30eb\u30c8\u30b0\u30ed\u30c3\u30bd\u300d",
-                "costs": [],
+                "costs": [
+                    {
+                        "statId": 1,
+                        "value": 5,
+                        "$type": "CCGKit.PayResourceCost"
+                    }
+                ],
                 "properties": [
                     {
-                        "value": "\u6b21\u306e\u30bf\u30fc\u30f3\u30b9\u30da\u30eb\u306f\u4f7f\u7528\u3067\u304d\u306a\u3044\u3002\u3053\u306e\u30ab\u30fc\u30c9\u304c\u624b\u672d\u306b\u3042\u308b\u9593\u3001\u30d7\u30ea\u30ba\u30e0\u30ea\u30d0\u30fc\u59c9\u59b9\u304c\u5834\u306b\u51fa\u308b\u5ea6\u30b3\u30b9\u30c8\u304c(2)\u6e1b\u308b",
+                        "value": "\u6b21\u306e\u30bf\u30fc\u30f3\u30b9\u30da\u30eb\u306f\u4f7f\u7528\u3067\u304d\u306a\u3044\u3002\u3053\u306e\u30ab\u30fc\u30c9\u304c\u624b\u672d\u306b\u3042\u308b\u9593\u3001\u30d7\u30ea\u30ba\u30e0\u30ea\u30d0\u30fc\u59c9\u59b9\u304c\u5834\u306b\u51fa\u308b\u5ea6\u30b3\u30b9\u30c8\u304c(2)\u6e1b\u308b(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -2102,28 +1965,7 @@
                 ],
                 "stats": [],
                 "keywords": [],
-                "abilities": [
-                    {
-                        "trigger": {
-                            "zoneId": 2,
-                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
-                        },
-                        "name": "\u6b21\u30bf\u30fc\u30f3\u30b9\u30da\u30eb\u4e0d\u53ef",
-                        "type": "Triggered",
-                        "effect": {
-                            "keywordTypeId": 0,
-                            "keywordValueId": 0,
-                            "gameZoneId": 2,
-                            "cardTypeId": 1,
-                            "$type": "CCGKit.AddKeywordEffect"
-                        },
-                        "target": {
-                            "conditions": [],
-                            "$type": "CCGKit.AllCards"
-                        },
-                        "$type": "CCGKit.TriggeredAbility"
-                    }
-                ],
+                "abilities": [],
                 "id": 292
             },
             {
@@ -2169,10 +2011,15 @@
                         "name": "\u5168\u7834\u58ca",
                         "type": "Triggered",
                         "effect": {
-                            "originGameZoneId": 2,
-                            "destinationGameZoneId": 3,
+                            "value": {
+                                "constant": 0,
+                                "$type": "CCGKit.ConstantValue"
+                            },
+                            "duration": 0,
+                            "statId": 1,
+                            "gameZoneId": 2,
                             "cardTypeId": 0,
-                            "$type": "CCGKit.MoveCardEffect"
+                            "$type": "CCGKit.SetCardStatEffect"
                         },
                         "target": {
                             "conditions": [],
@@ -2195,7 +2042,7 @@
                 ],
                 "properties": [
                     {
-                        "value": "\u5473\u65b9\u306e\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u5168\u3066\u306b\u300c\u81e8\u6b7b\uff1a\u6f02\u6d41\u7269\u3092\u53ec\u559a\u3059\u308b\u300d\u3092\u4ed8\u4e0e\u3059\u308b",
+                        "value": "\u5473\u65b9\u306e\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u5168\u3066\u306b\u300c\u81e8\u6b7b\uff1a\u6f02\u6d41\u7269\u3092\u53ec\u559a\u3059\u308b\u300d\u3092\u4ed8\u4e0e\u3059\u308b(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -2228,82 +2075,6 @@
         "cards": [
             {
                 "cardTypeId": 0,
-                "name": "\u30ea\u30b0\u30eb\u30fb\u30ca\u30a4\u30c8\u30d0\u30b0",
-                "costs": [
-                    {
-                        "statId": 1,
-                        "value": 2,
-                        "$type": "CCGKit.PayResourceCost"
-                    }
-                ],
-                "properties": [
-                    {
-                        "value": "<b>\u5ba3\u6226</b>1/1\u306e\u87f2\u3092\u4e8c\u4f53\u547c\u3073\u51fa\u3059\uff08\u672a\u5b9f\u88c5\uff09",
-                        "name": "Text",
-                        "$type": "CCGKit.StringProperty"
-                    },
-                    {
-                        "value": "wriggle",
-                        "name": "Picture",
-                        "$type": "CCGKit.StringProperty"
-                    },
-                    {
-                        "value": 30,
-                        "name": "MaxCopies",
-                        "$type": "CCGKit.IntProperty"
-                    },
-                    {
-                        "value": null,
-                        "name": "Material",
-                        "$type": "CCGKit.StringProperty"
-                    }
-                ],
-                "stats": [
-                    {
-                        "baseValue": 1,
-                        "statId": 0,
-                        "name": "Attack",
-                        "originalValue": 1,
-                        "minValue": 0,
-                        "maxValue": 99,
-                        "modifiers": []
-                    },
-                    {
-                        "baseValue": 3,
-                        "statId": 1,
-                        "name": "Life",
-                        "originalValue": 3,
-                        "minValue": 0,
-                        "maxValue": 99,
-                        "modifiers": []
-                    }
-                ],
-                "keywords": [],
-                "abilities": [
-                    {
-                        "trigger": {
-                            "zoneId": 2,
-                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
-                        },
-                        "name": "\u87f22\u4f53\u53ec\u559a",
-                        "type": "Triggered",
-                        "effect": {
-                            "originGameZoneId": 4,
-                            "destinationGameZoneId": 2,
-                            "cardTypeId": 0,
-                            "$type": "CCGKit.MoveCardEffect"
-                        },
-                        "target": {
-                            "conditions": [],
-                            "$type": "CCGKit.Token_insect"
-                        },
-                        "$type": "CCGKit.TriggeredAbility"
-                    }
-                ],
-                "id": 52
-            },
-            {
-                "cardTypeId": 0,
                 "name": "\u30df\u30b9\u30c6\u30a3\u30a2\u30fb\u30ed\u30fc\u30ec\u30e9\u30a4",
                 "costs": [
                     {
@@ -2319,7 +2090,7 @@
                         "$type": "CCGKit.StringProperty"
                     },
                     {
-                        "value": "mistia",
+                        "value": "creature",
                         "name": "Picture",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -2357,6 +2128,62 @@
                 "keywords": [],
                 "abilities": [],
                 "id": 81
+            },
+            {
+                "cardTypeId": 0,
+                "name": "\u30ea\u30b0\u30eb\u30fb\u30ca\u30a4\u30c8\u30d0\u30b0",
+                "costs": [
+                    {
+                        "statId": 1,
+                        "value": 2,
+                        "$type": "CCGKit.PayResourceCost"
+                    }
+                ],
+                "properties": [
+                    {
+                        "value": "<b>\u5ba3\u6226</b>1/1\u306e\u87f2\u3092\u4e8c\u4f53\u547c\u3073\u51fa\u3059\uff08\u672a\u5b9f\u88c5\uff09",
+                        "name": "Text",
+                        "$type": "CCGKit.StringProperty"
+                    },
+                    {
+                        "value": "wriggle",
+                        "name": "Picture",
+                        "$type": "CCGKit.StringProperty"
+                    },
+                    {
+                        "value": 2,
+                        "name": "MaxCopies",
+                        "$type": "CCGKit.IntProperty"
+                    },
+                    {
+                        "value": null,
+                        "name": "Material",
+                        "$type": "CCGKit.StringProperty"
+                    }
+                ],
+                "stats": [
+                    {
+                        "baseValue": 1,
+                        "statId": 0,
+                        "name": "Attack",
+                        "originalValue": 1,
+                        "minValue": 0,
+                        "maxValue": 99,
+                        "modifiers": []
+                    },
+                    {
+                        "baseValue": 3,
+                        "statId": 1,
+                        "name": "Life",
+                        "originalValue": 3,
+                        "minValue": 0,
+                        "maxValue": 99,
+                        "modifiers": []
+                    }
+                ],
+                "keywords": [],
+                "abilities": [],
+                "id": 52
             },
             {
                 "cardTypeId": 0,
@@ -2467,28 +2294,7 @@
                     }
                 ],
                 "keywords": [],
-                "abilities": [
-                    {
-                        "trigger": {
-                            "zoneId": 0,
-                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
-                        },
-                        "name": null,
-                        "type": "Triggered",
-                        "effect": {
-                            "keywordTypeId": 0,
-                            "keywordValueId": 0,
-                            "gameZoneId": 0,
-                            "cardTypeId": 0,
-                            "$type": "CCGKit.AddKeywordEffect"
-                        },
-                        "target": {
-                            "conditions": [],
-                            "$type": "CCGKit.ThisCard"
-                        },
-                        "$type": "CCGKit.TriggeredAbility"
-                    }
-                ],
+                "abilities": [],
                 "id": 83
             },
             {
@@ -2503,7 +2309,7 @@
                 ],
                 "properties": [
                     {
-                        "value": "<b>\u3053\u306e\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u3092\u5bfe\u8c61\u3068\u3059\u308b\u884c\u52d5\u306f\u3001\u305d\u306e\u5bfe\u8c61\u304c\u30e9\u30f3\u30c0\u30e0\u306b\u6c7a\u5b9a\u3055\u308c\u308b\uff08\u672a\u5b9f\u88c5\uff09</b> ",
+                        "value": "\u3053\u306e\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u3092\u5bfe\u8c61\u3068\u3059\u308b\u884c\u52d5\u306f\u3001\u305d\u306e\u5bfe\u8c61\u304c\u30e9\u30f3\u30c0\u30e0\u306b\u6c7a\u5b9a\u3055\u308c\u308b\uff08\u672a\u5b9f\u88c5\uff09",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -2648,6 +2454,54 @@
                             "$type": "CCGKit.AllPlayerCards"
                         },
                         "$type": "CCGKit.TriggeredAbility"
+                    },
+                    {
+                        "trigger": {
+                            "zoneId": 2,
+                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
+                        },
+                        "name": "-2/+0",
+                        "type": "Triggered",
+                        "effect": {
+                            "value": {
+                                "constant": 2,
+                                "$type": "CCGKit.ConstantValue"
+                            },
+                            "duration": 0,
+                            "statId": 0,
+                            "gameZoneId": 2,
+                            "cardTypeId": 0,
+                            "$type": "CCGKit.DecreaseCardStatEffect"
+                        },
+                        "target": {
+                            "conditions": [],
+                            "$type": "CCGKit.ThisCard"
+                        },
+                        "$type": "CCGKit.TriggeredAbility"
+                    },
+                    {
+                        "trigger": {
+                            "zoneId": 2,
+                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
+                        },
+                        "name": "+0/-2",
+                        "type": "Triggered",
+                        "effect": {
+                            "value": {
+                                "constant": 2,
+                                "$type": "CCGKit.ConstantValue"
+                            },
+                            "duration": 0,
+                            "statId": 1,
+                            "gameZoneId": 2,
+                            "cardTypeId": 0,
+                            "$type": "CCGKit.DecreaseCardStatEffect"
+                        },
+                        "target": {
+                            "conditions": [],
+                            "$type": "CCGKit.ThisCard"
+                        },
+                        "$type": "CCGKit.TriggeredAbility"
                     }
                 ],
                 "id": 85
@@ -2776,7 +2630,7 @@
                 ],
                 "properties": [
                     {
-                        "value": "\u3053\u306e\u30b2\u30fc\u30e0\u3067\u7834\u58ca\u3055\u308c\u305f\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c91\u4f53\u3092\u30e9\u30f3\u30c0\u30e0\u306b\u53ec\u559a\u3059\u308b",
+                        "value": "\u3053\u306e\u30b2\u30fc\u30e0\u3067\u7834\u58ca\u3055\u308c\u305f\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c91\u4f53\u3092\u30e9\u30f3\u30c0\u30e0\u306b\u53ec\u559a\u3059\u308b(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -2801,21 +2655,20 @@
                 "abilities": [
                     {
                         "trigger": {
-                            "zoneId": 3,
+                            "zoneId": 2,
                             "$type": "CCGKit.OnCardEnteredZoneTrigger"
                         },
                         "name": "\u5fa9\u6d3b",
                         "type": "Triggered",
                         "effect": {
-                            "keywordTypeId": 0,
-                            "keywordValueId": 0,
-                            "gameZoneId": 0,
+                            "originGameZoneId": 3,
+                            "destinationGameZoneId": 2,
                             "cardTypeId": 0,
-                            "$type": "CCGKit.AddKeywordEffect"
+                            "$type": "CCGKit.MoveCardEffect"
                         },
                         "target": {
                             "conditions": [],
-                            "$type": "CCGKit.ThisCard"
+                            "$type": "CCGKit.PlayerCard"
                         },
                         "$type": "CCGKit.TriggeredAbility"
                     }
@@ -2856,7 +2709,56 @@
                 ],
                 "stats": [],
                 "keywords": [],
-                "abilities": [],
+                "abilities": [
+                    {
+                        "trigger": {
+                            "zoneId": 2,
+                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
+                        },
+                        "name": "+4/+4",
+                        "type": "Triggered",
+                        "effect": {
+                            "value": {
+                                "constant": 4,
+                                "$type": "CCGKit.ConstantValue"
+                            },
+                            "duration": 1,
+                            "statId": 0,
+                            "gameZoneId": 2,
+                            "cardTypeId": 0,
+                            "$type": "CCGKit.IncreaseCardStatEffect"
+                        },
+                        "target": {
+                            "conditions": [],
+                            "$type": "CCGKit.PlayerCard"
+                        },
+                        "$type": "CCGKit.TriggeredAbility"
+                    },
+                    {
+                        "trigger": {
+                            "zoneId": 2,
+                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
+                        },
+                        "name": null,
+                        "type": "Triggered",
+                        "effect": {
+                            "value": {
+                                "constant": 4,
+                                "$type": "CCGKit.ConstantValue"
+                            },
+                            "duration": 1,
+                            "statId": 1,
+                            "gameZoneId": 2,
+                            "cardTypeId": 0,
+                            "$type": "CCGKit.IncreaseCardStatEffect"
+                        },
+                        "target": {
+                            "conditions": [],
+                            "$type": "CCGKit.PlayerCard"
+                        },
+                        "$type": "CCGKit.TriggeredAbility"
+                    }
+                ],
                 "id": 296
             },
             {
@@ -2871,7 +2773,7 @@
                 ],
                 "properties": [
                     {
-                        "value": "\u5bfe\u6226\u76f8\u624b\u306e\u30c7\u30c3\u30ad\u30c8\u30c3\u30d7\u304b\u30893\u679a\u516c\u958b\u3059\u308b\u3002\u305d\u306e\u4e2d\u304b\u30891\u679a\u3092\u30e9\u30f3\u30c0\u30e0\u306b\u7834\u68c4\u3057\u3001\u6b8b\u308a\u306e2\u679a\u3092\u30c7\u30c3\u30ad\u306e\u30e9\u30f3\u30c0\u30e0\u306a\u4f4d\u7f6e\u306b\u623b\u3059",
+                        "value": "\u5bfe\u6226\u76f8\u624b\u306e\u30c7\u30c3\u30ad\u30c8\u30c3\u30d7\u304b\u30893\u679a\u516c\u958b\u3059\u308b\u3002\u305d\u306e\u4e2d\u304b\u30891\u679a\u3092\u30e9\u30f3\u30c0\u30e0\u306b\u7834\u68c4\u3057\u3001\u6b8b\u308a\u306e2\u679a\u3092\u30c7\u30c3\u30ad\u306e\u30e9\u30f3\u30c0\u30e0\u306a\u4f4d\u7f6e\u306b\u623b\u3059(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -2908,7 +2810,7 @@
                 ],
                 "properties": [
                     {
-                        "value": "\u6307\u5b9a\u3057\u305f\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u306e1/1\u306e\u30b3\u30d4\u30fc\u30922\u4f53\u53ec\u559a\u3059\u308b",
+                        "value": "\u6307\u5b9a\u3057\u305f\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u306e1/1\u306e\u30b3\u30d4\u30fc\u30922\u4f53\u53ec\u559a\u3059\u308b(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -3027,7 +2929,32 @@
                 ],
                 "stats": [],
                 "keywords": [],
-                "abilities": [],
+                "abilities": [
+                    {
+                        "trigger": {
+                            "zoneId": 2,
+                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
+                        },
+                        "name": "\u5168\u4f533\u30c0\u30e1",
+                        "type": "Triggered",
+                        "effect": {
+                            "value": {
+                                "constant": 3,
+                                "$type": "CCGKit.ConstantValue"
+                            },
+                            "duration": 0,
+                            "statId": 1,
+                            "gameZoneId": 2,
+                            "cardTypeId": 0,
+                            "$type": "CCGKit.DecreaseCardStatEffect"
+                        },
+                        "target": {
+                            "conditions": [],
+                            "$type": "CCGKit.AllCards"
+                        },
+                        "$type": "CCGKit.TriggeredAbility"
+                    }
+                ],
                 "id": 300
             },
             {
@@ -3042,7 +2969,7 @@
                 ],
                 "properties": [
                     {
-                        "value": "+3/+3\u3067\u30c7\u30b9\u30e9\u30c8\u30eb\u81ea\u9663\u55b6\u5168\u4f532\u30c0\u30e1",
+                        "value": "\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u4e00\u679a\u306b+3/+3\u3068\u3001<b>\u81e8\u6b7b</b>\u30d7\u30ec\u30a4\u30e4\u30fc\u306e\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u5168\u306b2\u30c0\u30e1\u30fc\u30b8\u4e0e\u3048\u308b\u52b9\u679c\u3092\u4ed8\u4e0e\u3059\u308b(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -3090,7 +3017,7 @@
                         "$type": "CCGKit.StringProperty"
                     },
                     {
-                        "value": "Creature",
+                        "value": "reimu",
                         "name": "Picture",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -3166,7 +3093,7 @@
                 ],
                 "properties": [
                     {
-                        "value": "<b>\u30b9\u30da\u30eb\u5f37\u5316+\uff12(\u672a\u5b9f\u88c5)</b> ",
+                        "value": "<b>\u30b9\u30da\u30eb\u30c0\u30e1\u30fc\u30b8+\uff12(\u672a\u5b9f\u88c5)</b> ",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -3227,7 +3154,7 @@
                         "$type": "CCGKit.StringProperty"
                     },
                     {
-                        "value": "akyu",
+                        "value": "creature",
                         "name": "Picture",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -3263,7 +3190,27 @@
                     }
                 ],
                 "keywords": [],
-                "abilities": [],
+                "abilities": [
+                    {
+                        "trigger": {
+                            "zoneId": 3,
+                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
+                        },
+                        "name": "\u30df\u30cb\u30aa\u30f3\u5fa9\u6d3b",
+                        "type": "Triggered",
+                        "effect": {
+                            "originGameZoneId": 3,
+                            "destinationGameZoneId": 2,
+                            "cardTypeId": 0,
+                            "$type": "CCGKit.MoveCardEffect"
+                        },
+                        "target": {
+                            "conditions": [],
+                            "$type": "CCGKit.PlayerCard"
+                        },
+                        "$type": "CCGKit.TriggeredAbility"
+                    }
+                ],
                 "id": 129
             },
             {
@@ -3278,12 +3225,12 @@
                 ],
                 "properties": [
                     {
-                        "value": "<b>\u81e8\u6b7b</b>\u30c7\u30c3\u30ad\u304b\u3089\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u3092\uff11\u679a\u5f15\u304f(\u672a\u5b9f\u88c5)",
+                        "value": "<b>\u81e8\u6b7b</b>\u30c7\u30c3\u30ad\u304b\u3089\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u3092\uff11\u679a\u5f15\u304f",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
                     {
-                        "value": "kosuzu",
+                        "value": "creature",
                         "name": "Picture",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -3319,13 +3266,39 @@
                     }
                 ],
                 "keywords": [],
-                "abilities": [],
+                "abilities": [
+                    {
+                        "trigger": {
+                            "zoneId": 3,
+                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
+                        },
+                        "name": "1\u679a\u30c9\u30ed\u30fc",
+                        "type": "Triggered",
+                        "effect": {
+                            "originGameZoneId": 0,
+                            "destinationGameZoneId": 1,
+                            "cardTypeId": 0,
+                            "$type": "CCGKit.MoveCardEffect"
+                        },
+                        "target": {
+                            "conditions": [],
+                            "$type": "CCGKit.RandomPlayerCard"
+                        },
+                        "$type": "CCGKit.TriggeredAbility"
+                    }
+                ],
                 "id": 128
             },
             {
                 "cardTypeId": 0,
                 "name": "\u4f0a\u5439\u8403\u9999",
-                "costs": [],
+                "costs": [
+                    {
+                        "statId": 1,
+                        "value": 8,
+                        "$type": "CCGKit.PayResourceCost"
+                    }
+                ],
                 "properties": [
                     {
                         "value": "\u30bf\u30fc\u30f3\u7d42\u4e86\u6642\u306b+2/+2\u3092\u5f97\u308b",
@@ -3338,7 +3311,7 @@
                         "$type": "CCGKit.StringProperty"
                     },
                     {
-                        "value": 2,
+                        "value": 1,
                         "name": "MaxCopies",
                         "$type": "CCGKit.IntProperty"
                     },
@@ -3350,35 +3323,88 @@
                 ],
                 "stats": [
                     {
-                        "baseValue": 1,
+                        "baseValue": 4,
                         "statId": 0,
                         "name": "Attack",
-                        "originalValue": 1,
+                        "originalValue": 4,
                         "minValue": 0,
                         "maxValue": 99,
                         "modifiers": []
                     },
                     {
-                        "baseValue": 1,
+                        "baseValue": 8,
                         "statId": 1,
                         "name": "Life",
-                        "originalValue": 1,
+                        "originalValue": 8,
                         "minValue": 0,
                         "maxValue": 99,
                         "modifiers": []
                     }
                 ],
                 "keywords": [],
-                "abilities": [],
+                "abilities": [
+                    {
+                        "trigger": {
+                            "$type": "CCGKit.OnPlayerTurnEndedTrigger"
+                        },
+                        "name": "\u30bf\u30fc\u30f3\u7d42\u4e86\u6642+2/+2",
+                        "type": "Triggered",
+                        "effect": {
+                            "value": {
+                                "constant": 2,
+                                "$type": "CCGKit.ConstantValue"
+                            },
+                            "duration": 0,
+                            "statId": 0,
+                            "gameZoneId": 2,
+                            "cardTypeId": 0,
+                            "$type": "CCGKit.IncreaseCardStatEffect"
+                        },
+                        "target": {
+                            "conditions": [],
+                            "$type": "CCGKit.ThisCard"
+                        },
+                        "$type": "CCGKit.TriggeredAbility"
+                    },
+                    {
+                        "trigger": {
+                            "$type": "CCGKit.OnPlayerTurnEndedTrigger"
+                        },
+                        "name": "\u30bf\u30fc\u30f3\u7d42\u4e86\u6642+2/+2",
+                        "type": "Triggered",
+                        "effect": {
+                            "value": {
+                                "constant": 2,
+                                "$type": "CCGKit.ConstantValue"
+                            },
+                            "duration": 0,
+                            "statId": 1,
+                            "gameZoneId": 2,
+                            "cardTypeId": 0,
+                            "$type": "CCGKit.IncreaseCardStatEffect"
+                        },
+                        "target": {
+                            "conditions": [],
+                            "$type": "CCGKit.ThisCard"
+                        },
+                        "$type": "CCGKit.TriggeredAbility"
+                    }
+                ],
                 "id": 314
             },
             {
                 "cardTypeId": 0,
                 "name": "\u6bd4\u90a3\u540d\u5c45\u5929\u5b50",
-                "costs": [],
+                "costs": [
+                    {
+                        "statId": 1,
+                        "value": 6,
+                        "$type": "CCGKit.PayResourceCost"
+                    }
+                ],
                 "properties": [
                     {
-                        "value": "",
+                        "value": "<b>\u5ba3\u6226</b>\u8981\u77f3\u3092\u53ec\u559a\u3059\u308b(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -3388,7 +3414,7 @@
                         "$type": "CCGKit.StringProperty"
                     },
                     {
-                        "value": 2,
+                        "value": 1,
                         "name": "MaxCopies",
                         "$type": "CCGKit.IntProperty"
                     },
@@ -3400,19 +3426,19 @@
                 ],
                 "stats": [
                     {
-                        "baseValue": 1,
+                        "baseValue": 4,
                         "statId": 0,
                         "name": "Attack",
-                        "originalValue": 1,
+                        "originalValue": 4,
                         "minValue": 0,
                         "maxValue": 99,
                         "modifiers": []
                     },
                     {
-                        "baseValue": 1,
+                        "baseValue": 10,
                         "statId": 1,
                         "name": "Life",
-                        "originalValue": 1,
+                        "originalValue": 10,
                         "minValue": 0,
                         "maxValue": 99,
                         "modifiers": []
@@ -3425,10 +3451,16 @@
             {
                 "cardTypeId": 0,
                 "name": "\u6c38\u6c5f\u8863\u7396",
-                "costs": [],
+                "costs": [
+                    {
+                        "statId": 1,
+                        "value": 5,
+                        "$type": "CCGKit.PayResourceCost"
+                    }
+                ],
                 "properties": [
                     {
-                        "value": "",
+                        "value": "\u30b9\u30da\u30eb\u3068\u30d2\u30fc\u30ed\u30fc\u30d1\u30ef\u30fc\u306e\u6a19\u7684\u306b\u306a\u3089\u306a\u3044(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -3450,19 +3482,19 @@
                 ],
                 "stats": [
                     {
-                        "baseValue": 1,
+                        "baseValue": 4,
                         "statId": 0,
                         "name": "Attack",
-                        "originalValue": 1,
+                        "originalValue": 4,
                         "minValue": 0,
                         "maxValue": 99,
                         "modifiers": []
                     },
                     {
-                        "baseValue": 1,
+                        "baseValue": 6,
                         "statId": 1,
                         "name": "Life",
-                        "originalValue": 1,
+                        "originalValue": 6,
                         "minValue": 0,
                         "maxValue": 99,
                         "modifiers": []
@@ -3475,10 +3507,16 @@
             {
                 "cardTypeId": 0,
                 "name": "\u79e6\u3053\u3053\u308d",
-                "costs": [],
+                "costs": [
+                    {
+                        "statId": 1,
+                        "value": 6,
+                        "$type": "CCGKit.PayResourceCost"
+                    }
+                ],
                 "properties": [
                     {
-                        "value": "",
+                        "value": "\u6b21\u306e\u30bf\u30fc\u30f3\u3001\u5bfe\u6226\u76f8\u624b\u306e\u546a\u6587\u306e\u30b3\u30b9\u30c8\u304c(5)\u5897\u3048\u308b(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -3488,7 +3526,7 @@
                         "$type": "CCGKit.StringProperty"
                     },
                     {
-                        "value": 2,
+                        "value": 1,
                         "name": "MaxCopies",
                         "$type": "CCGKit.IntProperty"
                     },
@@ -3500,19 +3538,19 @@
                 ],
                 "stats": [
                     {
-                        "baseValue": 1,
+                        "baseValue": 6,
                         "statId": 0,
                         "name": "Attack",
-                        "originalValue": 1,
+                        "originalValue": 6,
                         "minValue": 0,
                         "maxValue": 99,
                         "modifiers": []
                     },
                     {
-                        "baseValue": 1,
+                        "baseValue": 6,
                         "statId": 1,
                         "name": "Life",
-                        "originalValue": 1,
+                        "originalValue": 6,
                         "minValue": 0,
                         "maxValue": 99,
                         "modifiers": []
@@ -3525,10 +3563,16 @@
             {
                 "cardTypeId": 0,
                 "name": "\u5b87\u4f50\u898b\u83eb\u5b50",
-                "costs": [],
+                "costs": [
+                    {
+                        "statId": 1,
+                        "value": 5,
+                        "$type": "CCGKit.PayResourceCost"
+                    }
+                ],
                 "properties": [
                     {
-                        "value": "",
+                        "value": "\u5bfe\u6226\u76f8\u624b\u306e\u9663\u5730\u306b5/6/3\u306e\u30c9\u30c3\u30da\u30eb\u30b2\u30f3\u30ac\u30fc\u3092\u53ec\u559a\u3059\u308b\u3002(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -3538,7 +3582,7 @@
                         "$type": "CCGKit.StringProperty"
                     },
                     {
-                        "value": 2,
+                        "value": 1,
                         "name": "MaxCopies",
                         "$type": "CCGKit.IntProperty"
                     },
@@ -3550,19 +3594,19 @@
                 ],
                 "stats": [
                     {
-                        "baseValue": 1,
+                        "baseValue": 6,
                         "statId": 0,
                         "name": "Attack",
-                        "originalValue": 1,
+                        "originalValue": 6,
                         "minValue": 0,
                         "maxValue": 99,
                         "modifiers": []
                     },
                     {
-                        "baseValue": 1,
+                        "baseValue": 3,
                         "statId": 1,
                         "name": "Life",
-                        "originalValue": 1,
+                        "originalValue": 3,
                         "minValue": 0,
                         "maxValue": 99,
                         "modifiers": []
@@ -3575,10 +3619,16 @@
             {
                 "cardTypeId": 0,
                 "name": "\u5c0f\u91ce\u585a\u5c0f\u753a",
-                "costs": [],
+                "costs": [
+                    {
+                        "statId": 1,
+                        "value": 4,
+                        "$type": "CCGKit.PayResourceCost"
+                    }
+                ],
                 "properties": [
                     {
-                        "value": "",
+                        "value": "\u3053\u306e\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u306f\u6311\u767a\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u3092\u7121\u8996\u3057\u3066\u653b\u6483\u51fa\u6765\u308b(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -3600,19 +3650,19 @@
                 ],
                 "stats": [
                     {
-                        "baseValue": 1,
+                        "baseValue": 4,
                         "statId": 0,
                         "name": "Attack",
-                        "originalValue": 1,
+                        "originalValue": 4,
                         "minValue": 0,
                         "maxValue": 99,
                         "modifiers": []
                     },
                     {
-                        "baseValue": 1,
+                        "baseValue": 4,
                         "statId": 1,
                         "name": "Life",
-                        "originalValue": 1,
+                        "originalValue": 4,
                         "minValue": 0,
                         "maxValue": 99,
                         "modifiers": []
@@ -3625,10 +3675,16 @@
             {
                 "cardTypeId": 0,
                 "name": "\u56db\u5b63\u6620\u59eb\u30fb\u30e4\u30de\u30b6\u30ca\u30c9\u30a5",
-                "costs": [],
+                "costs": [
+                    {
+                        "statId": 1,
+                        "value": 10,
+                        "$type": "CCGKit.PayResourceCost"
+                    }
+                ],
                 "properties": [
                     {
-                        "value": "",
+                        "value": "<b>\u6311\u767a</b>\u81ea\u8eab\u3092\u9664\u304f\u5168\u3066\u306e\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u306e\u653b\u6483\u529b\u3068\u4f53\u529b\u30921\u306b\u3059\u308b(\u6311\u767a\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -3638,7 +3694,7 @@
                         "$type": "CCGKit.StringProperty"
                     },
                     {
-                        "value": 2,
+                        "value": 1,
                         "name": "MaxCopies",
                         "$type": "CCGKit.IntProperty"
                     },
@@ -3659,31 +3715,158 @@
                         "modifiers": []
                     },
                     {
-                        "baseValue": 1,
+                        "baseValue": 20,
                         "statId": 1,
                         "name": "Life",
-                        "originalValue": 1,
+                        "originalValue": 20,
                         "minValue": 0,
                         "maxValue": 99,
                         "modifiers": []
                     }
                 ],
                 "keywords": [],
-                "abilities": [],
+                "abilities": [
+                    {
+                        "trigger": {
+                            "zoneId": 2,
+                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
+                        },
+                        "name": "\u6575\u306e\u30a2\u30bf\u30c3\u30af1",
+                        "type": "Triggered",
+                        "effect": {
+                            "value": {
+                                "constant": 1,
+                                "$type": "CCGKit.ConstantValue"
+                            },
+                            "duration": 0,
+                            "statId": 0,
+                            "gameZoneId": 2,
+                            "cardTypeId": 0,
+                            "$type": "CCGKit.SetCardStatEffect"
+                        },
+                        "target": {
+                            "conditions": [],
+                            "$type": "CCGKit.AllOpponentCards"
+                        },
+                        "$type": "CCGKit.TriggeredAbility"
+                    },
+                    {
+                        "trigger": {
+                            "zoneId": 2,
+                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
+                        },
+                        "name": "\u6575\u306e\u30e9\u30a4\u30d51",
+                        "type": "Triggered",
+                        "effect": {
+                            "value": {
+                                "constant": 1,
+                                "$type": "CCGKit.ConstantValue"
+                            },
+                            "duration": 0,
+                            "statId": 1,
+                            "gameZoneId": 2,
+                            "cardTypeId": 0,
+                            "$type": "CCGKit.SetCardStatEffect"
+                        },
+                        "target": {
+                            "conditions": [],
+                            "$type": "CCGKit.AllOpponentCards"
+                        },
+                        "$type": "CCGKit.TriggeredAbility"
+                    },
+                    {
+                        "trigger": {
+                            "zoneId": 2,
+                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
+                        },
+                        "name": "\u5473\u65b9\u306e\u30a2\u30bf\u30c3\u30af1",
+                        "type": "Triggered",
+                        "effect": {
+                            "value": {
+                                "constant": 1,
+                                "$type": "CCGKit.ConstantValue"
+                            },
+                            "duration": 0,
+                            "statId": 0,
+                            "gameZoneId": 2,
+                            "cardTypeId": 0,
+                            "$type": "CCGKit.SetCardStatEffect"
+                        },
+                        "target": {
+                            "conditions": [],
+                            "$type": "CCGKit.AllPlayerCards"
+                        },
+                        "$type": "CCGKit.TriggeredAbility"
+                    },
+                    {
+                        "trigger": {
+                            "zoneId": 2,
+                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
+                        },
+                        "name": "\u5473\u65b9\u306e\u30e9\u30a4\u30d51",
+                        "type": "Triggered",
+                        "effect": {
+                            "value": {
+                                "constant": 1,
+                                "$type": "CCGKit.ConstantValue"
+                            },
+                            "duration": 0,
+                            "statId": 1,
+                            "gameZoneId": 2,
+                            "cardTypeId": 0,
+                            "$type": "CCGKit.SetCardStatEffect"
+                        },
+                        "target": {
+                            "conditions": [],
+                            "$type": "CCGKit.AllPlayerCards"
+                        },
+                        "$type": "CCGKit.TriggeredAbility"
+                    },
+                    {
+                        "trigger": {
+                            "zoneId": 2,
+                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
+                        },
+                        "name": "\u6620\u59eb\u306e\u30e9\u30a4\u30d520",
+                        "type": "Triggered",
+                        "effect": {
+                            "value": {
+                                "constant": 20,
+                                "$type": "CCGKit.ConstantValue"
+                            },
+                            "duration": 0,
+                            "statId": 1,
+                            "gameZoneId": 1,
+                            "cardTypeId": 0,
+                            "$type": "CCGKit.SetCardStatEffect"
+                        },
+                        "target": {
+                            "conditions": [],
+                            "$type": "CCGKit.ThisCard"
+                        },
+                        "$type": "CCGKit.TriggeredAbility"
+                    }
+                ],
                 "id": 321
             },
             {
                 "cardTypeId": 0,
-                "name": "\u30e1\u30c7\u30a3\u30b9\u30f3\u30e1\u30e9\u30f3\u30b3\u30ea\u30fc",
-                "costs": [],
+                "name": "\u30e1\u30c7\u30a3\u30b9\u30f3\u30fb\u30e1\u30e9\u30f3\u30b3\u30ea\u30fc",
+                "costs": [
+                    {
+                        "statId": 1,
+                        "value": 3,
+                        "$type": "CCGKit.PayResourceCost"
+                    }
+                ],
                 "properties": [
                     {
-                        "value": "",
+                        "value": "\u5168\u3066\u306e\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u306e\u30b3\u30b9\u30c8\u304c(1)\u5897\u3048\u308b(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
                     {
-                        "value": "Creature",
+                        "value": "medicine",
                         "name": "Picture",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -3700,19 +3883,19 @@
                 ],
                 "stats": [
                     {
-                        "baseValue": 1,
+                        "baseValue": 2,
                         "statId": 0,
                         "name": "Attack",
-                        "originalValue": 1,
+                        "originalValue": 2,
                         "minValue": 0,
                         "maxValue": 99,
                         "modifiers": []
                     },
                     {
-                        "baseValue": 1,
+                        "baseValue": 4,
                         "statId": 1,
                         "name": "Life",
-                        "originalValue": 1,
+                        "originalValue": 4,
                         "minValue": 0,
                         "maxValue": 99,
                         "modifiers": []
@@ -3725,10 +3908,16 @@
             {
                 "cardTypeId": 0,
                 "name": "\u98a8\u898b\u5e7d\u9999",
-                "costs": [],
+                "costs": [
+                    {
+                        "statId": 1,
+                        "value": 8,
+                        "$type": "CCGKit.PayResourceCost"
+                    }
+                ],
                 "properties": [
                     {
-                        "value": "",
+                        "value": "<b>\u5ba3\u6226</b>\u30de\u30b9\u30bf\u30fc\u30b9\u30d1\u30fc\u30af\u3092\u624b\u5143\u306b\u52a0\u3048\u308b(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -3738,7 +3927,7 @@
                         "$type": "CCGKit.StringProperty"
                     },
                     {
-                        "value": 2,
+                        "value": 1,
                         "name": "MaxCopies",
                         "$type": "CCGKit.IntProperty"
                     },
@@ -3750,19 +3939,19 @@
                 ],
                 "stats": [
                     {
-                        "baseValue": 1,
+                        "baseValue": 8,
                         "statId": 0,
                         "name": "Attack",
-                        "originalValue": 1,
+                        "originalValue": 8,
                         "minValue": 0,
                         "maxValue": 99,
                         "modifiers": []
                     },
                     {
-                        "baseValue": 1,
+                        "baseValue": 8,
                         "statId": 1,
                         "name": "Life",
-                        "originalValue": 1,
+                        "originalValue": 8,
                         "minValue": 0,
                         "maxValue": 99,
                         "modifiers": []
@@ -3775,10 +3964,16 @@
             {
                 "cardTypeId": 0,
                 "name": "\u59eb\u6d77\u68e0\u306f\u305f\u3066",
-                "costs": [],
+                "costs": [
+                    {
+                        "statId": 1,
+                        "value": 3,
+                        "$type": "CCGKit.PayResourceCost"
+                    }
+                ],
                 "properties": [
                     {
-                        "value": "",
+                        "value": "<b>\u6311\u767a</b><b>\u5ba3\u6226</b>\u3053\u306e\u30b2\u30fc\u30e0\u3067\u7834\u58ca\u3055\u308c\u305f\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u3092\u30e9\u30f3\u30c0\u30e0\u30671\u679a\u624b\u672d\u306b\u52a0\u3048\u308b",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -3788,7 +3983,7 @@
                         "$type": "CCGKit.StringProperty"
                     },
                     {
-                        "value": 2,
+                        "value": 1,
                         "name": "MaxCopies",
                         "$type": "CCGKit.IntProperty"
                     },
@@ -3800,77 +3995,47 @@
                 ],
                 "stats": [
                     {
-                        "baseValue": 1,
+                        "baseValue": 3,
                         "statId": 0,
                         "name": "Attack",
-                        "originalValue": 1,
+                        "originalValue": 3,
                         "minValue": 0,
                         "maxValue": 99,
                         "modifiers": []
                     },
                     {
-                        "baseValue": 1,
+                        "baseValue": 3,
                         "statId": 1,
                         "name": "Life",
-                        "originalValue": 1,
+                        "originalValue": 3,
                         "minValue": 0,
                         "maxValue": 99,
                         "modifiers": []
                     }
                 ],
                 "keywords": [],
-                "abilities": [],
+                "abilities": [
+                    {
+                        "trigger": {
+                            "zoneId": 2,
+                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
+                        },
+                        "name": null,
+                        "type": "Triggered",
+                        "effect": {
+                            "originGameZoneId": 3,
+                            "destinationGameZoneId": 1,
+                            "cardTypeId": 0,
+                            "$type": "CCGKit.MoveCardEffect"
+                        },
+                        "target": {
+                            "conditions": [],
+                            "$type": "CCGKit.PlayerCard"
+                        },
+                        "$type": "CCGKit.TriggeredAbility"
+                    }
+                ],
                 "id": 324
-            },
-            {
-                "cardTypeId": 0,
-                "name": "\u68ee\u8fd1\u9716\u4e4b\u52a9",
-                "costs": [],
-                "properties": [
-                    {
-                        "value": "",
-                        "name": "Text",
-                        "$type": "CCGKit.StringProperty"
-                    },
-                    {
-                        "value": "Creature",
-                        "name": "Picture",
-                        "$type": "CCGKit.StringProperty"
-                    },
-                    {
-                        "value": 2,
-                        "name": "MaxCopies",
-                        "$type": "CCGKit.IntProperty"
-                    },
-                    {
-                        "value": null,
-                        "name": "Material",
-                        "$type": "CCGKit.StringProperty"
-                    }
-                ],
-                "stats": [
-                    {
-                        "baseValue": 1,
-                        "statId": 0,
-                        "name": "Attack",
-                        "originalValue": 1,
-                        "minValue": 0,
-                        "maxValue": 99,
-                        "modifiers": []
-                    },
-                    {
-                        "baseValue": 1,
-                        "statId": 1,
-                        "name": "Life",
-                        "originalValue": 1,
-                        "minValue": 0,
-                        "maxValue": 99,
-                        "modifiers": []
-                    }
-                ],
-                "keywords": [],
-                "abilities": [],
-                "id": 325
             },
             {
                 "cardTypeId": 0,
@@ -3884,7 +4049,7 @@
                 ],
                 "properties": [
                     {
-                        "value": "<b>\u30b9\u30da\u30eb\u306e\u5bfe\u8c61\u306b\u306a\u3089\u306a\u3044\uff08\u672a\u5b9f\u88c5\uff09</b>",
+                        "value": "\u30b9\u30da\u30eb\u306e\u5bfe\u8c61\u306b\u306a\u3089\u306a\u3044\uff08\u672a\u5b9f\u88c5\uff09",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -4041,174 +4206,6 @@
                 "id": 127
             },
             {
-                "cardTypeId": 0,
-                "name": "\u30b6\u30b3\u5996\u7cbe",
-                "costs": [
-                    {
-                        "statId": 1,
-                        "value": 2,
-                        "$type": "CCGKit.PayResourceCost"
-                    }
-                ],
-                "properties": [
-                    {
-                        "value": "",
-                        "name": "Text",
-                        "$type": "CCGKit.StringProperty"
-                    },
-                    {
-                        "value": "Creature",
-                        "name": "Picture",
-                        "$type": "CCGKit.StringProperty"
-                    },
-                    {
-                        "value": 2,
-                        "name": "MaxCopies",
-                        "$type": "CCGKit.IntProperty"
-                    },
-                    {
-                        "value": null,
-                        "name": "Material",
-                        "$type": "CCGKit.StringProperty"
-                    }
-                ],
-                "stats": [
-                    {
-                        "baseValue": 2,
-                        "statId": 0,
-                        "name": "Attack",
-                        "originalValue": 2,
-                        "minValue": 0,
-                        "maxValue": 99,
-                        "modifiers": []
-                    },
-                    {
-                        "baseValue": 2,
-                        "statId": 1,
-                        "name": "Life",
-                        "originalValue": 2,
-                        "minValue": 0,
-                        "maxValue": 99,
-                        "modifiers": []
-                    }
-                ],
-                "keywords": [],
-                "abilities": [],
-                "id": 170
-            },
-            {
-                "cardTypeId": 0,
-                "name": "\u3072\u307e\u308f\u308a\u5996\u7cbe",
-                "costs": [
-                    {
-                        "statId": 1,
-                        "value": 2,
-                        "$type": "CCGKit.PayResourceCost"
-                    }
-                ],
-                "properties": [
-                    {
-                        "value": "",
-                        "name": "Text",
-                        "$type": "CCGKit.StringProperty"
-                    },
-                    {
-                        "value": "Creature",
-                        "name": "Picture",
-                        "$type": "CCGKit.StringProperty"
-                    },
-                    {
-                        "value": 2,
-                        "name": "MaxCopies",
-                        "$type": "CCGKit.IntProperty"
-                    },
-                    {
-                        "value": null,
-                        "name": "Material",
-                        "$type": "CCGKit.StringProperty"
-                    }
-                ],
-                "stats": [
-                    {
-                        "baseValue": 2,
-                        "statId": 0,
-                        "name": "Attack",
-                        "originalValue": 2,
-                        "minValue": 0,
-                        "maxValue": 99,
-                        "modifiers": []
-                    },
-                    {
-                        "baseValue": 3,
-                        "statId": 1,
-                        "name": "Life",
-                        "originalValue": 3,
-                        "minValue": 0,
-                        "maxValue": 99,
-                        "modifiers": []
-                    }
-                ],
-                "keywords": [],
-                "abilities": [],
-                "id": 171
-            },
-            {
-                "cardTypeId": 0,
-                "name": "\u6bdb\u7389",
-                "costs": [
-                    {
-                        "statId": 1,
-                        "value": 1,
-                        "$type": "CCGKit.PayResourceCost"
-                    }
-                ],
-                "properties": [
-                    {
-                        "value": "",
-                        "name": "Text",
-                        "$type": "CCGKit.StringProperty"
-                    },
-                    {
-                        "value": "Creature",
-                        "name": "Picture",
-                        "$type": "CCGKit.StringProperty"
-                    },
-                    {
-                        "value": 2,
-                        "name": "MaxCopies",
-                        "$type": "CCGKit.IntProperty"
-                    },
-                    {
-                        "value": null,
-                        "name": "Material",
-                        "$type": "CCGKit.StringProperty"
-                    }
-                ],
-                "stats": [
-                    {
-                        "baseValue": 1,
-                        "statId": 0,
-                        "name": "Attack",
-                        "originalValue": 1,
-                        "minValue": 0,
-                        "maxValue": 99,
-                        "modifiers": []
-                    },
-                    {
-                        "baseValue": 1,
-                        "statId": 1,
-                        "name": "Life",
-                        "originalValue": 1,
-                        "minValue": 0,
-                        "maxValue": 99,
-                        "modifiers": []
-                    }
-                ],
-                "keywords": [],
-                "abilities": [],
-                "id": 174
-            },
-            {
                 "cardTypeId": 1,
                 "name": "\u970a\u7b26\u300c\u5922\u60f3\u5c01\u5370\u300d",
                 "costs": [
@@ -4220,12 +4217,12 @@
                 ],
                 "properties": [
                     {
-                        "value": "\u6575\u306e\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c91\u4f53\u3092\u7834\u58ca\u3059\u308b",
+                        "value": "\u5bfe\u6226\u76f8\u624b\u306e\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c91\u4f53\u3092\u7834\u58ca\u3059\u308b",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
                     {
-                        "value": "Spell",
+                        "value": "musofuin",
                         "name": "Picture",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -4242,7 +4239,32 @@
                 ],
                 "stats": [],
                 "keywords": [],
-                "abilities": [],
+                "abilities": [
+                    {
+                        "trigger": {
+                            "zoneId": 2,
+                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
+                        },
+                        "name": "\u4e00\u4f53\u7834\u58ca",
+                        "type": "Triggered",
+                        "effect": {
+                            "value": {
+                                "constant": 0,
+                                "$type": "CCGKit.ConstantValue"
+                            },
+                            "duration": 0,
+                            "statId": 1,
+                            "gameZoneId": 2,
+                            "cardTypeId": 0,
+                            "$type": "CCGKit.SetCardStatEffect"
+                        },
+                        "target": {
+                            "conditions": [],
+                            "$type": "CCGKit.TargetCard"
+                        },
+                        "$type": "CCGKit.TriggeredAbility"
+                    }
+                ],
                 "id": 306
             },
             {
@@ -4257,7 +4279,7 @@
                 ],
                 "properties": [
                     {
-                        "value": "\u6575\u306e\u5168\u3066\u306e\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u306b2\u30c0\u30e1\u30fc\u30b8\u3092\u4e0e\u3048\u308b",
+                        "value": "\u5bfe\u6226\u76f8\u624b\u306e\u5168\u3066\u306e\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u306b2\u30c0\u30e1\u30fc\u30b8\u3092\u4e0e\u3048\u308b",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -4279,7 +4301,32 @@
                 ],
                 "stats": [],
                 "keywords": [],
-                "abilities": [],
+                "abilities": [
+                    {
+                        "trigger": {
+                            "zoneId": 2,
+                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
+                        },
+                        "name": "\u6575\u5168\u4f532\u30c0\u30e1",
+                        "type": "Triggered",
+                        "effect": {
+                            "value": {
+                                "constant": 2,
+                                "$type": "CCGKit.ConstantValue"
+                            },
+                            "duration": 0,
+                            "statId": 1,
+                            "gameZoneId": 0,
+                            "cardTypeId": 0,
+                            "$type": "CCGKit.DecreaseCardStatEffect"
+                        },
+                        "target": {
+                            "conditions": [],
+                            "$type": "CCGKit.AllOpponentCards"
+                        },
+                        "$type": "CCGKit.TriggeredAbility"
+                    }
+                ],
                 "id": 307
             },
             {
@@ -4316,7 +4363,32 @@
                 ],
                 "stats": [],
                 "keywords": [],
-                "abilities": [],
+                "abilities": [
+                    {
+                        "trigger": {
+                            "zoneId": 1,
+                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
+                        },
+                        "name": "\u5168\u4f535\u30c0\u30e1",
+                        "type": "Triggered",
+                        "effect": {
+                            "value": {
+                                "constant": 5,
+                                "$type": "CCGKit.ConstantValue"
+                            },
+                            "duration": 0,
+                            "statId": 1,
+                            "gameZoneId": 2,
+                            "cardTypeId": 0,
+                            "$type": "CCGKit.DecreaseCardStatEffect"
+                        },
+                        "target": {
+                            "conditions": [],
+                            "$type": "CCGKit.AllOpponentCards"
+                        },
+                        "$type": "CCGKit.TriggeredAbility"
+                    }
+                ],
                 "id": 308
             },
             {
@@ -4331,7 +4403,7 @@
                 ],
                 "properties": [
                     {
-                        "value": "\u5bfe\u8c61\u306e\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u306b6\u30c0\u30e1\u30fc\u30b8\u3092\u4e0e\u3048\u308b\u3002\u4f59\u5270\u30c0\u30e1\u30fc\u30b8\u3092\u76f8\u624b\u30d7\u30ec\u30a4\u30e4\u30fc\u306b\u4e0e\u3048\u308b",
+                        "value": "\u5bfe\u8c61\u306e\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u306b6\u30c0\u30e1\u30fc\u30b8\u3092\u4e0e\u3048\u308b\u3002\u4f59\u5270\u30c0\u30e1\u30fc\u30b8\u3092\u76f8\u624b\u30d7\u30ec\u30a4\u30e4\u30fc\u306b\u4e0e\u3048\u308b(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -4390,7 +4462,56 @@
                 ],
                 "stats": [],
                 "keywords": [],
-                "abilities": [],
+                "abilities": [
+                    {
+                        "trigger": {
+                            "zoneId": 2,
+                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
+                        },
+                        "name": "+8/+0",
+                        "type": "Triggered",
+                        "effect": {
+                            "value": {
+                                "constant": 8,
+                                "$type": "CCGKit.ConstantValue"
+                            },
+                            "duration": 0,
+                            "statId": 0,
+                            "gameZoneId": 2,
+                            "cardTypeId": 0,
+                            "$type": "CCGKit.IncreaseCardStatEffect"
+                        },
+                        "target": {
+                            "conditions": [],
+                            "$type": "CCGKit.TargetCard"
+                        },
+                        "$type": "CCGKit.TriggeredAbility"
+                    },
+                    {
+                        "trigger": {
+                            "zoneId": 2,
+                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
+                        },
+                        "name": "+0/+8",
+                        "type": "Triggered",
+                        "effect": {
+                            "value": {
+                                "constant": 8,
+                                "$type": "CCGKit.ConstantValue"
+                            },
+                            "duration": 0,
+                            "statId": 1,
+                            "gameZoneId": 2,
+                            "cardTypeId": 0,
+                            "$type": "CCGKit.IncreaseCardStatEffect"
+                        },
+                        "target": {
+                            "conditions": [],
+                            "$type": "CCGKit.TargetCard"
+                        },
+                        "$type": "CCGKit.TriggeredAbility"
+                    }
+                ],
                 "id": 310
             },
             {
@@ -4405,7 +4526,7 @@
                 ],
                 "properties": [
                     {
-                        "value": "\u5404\u30d7\u30ec\u30a4\u30e4\u30fc\u306e\u9663\u5730\u306e\u6700\u3082\u653b\u6483\u529b\u304c\u9ad8\u3044\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c91\u679a\u3092\u9664\u304d\u3001\u5168\u3066\u306e\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u3092\u7834\u58ca\u3059\u308b",
+                        "value": "\u5404\u30d7\u30ec\u30a4\u30e4\u30fc\u306e\u9663\u5730\u306e\u6700\u3082\u653b\u6483\u529b\u304c\u9ad8\u3044\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c91\u679a\u3092\u9664\u304d\u3001\u5168\u3066\u306e\u30ad\u30e3\u30e9\u30af\u30bf\u30fc\u30ab\u30fc\u30c9\u3092\u7834\u58ca\u3059\u308b(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -4442,7 +4563,7 @@
                 ],
                 "properties": [
                     {
-                        "value": "\u4e09\u5996\u7cbe\u3092\u5168\u3066\u306b+1/+1\u3092\u4ed8\u4e0e\u3059\u308b\u3002\u4e09\u5996\u7cbe\u304c\u5168\u3066\u5834\u306b\u51fa\u3066\u3044\u308b\u5834\u5408\u3001\u4e09\u5996\u7cbe\u5168\u3066\u306b+5/+5\u3092\u4ed8\u4e0e\u3059\u308b",
+                        "value": "\u4e09\u5996\u7cbe\u3092\u5168\u3066\u306b+1/+1\u3092\u4ed8\u4e0e\u3059\u308b\u3002\u4e09\u5996\u7cbe\u304c\u5168\u3066\u5834\u306b\u51fa\u3066\u3044\u308b\u5834\u5408\u3001\u4e09\u5996\u7cbe\u5168\u3066\u306b+5/+5\u3092\u4ed8\u4e0e\u3059\u308b(\u672a\u5b9f\u88c5)",
                         "name": "Text",
                         "$type": "CCGKit.StringProperty"
                     },
@@ -4490,7 +4611,7 @@
                         "$type": "CCGKit.StringProperty"
                     },
                     {
-                        "value": "Creature",
+                        "value": "insect",
                         "name": "Picture",
                         "$type": "CCGKit.StringProperty"
                     },

@@ -25,11 +25,14 @@ public class GameScene : BaseScene
 
     private void Start()
     {
+        //フェードインから開始
+        FadeScript fadeout = GameObject.Find("fadein_out_panel").GetComponent<FadeScript>();
+        fadeout.InitIn();
+        fadeout.isFadeIn = true;
 
-        
 
-//        SelectHeroScene shc = new SelectHeroScene();
-//        bool rFlag = shc.GetRenkoNameFlag();
+        //        SelectHeroScene shc = new SelectHeroScene();
+        //        bool rFlag = shc.GetRenkoNameFlag();
 
         //BGM再生。AUDIO.BGM_BATTLEがBGMのファイル名
         SoundController.setloopDefine=18.181f;
@@ -63,6 +66,7 @@ public class GameScene : BaseScene
 
         if (GameNetworkManager.Instance.isSinglePlayer)
         {
+            //Invoke(文字列)で文字列名のメソッドを呼び出す
             //AddBotメソッドを1.5秒後呼び出す
             Invoke("AddBot", 1.5f);
         }

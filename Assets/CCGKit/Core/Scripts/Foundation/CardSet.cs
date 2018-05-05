@@ -6,6 +6,7 @@ namespace CCGKit
     /// A card set is a named collection of cards. Their main purpose is to help organize
     /// a big collection of cards into smaller, more manageable sub-groups.
     /// カードセットは名前付きのカードの集合です。 彼らの主な目的は、大規模なカードのコレクションを、より小さく、より管理しやすいサブグループに編成することです。
+    /// 陣営ID、紅魔館や白玉楼等の陣営名、陣営のカードをリストでそれぞれ持っている
     /// </summary>
     public class CardSet
     {

@@ -9,22 +9,33 @@ namespace CCGKit
     /// </summary>
     public class PlayerRegistrationHandler : ServerHandler
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="server"></param>
         public PlayerRegistrationHandler(Server server) : base(server)
         {
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public override void RegisterNetworkHandlers()
         {
             base.RegisterNetworkHandlers();
             NetworkServer.RegisterHandler(NetworkProtocol.RegisterPlayer, OnRegisterPlayer);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public override void UnregisterNetworkHandlers()
         {
             base.UnregisterNetworkHandlers();
             NetworkServer.UnregisterHandler(NetworkProtocol.RegisterPlayer);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="netMsg"></param>
         protected virtual void OnRegisterPlayer(NetworkMessage netMsg)
         {
             var msg = netMsg.ReadMessage<RegisterPlayerMessage>();

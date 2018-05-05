@@ -81,12 +81,12 @@ namespace CCGKit
 
     public abstract class HeroPowerTargetBase : Target, IHeroPowerTarget
     {
-        public List<HeroPowerCondition> conditions = new List<HeroPowerCondition>();
+        public List<CardCondition> conditions = new List<CardCondition>();
     }
 
     public abstract class TokenTargetBase : Target, ITokenTarget
     {
-        public List<TokenCondition> conditions = new List<TokenCondition>();
+        public List<CardCondition> conditions = new List<CardCondition>();
     }
 
 
