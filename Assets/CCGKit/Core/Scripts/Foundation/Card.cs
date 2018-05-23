@@ -13,28 +13,28 @@ namespace CCGKit
         /// <summary>
         /// カードの所属陣営(追加)
         /// </summary>
-        public static int groupId { get; set; }
+        public static int groupId;
 
         /// <summary>
         /// The current resource identifier.
-        /// 現在のリソース識別子(カードのユニークID)
+        /// 現在のリソース識別子
         /// </summary>
 //        public static int currentId;
-        public static int currentId { get; set; }
+        public static int currentId;
 
         /// <summary>
         /// The type of this card.
         /// このカードのタイプ。
         /// </summary>
 //        public int cardTypeId;
-        public int cardTypeId { get; set; }
+        public int cardTypeId;
 
         /// <summary>
         /// The name of this card.
         /// このカードの名前。
         /// </summary>
 //        public string name;
-        public string name { get; set; }
+        public string name;
 
         /// <summary>
         /// The costs of this card.

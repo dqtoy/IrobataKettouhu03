@@ -935,7 +935,9 @@ public class DemoHumanPlayer : DemoPlayer
                 boardCreature.tag = "PlayerOwned";
                 boardCreature.transform.parent = board.transform;
                 boardCreature.transform.position = new Vector2(1.9f * playerBoardCards.Count, 0);
+                //
                 boardCreature.GetComponent<BoardCreature>().ownerPlayer = this;
+                //ミニオンのテキストやイラスト、キーワードの描画
                 boardCreature.GetComponent<BoardCreature>().PopulateWithInfo(card.card);
 
                 //手札からプレイしたカードを消す
@@ -948,7 +950,7 @@ public class DemoHumanPlayer : DemoPlayer
 
                 currentCreature = boardCreature.GetComponent<BoardCreature>();
 
-                //ボードの描画処理。RearrangeBottomBoardの()内はActionクラスで、カードの能力を探してる
+                //ボードの描画処理。RearrangeBottomBoardの()内はActionクラスで、libraryCard(特定のミニオンのID)が持つカードの能力を探してる
                 RearrangeBottomBoard(() =>{var triggeredAbilities = libraryCard.abilities.FindAll(x => x is TriggeredAbility);
                     TriggeredAbility targetableAbility = null;
                     foreach (var ability in triggeredAbilities)

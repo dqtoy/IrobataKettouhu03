@@ -115,6 +115,7 @@ public class BoardCreature : MonoBehaviour
         attackText.text = attackStat.effectiveValue.ToString();
         healthText.text = healthStat.effectiveValue.ToString();
 
+        //ƒCƒ‰ƒXƒg‚Ì•`‰æ
         pictureSprite.sprite = Resources.Load<Sprite>(string.Format("Images/{0}", libraryCard.GetStringProperty("Picture")));
         var material = libraryCard.GetStringProperty("Material");
         if (!string.IsNullOrEmpty(material))

@@ -2182,7 +2182,25 @@
                     }
                 ],
                 "keywords": [],
-                "abilities": [],
+                "abilities": [
+                    {
+                        "trigger": {
+                            "zoneId": 2,
+                            "$type": "CCGKit.OnCardEnteredZoneTrigger"
+                        },
+                        "name": "\u87f2\u53ec\u559a",
+                        "type": "Triggered",
+                        "effect": {
+                            "destinationGameZoneId": 2,
+                            "$type": "CCGKit.AddTokenEffect"
+                        },
+                        "target": {
+                            "conditions": [],
+                            "$type": "CCGKit.ThisCard"
+                        },
+                        "$type": "CCGKit.TriggeredAbility"
+                    }
+                ],
                 "id": 52
             },
             {
@@ -4316,7 +4334,7 @@
                             },
                             "duration": 0,
                             "statId": 1,
-                            "gameZoneId": 0,
+                            "gameZoneId": 2,
                             "cardTypeId": 0,
                             "$type": "CCGKit.DecreaseCardStatEffect"
                         },
@@ -4366,7 +4384,7 @@
                 "abilities": [
                     {
                         "trigger": {
-                            "zoneId": 1,
+                            "zoneId": 2,
                             "$type": "CCGKit.OnCardEnteredZoneTrigger"
                         },
                         "name": "\u5168\u4f535\u30c0\u30e1",

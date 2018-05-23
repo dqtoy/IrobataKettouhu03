@@ -234,6 +234,7 @@ namespace CCGKit
             //libraryCardにカードのIDを代入
             var libraryCard = gameState.config.GetCard(card.cardId);
             //カードの能力一覧を検索
+            //libraryCardが持ってるアビリティを全てのアビリティから検索
             var triggeredAbilities = libraryCard.abilities.FindAll(x => x is TriggeredAbility);
             //inはジェネリック修飾子 http://ufcpp.net/study/csharp/sp4_variance.html
             foreach (var ability in triggeredAbilities)
@@ -484,6 +485,7 @@ namespace CCGKit
                 case EffectTarget.PlayerCard:
                     {
                         var card = player.GetCard(targetInfo[1], zoneId);
+                        //場のカード全てが選択肢に入るって意味
                         cardTargets.Add(card);
                     }
                     break;
@@ -509,8 +511,10 @@ namespace CCGKit
                 case EffectTarget.RandomPlayerCard:
                     {
                         cardTargets.AddRange(player.zones[zoneId].cards);
+                        //effectCardType以外のカードを対象から除外する
                         cardTargets.RemoveAll(x => x.cardType.id != effectCardType);
                         var card = cardTargets[GetRandomNumber(cardTargets.Count)];
+                        //指定したカード以外を削除
                         cardTargets.RemoveAll(x => x != card);
                     }
                     break;
@@ -549,16 +553,20 @@ namespace CCGKit
                     cardTargets.AddRange(opponent.zones[zoneId].cards);
                     cardTargets.RemoveAll(x => x.cardType.id != effectCardType);
                     break;
-                    /*
+                    
                 case EffectTarget.TokenCard:
                     break;
                 case EffectTarget.Coin:
                     break;
                 case EffectTarget.Token_insect:
+//                    var allCard = 
+//                    var libraryCard = gameState.config.GetCard(); ;
+//                    var TokenName = libraryCard.GetStringProperty("name");
+//                    cardTargets.Add(TokenName);
                     break;
                 case EffectTarget.Token_rabbit:
                     break;
-                    */
+                    
 
                 default:
                     break;

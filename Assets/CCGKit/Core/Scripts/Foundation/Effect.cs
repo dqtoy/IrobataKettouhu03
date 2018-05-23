@@ -229,4 +229,20 @@ namespace CCGKit
         [Order(3)]
         public int statId;
     }
+    /// <summary>
+    /// 【追加】
+    /// デッキ外からカードを持ってくる際に継承するクラス
+    /// </summary>
+    public abstract class TokenEffect : Effect
+    {
+        /// <summary>
+        /// Resolves this effect on the specified card.
+        /// この効果を指定されたカードに解決します。
+        /// </summary>
+        /// <param name="state">The game's state.</param>
+        /// <param name="player">The card on which to resolve this effect.</param>
+        public virtual void Resolve(GameState state, RuntimeCard card)
+        {
+        }
+    }
 }
