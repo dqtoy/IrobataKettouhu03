@@ -36,6 +36,7 @@ public class DemoHumanPlayer : DemoPlayer
     //マリガン用
     [SerializeField]
     private GameObject MulliganCardPrefab;
+    private bool mulliganFlag = false;
 
 
     [SerializeField]
@@ -78,6 +79,9 @@ public class DemoHumanPlayer : DemoPlayer
     protected Stat opponentLifeStat { get; set; }
     protected Stat opponentManaStat { get; set; }
 
+    private bool FirstSecondMove;
+
+    public RuntimeZone tokenZone;
     public RuntimeZone deckZone;
     public RuntimeZone handZone;
     public RuntimeZone boardZone;
@@ -120,7 +124,29 @@ public class DemoHumanPlayer : DemoPlayer
     {
         base.Start();
 
-//        chatPopup = GameObject.Find("PopupChat").GetComponent<PopupChat>();
+
+        //        chatPopup = GameObject.Find("PopupChat").GetComponent<PopupChat>();
+        Debug.Log("Start開始");
+
+        // Random クラスの新しいインスタンスを生成する
+        System.Random cRandom = new System.Random();
+        // 0.0 以上 1.0 以下の乱数を取得する
+        double dRandom = cRandom.NextDouble();
+        //先手後手フラグ
+        if (0 < dRandom && dRandom <= 0.5)
+        {
+            Debug.Log("先手");
+            FirstSecondMove = true;
+        }
+        else
+        {
+            Debug.Log("後手");
+            FirstSecondMove = false;
+        }
+
+
+
+
     }
     /// <summary>
     /// 
@@ -128,6 +154,8 @@ public class DemoHumanPlayer : DemoPlayer
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
+
+//        Debug.Log("OnStartLocalPlayer開始");
 
         gameUI = GameObject.Find("GameUI").GetComponent<GameUI>();
         Assert.IsNotNull(gameUI);
@@ -174,6 +202,15 @@ public class DemoHumanPlayer : DemoPlayer
             gameUI.SetOpponentMana(opponentManaStat.effectiveValue);
         };
 
+
+        //トークンプール作成
+        tokenZone = playerInfo.namedZones["TokenPool"];
+        tokenZone.onZoneChanged += numCards =>
+        {
+            gameUI.SetBoardToken(numCards);
+        };
+
+        //デッキ作成
         deckZone = playerInfo.namedZones["Deck"];
         deckZone.onZoneChanged += numCards =>
         {
@@ -190,16 +227,29 @@ public class DemoHumanPlayer : DemoPlayer
         //手札作成
         handZone = playerInfo.namedZones["Hand"];
         //handZone.onZoneChanged = handZone.onZoneChanged + numCardsのこと
+        //マップ関数？とラムダ式の複合技？
+        //一時変数だからnumCardsは宣言不要
+        /*
+         *
+          funciotn lambda(Action<int> numCards)
+          {
+            return gameUI.SetPlayerHandCards(numCards)
+          }
+          handZone.onZoneChanged += lambda(handZone.onZoneChanged)
+         *
+         */
         handZone.onZoneChanged += numCards =>
         {
             gameUI.SetPlayerHandCards(numCards);
+//            Debug.Log("handZone.onZoneChanged==" + handZone.onZoneChanged);
         };
-
         //マリガンゾーンにカードを追加
         handZone.onCardAdded += card =>
         {
             AddCardToHand(card);
             RearrangeMulliganZone();
+//            Debug.Log("handZone.onCardAdded==" + handZone.onCardAdded);
+
         };
 
 
@@ -207,7 +257,7 @@ public class DemoHumanPlayer : DemoPlayer
 
         //カードをクリックしたらフラグを立てる
 
-        //終了ボタンを押す
+        //確定ボタンを押す
         //→GameSceneに追加
 
 
@@ -361,6 +411,12 @@ public class DemoHumanPlayer : DemoPlayer
         GameObject.Find("Player/Avatar").GetComponent<PlayerAvatar>().playerInfo = playerInfo;
         GameObject.Find("Opponent/Avatar").GetComponent<PlayerAvatar>().playerInfo = opponentInfo;
 
+        //自分が後手だったら相手のカード3枚
+        if (FirstSecondMove == false) {
+            opponentHandZone.numCards = 3;
+        }
+
+
         for (var i = 0; i < opponentHandZone.numCards; i++)
         {
             AddCardToOpponentHand();
@@ -468,6 +524,8 @@ public class DemoHumanPlayer : DemoPlayer
     /// <param name="msg"></param>
     public override void OnStartTurn(StartTurnMessage msg)
     {
+//        Debug.Log("OnStartTurn開始");
+
         base.OnStartTurn(msg);
 
         //各ヒーロー、ターンエンドボタン、ヒロパ活性化
@@ -794,16 +852,30 @@ public class DemoHumanPlayer : DemoPlayer
 
         //マウスの場所を検知
         var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+
+//        Debug.Log(isCardSelected);
+        
+        
+        
         //左クリックされたら
         if (Input.GetMouseButtonDown(0))
         {
+            //マリガン中かどうか判定
+            if (mulliganFlag) {
+                //クリックされたものがマリガン用カードかどうか判定
+
+            }
+
             //今プレイヤーのターン中且つスペカが発動中でなければ
-            if (isActivePlayer && currentSpellCard == null)
+            else if (isActivePlayer && currentSpellCard == null)
             {
                 //マウスがクリックしたポジションとRaycast(オブジェクト)がぶつかってないか確認(Vector2.zeroはオブジェクトの原点)
                 var hits = Physics2D.RaycastAll(mousePos, Vector2.zero);
                 //Objectを用意(中身は空)
                 var hitCards = new List<GameObject>();
+
+
                 foreach (var hit in hits)
                 {
                     //hit.colliderは内部のプロパティをチェックして衝突があったかbooleanで返す
@@ -817,6 +889,7 @@ public class DemoHumanPlayer : DemoPlayer
                         hitCards.Add(hit.collider.gameObject);
                     }
                 }
+                //アクティブなカード上でクリックしたかどうかの判定
                 if (hitCards.Count > 0)
                 {
                     DestroyCardPreview();
@@ -830,6 +903,10 @@ public class DemoHumanPlayer : DemoPlayer
                 }
             }
         }
+
+
+
+
         //カードの上にマウスカーソルが乗っていなければ
         else if (!isCardSelected)
         {
@@ -856,8 +933,8 @@ public class DemoHumanPlayer : DemoPlayer
             }
 
             //クリックしたのがマリガンカードじゃない場合
-            if (!hitMulliganCard)
-            {
+//            if (!hitMulliganCard)
+//            {
                 //クリックしたのがハンドのカードでなければボードのミニオンを選択
 
                 if (!hitHandCard)
@@ -912,16 +989,17 @@ public class DemoHumanPlayer : DemoPlayer
             
             }
             //クリックしたカードがマリガンカードだったら入れ替えフラグを立てる
-            else if (hitMulliganCard)
-            {
-                var MulliganExchangeCheck = 0;
+//            else if (hitMulliganCard)
+//            {
+//                var MulliganExchangeChecHitCards = new List<GameObject>();
+//                var MulliganExchangeCheck = 0;
 
-            }
+//            }
             else
             {
                 DestroyCardPreview();
             }
-        }
+//        }
     }
 
     /// <summary>

@@ -80,6 +80,7 @@ namespace CCGKit
         /// <summary>
         /// The callback that is called when this zone changes.
         /// このゾーンが変更されたときに呼び出されるコールバックです。
+        /// コールバック：関数に関数を渡してその関数の中で他の関数を実行すること
         /// </summary>
         public Action<int> onZoneChanged;
 

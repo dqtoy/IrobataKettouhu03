@@ -40,7 +40,7 @@
         "id": 3
     },
     {
-        "name": "tokenPool",
+        "name": "TokenPool",
         "owner": "Shared",
         "type": "Dynamic",
         "ownerVisibility": "Hidden",
