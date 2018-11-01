@@ -189,12 +189,12 @@ namespace CCGKit
         /// <param name="playerNetId">The network identifier of the card's owner player.</param>
         /// <param name = "playerNetId">カード所有者のプレーヤーのネットワーク識別子</ param>
         /// <param name="card">The card to move.</param>
-        /// <param name = "card" > 移動するカード </ param >
+        /// <param name = "card" > 召喚するカード </ param >
         /// <param name="originZone">The origin(元) zone.</param>
         /// <param name="destinationZone">The destination(先) zone.</param>
         /// <param name="targetInfo">The optional target information.</param>
         /// <param name = "targetInfo">オプションのターゲット情報</ param>
-        public void SummonToken(NetworkInstanceId playerNetId, RuntimeCard card, string originZone, string destinationZone, List<int> targetInfo = null)
+        public void SummonToken(NetworkInstanceId playerNetId, RuntimeCard card, string destinationZone, List<int> targetInfo = null)
         {
             var player = gameState.players.Find(x => x.netId == playerNetId);
             if (player != null)
@@ -212,7 +212,6 @@ namespace CCGKit
                     // We do not use the MoveCards function here, because we do not want to trigger any effects
                     // (which would cause an infinite recursion).
                     //ここではMoveCards関数を使用しません。なぜなら、（無限再帰を引き起こす）エフェクトをトリガーしたくないからです。
-                    player.namedZones[destinationZone].RemoveCard(card);
                     player.namedZones[finalDestinationZone.name].AddCard(card);
                 }
             }

@@ -13,7 +13,7 @@ namespace CCGKit
         /// <summary>
         /// ƒJ[ƒh‚ÌŠ‘®w‰c(’Ç‰Á)
         /// </summary>
-        public static int groupId;
+        public int groupId;
 
         /// <summary>
         /// The current resource identifier.

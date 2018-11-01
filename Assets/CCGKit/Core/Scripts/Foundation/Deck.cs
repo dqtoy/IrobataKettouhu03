@@ -21,6 +21,7 @@ namespace CCGKit
         /// カードのコピー枚数
         /// </summary>
         public int amount;
+
     }
 
     /// <summary>
@@ -37,12 +38,17 @@ namespace CCGKit
         public string name = "新しいデッキ";
 
         /// <summary>
+        /// The name of this deck.
+        /// 陣営名
+        /// </summary>
+        public int team = 0;
+
+        /// <summary>
         /// The entries of this deck.
         /// デッキの入り口
         /// デッキに含まれるカードの固有IDとその所持枚数
         /// </summary>
         public List<DeckEntry> cards = new List<DeckEntry>();
-
 
         /// <summary>
         /// Returns the number of cards in this deck.

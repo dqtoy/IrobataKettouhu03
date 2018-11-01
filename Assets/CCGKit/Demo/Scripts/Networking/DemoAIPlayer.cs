@@ -370,7 +370,7 @@ public class DemoAIPlayer : DemoPlayer
         return effect is IncreasePlayerStatEffect || effect is IncreaseCardStatEffect;
     }
     /// <summary>
-    /// PlayerInfoクラスから対戦相手の手札にあるミニオンを全て検索してList<RuntimeCard>
+    /// PlayerInfoクラスから対戦相手の手札にあるミニオンを全て検索してList<RuntimeCard>にして返す
     /// </summary>
     /// <returns>RuntimeCardのリストをリターンする</returns>
     protected List<RuntimeCard> GetCreatureCardsInHand()
@@ -448,6 +448,7 @@ public class DemoAIPlayer : DemoPlayer
     /// <returns></returns>
     protected bool OpponentHasProvokeCreatures()
     {
+        //ライフが0以上のミニオンがいるか探す
         var opponentBoard = opponentInfo.namedZones["Board"].cards;
         var eligibleCreatures = opponentBoard.FindAll(x => x.namedStats["Life"].effectiveValue > 0);
         if (eligibleCreatures.Count > 0)

@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+
+
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Networking;
@@ -30,6 +32,11 @@ public class DemoHumanPlayer : DemoPlayer
 
     [SerializeField]
     private GameObject opponentCardPrefab;
+
+    //マリガン用
+    [SerializeField]
+    private GameObject MulliganCardPrefab;
+
 
     [SerializeField]
     private GameObject boardCreaturePrefab;
@@ -74,6 +81,10 @@ public class DemoHumanPlayer : DemoPlayer
     public RuntimeZone deckZone;
     public RuntimeZone handZone;
     public RuntimeZone boardZone;
+
+    //追加
+    public RuntimeZone MulliganZone;
+
     public RuntimeZone graveyardZone;
     public RuntimeZone opponentDeckZone;
     public RuntimeZone opponentHandZone;
@@ -90,9 +101,13 @@ public class DemoHumanPlayer : DemoPlayer
     {
         base.Awake();
 
+
         Assert.IsNotNull(creatureCardViewPrefab);
         Assert.IsNotNull(spellCardViewPrefab);
         Assert.IsNotNull(opponentCardPrefab);
+        //追加
+        Assert.IsNotNull(MulliganCardPrefab);
+
         Assert.IsNotNull(boardCreaturePrefab);
         Assert.IsNotNull(spellTargetingArrowPrefab);
         Assert.IsNotNull(fightTargetingArrowPrefab);
@@ -165,21 +180,67 @@ public class DemoHumanPlayer : DemoPlayer
             gameUI.SetPlayerDeckCards(numCards);
         };
 
+        //追加
+        //マリガン用
+        //        MulliganZone = playerInfo.namedZones["Mulligan"];
+
+
+
+
         //手札作成
         handZone = playerInfo.namedZones["Hand"];
+        //handZone.onZoneChanged = handZone.onZoneChanged + numCardsのこと
         handZone.onZoneChanged += numCards =>
         {
             gameUI.SetPlayerHandCards(numCards);
         };
 
-        //手札にカード追加
-        //handZone.onCardAdded = handZone.onCardAdded + cardのこと
+        //マリガンゾーンにカードを追加
         handZone.onCardAdded += card =>
         {
             AddCardToHand(card);
-            RearrangeHand();
+            RearrangeMulliganZone();
         };
-        
+
+
+        //ボタンを追加
+
+        //カードをクリックしたらフラグを立てる
+
+        //終了ボタンを押す
+        //→GameSceneに追加
+
+
+        //フラグの立ったカードをデッキに移動させる
+        //移動したカードの枚数分デッキからカードを引く
+        //時間カウントをリセット
+
+
+
+
+        //手札にカード追加
+        //handZone.onCardAdded = handZone.onCardAdded + card のこと
+        //ラムダ式。
+
+        //private void func()
+        //{
+        //  AddCardToHand(card);
+        //  RearrangeHand();
+        //}
+        // handZone.onCardAdded += card(func);
+
+        //と同じ意味
+
+        //20181031マリガン確認用に一時的にコメントアウト
+        //→コメントアウトすることでマリガン用カードを場に広げることに成功
+        //handZone.onCardAdded += card =>
+        //{
+        //    AddCardToHand(card);
+        //    RearrangeHand();
+        //};
+
+
+
         //手札のカード削除
         handZone.onCardRemoved += card =>
         {
@@ -351,7 +412,27 @@ public class DemoHumanPlayer : DemoPlayer
             }
         }
 
+        float rnd;
+        rnd = UnityEngine.Random.value;
         var gameScene = GameObject.Find("GameScene");
+        if (rnd > 0.5f || rFlag)
+        {
+            gameScene = GameObject.Find("GameScene");
+        }
+        else if (rnd > 0.5f || rFlag == false)
+        {
+            gameScene = GameObject.Find("GameScene");
+        } else if (rnd < 0.5f || rFlag) {
+            gameScene = GameObject.Find("GameScene");
+        } else if (rnd < 0.5f || rFlag == false)
+        {
+            gameScene = GameObject.Find("GameScene");
+        }
+        else {
+            gameScene = GameObject.Find("GameScene");
+        }
+
+
         if (gameScene != null)
         {
 #if USING_MASTER_SERVER_KIT
@@ -395,11 +476,13 @@ public class DemoHumanPlayer : DemoPlayer
         gameUI.SetEndTurnButtonEnabled(msg.isRecipientTheActivePlayer);
         gameUI.SetHeroPowerEnabled(msg.isRecipientTheActivePlayer);
 
+        //一旦カードを全て削除
         foreach (var card in opponentHandCards)
         {
             Destroy(card);
         }
         opponentHandCards.Clear();
+        //手札にカードを追加
         for (var i = 0; i < opponentHandZone.numCards; i++)
         {
             AddCardToOpponentHand();
@@ -439,6 +522,51 @@ public class DemoHumanPlayer : DemoPlayer
             gameUI.HideTurnCountdown();
         }
     }
+
+    /// <summary>
+    /// マリガンに関する描画処理
+    /// </summary>
+    /// <param name="onComplete"></param>
+    //virtualは仮想関数の印。継承先(派生クラス)でも同様のメソッドが作られることを明示している。
+    protected virtual void RearrangeMulliganZone(Action onComplete = null)
+    {
+        var boardWidth = 0.0f;
+        var spacing = 0.5f;
+        var cardWidth = 0.0f;
+        foreach (var card in playerHandCards)
+        {
+            cardWidth = card.GetComponent<SpriteRenderer>().bounds.size.x;
+            boardWidth += cardWidth;
+            boardWidth += spacing;
+        }
+        boardWidth -= spacing;
+
+        var newPositions = new List<Vector2>(playerHandCards.Count);
+        var pivot = GameObject.Find("MulliganZone").transform.position;
+        for (var i = 0; i < playerHandCards.Count; i++)
+        {
+            var card = playerHandCards[i];
+            newPositions.Add(new Vector2(pivot.x - boardWidth / 2 + cardWidth / 2, pivot.y));
+            pivot.x += boardWidth / playerHandCards.Count;
+        }
+
+        var sequence = DOTween.Sequence();
+        for (var i = 0; i < playerHandCards.Count; i++)
+        {
+            var card = playerHandCards[i];
+            sequence.Insert(0, card.transform.DOMove(newPositions[i], 0.4f).SetEase(Ease.OutSine));
+        }
+        sequence.OnComplete(() =>
+        {
+            if (onComplete != null)
+            {
+                onComplete();
+            }
+        });
+    }
+
+
+
     /// <summary>
     /// プレイヤーの手札に関する描画処理
     /// </summary>
@@ -702,7 +830,7 @@ public class DemoHumanPlayer : DemoPlayer
                 }
             }
         }
-        //カードが選択されてなければ
+        //カードの上にマウスカーソルが乗っていなければ
         else if (!isCardSelected)
         {
             var hits = Physics2D.RaycastAll(mousePos, Vector2.zero);
@@ -711,6 +839,10 @@ public class DemoHumanPlayer : DemoPlayer
             var hitHandCard = false;
             //選択中の、ボードのカード
             var hitBoardCard = false;
+
+            //20181031マリガン用に追加
+            var hitMulliganCard = false;
+
             foreach (var hit in hits)
             {
                 //オブジェクト上でクリックしたなら
@@ -722,49 +854,68 @@ public class DemoHumanPlayer : DemoPlayer
                     hitHandCard = true;
                 }
             }
-            //クリックしたのがハンドのカードでなければボードのミニオンを選択
-            if (!hitHandCard)
+
+            //クリックしたのがマリガンカードじゃない場合
+            if (!hitMulliganCard)
             {
-                foreach (var hit in hits)
+                //クリックしたのがハンドのカードでなければボードのミニオンを選択
+
+                if (!hitHandCard)
                 {
-                    if (hit.collider != null &&
-                        hit.collider.gameObject != null &&
-                        hit.collider.gameObject.GetComponent<BoardCreature>() != null)
+                    foreach (var hit in hits)
                     {
-                        hitCards.Add(hit.collider.gameObject);
-                        hitBoardCard = true;
-                    }
-                }
-            }
-            //ハンドのカードを選択中であれば
-            if (hitHandCard)
-            {
-                if (hitCards.Count > 0)
-                {
-                    hitCards = hitCards.OrderBy(x => x.GetComponent<SortingGroup>().sortingOrder).ToList();
-                    var topmostCardView = hitCards[hitCards.Count - 1].GetComponent<CardView>();
-                    if (!topmostCardView.isPreview)
-                    {
-                        if (!isPreviewActive || topmostCardView.card.instanceId != currentPreviewedCardId)
+                        if (hit.collider != null &&
+                            hit.collider.gameObject != null &&
+                            hit.collider.gameObject.GetComponent<BoardCreature>() != null)
                         {
-                            DestroyCardPreview();
-                            CreateCardPreview(topmostCardView.card, topmostCardView.transform.position, topmostCardView.IsHighlighted());
+                            hitCards.Add(hit.collider.gameObject);
+                            hitBoardCard = true;
                         }
                     }
                 }
-            }
-            else if (hitBoardCard)
-            {
-                if (hitCards.Count > 0)
+                //ハンドのカードを選択中であれば
+                if (hitHandCard)
                 {
-                    hitCards = hitCards.OrderBy(x => x.GetComponent<SortingGroup>().sortingOrder).ToList();
-                    var selectedBoardCreature = hitCards[hitCards.Count - 1].GetComponent<BoardCreature>();
-                    if (!isPreviewActive || selectedBoardCreature.card.instanceId != currentPreviewedCardId)
+                    if (hitCards.Count > 0)
                     {
-                        DestroyCardPreview();
-                        CreateCardPreview(selectedBoardCreature.card, selectedBoardCreature.transform.position);
+                        hitCards = hitCards.OrderBy(x => x.GetComponent<SortingGroup>().sortingOrder).ToList();
+                        var topmostCardView = hitCards[hitCards.Count - 1].GetComponent<CardView>();
+                        if (!topmostCardView.isPreview)
+                        {
+                            if (!isPreviewActive || topmostCardView.card.instanceId != currentPreviewedCardId)
+                            {
+                                DestroyCardPreview();
+                                CreateCardPreview(topmostCardView.card, topmostCardView.transform.position, topmostCardView.IsHighlighted());
+                            }
+                        }
                     }
                 }
+                else if (hitBoardCard)
+                {
+                    if (hitCards.Count > 0)
+                    {
+                        hitCards = hitCards.OrderBy(x => x.GetComponent<SortingGroup>().sortingOrder).ToList();
+                        var selectedBoardCreature = hitCards[hitCards.Count - 1].GetComponent<BoardCreature>();
+                        if (!isPreviewActive || selectedBoardCreature.card.instanceId != currentPreviewedCardId)
+                        {
+                            DestroyCardPreview();
+                            CreateCardPreview(selectedBoardCreature.card, selectedBoardCreature.transform.position);
+                        }
+                    }
+                }
+                
+                else
+                {
+                    DestroyCardPreview();
+                }
+
+            
+            }
+            //クリックしたカードがマリガンカードだったら入れ替えフラグを立てる
+            else if (hitMulliganCard)
+            {
+                var MulliganExchangeCheck = 0;
+
             }
             else
             {
@@ -871,6 +1022,39 @@ public class DemoHumanPlayer : DemoPlayer
             Destroy(oldCardPreview.gameObject);
         }
     }
+
+
+    /// <summary>
+    /// 呼び出し元から受け取ったRuntimeCardのカードを手札に加える
+    /// </summary>
+    /// <param name="card"></param>
+    protected virtual void AddCardToMulliganZone(RuntimeCard card)
+    {
+        var gameConfig = GameManager.Instance.config;
+        var libraryCard = gameConfig.GetCard(card.cardId);
+        var cardType = gameConfig.cardTypes.Find(x => x.id == libraryCard.cardTypeId);
+        GameObject go = null;
+        if (cardType.name == "Creature")
+        {
+            go = Instantiate(creatureCardViewPrefab as GameObject);
+        }
+        else if (cardType.name == "Spell")
+        {
+            go = Instantiate(spellCardViewPrefab as GameObject);
+        }
+        var cardView = go.GetComponent<CardView>();
+        cardView.PopulateWithInfo(card);
+
+        var handCard = go.AddComponent<HandCard>();
+        handCard.ownerPlayer = this;
+        handCard.boardZone = GameObject.Find("PlayerBoard");
+
+        playerHandCards.Add(cardView);
+
+        go.GetComponent<SortingGroup>().sortingOrder = playerHandCards.Count;
+    }
+
+
     /// <summary>
     /// 呼び出し元から受け取ったRuntimeCardのカードを手札に加える
     /// </summary>
@@ -900,6 +1084,9 @@ public class DemoHumanPlayer : DemoPlayer
 
         go.GetComponent<SortingGroup>().sortingOrder = playerHandCards.Count;
     }
+
+
+
     /// <summary>
     /// 相手の手札にカードを加える
     /// </summary>
@@ -915,7 +1102,7 @@ public class DemoHumanPlayer : DemoPlayer
     /// プレハブのインスタンス等も含む。
     /// ドローなどもここ
     /// </summary>
-    /// <param name="card"></param>
+    /// <param name="card">使用可能なカード</param>
     public void PlayCard(CardView card)
     {
         if (card.CanBePlayed(this))

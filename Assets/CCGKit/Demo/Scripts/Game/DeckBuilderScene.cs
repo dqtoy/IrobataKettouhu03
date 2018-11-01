@@ -53,13 +53,20 @@ public class DeckBuilderScene : BaseScene
 
     private fsSerializer serializer = new fsSerializer();
 
-    private bool goSelectTeam = false;
+    //選択したヒーローによって表示するデッキを変更するために、選んだヒーローの判定
+    //cardSets[i]の要素が0:紅魔館,1:白玉楼,2:永遠亭,3:中立
+    private static int selectTeam = SelectTeamScene.selectTeam;
 
+
+    private bool goSelectTeam = false;
+    
+    //pageの総数
     private int numPages;
+    //今のページ
     private int currentPage;
 
     [SerializeField]
-    private int maxDeckSize=30;
+    private int maxDeckSize = 30;
 
     private void Awake()
     {
@@ -80,7 +87,7 @@ public class DeckBuilderScene : BaseScene
     private void Start()
     {
 
-//        System.Threading.Thread.Sleep(1000);
+        //        System.Threading.Thread.Sleep(1000);
 
         //フェードインから開始
         FadeScript fadeout = GameObject.Find("fadein_out_panel").GetComponent<FadeScript>();
@@ -91,8 +98,8 @@ public class DeckBuilderScene : BaseScene
         SoundController.setloopDefine = 0.493f;
         SoundController.setendDefine = 87.767f;
         //BGM再生。AUDIO.BGM_BATTLEがBGMのファイル名
-        SoundController.Instance.PlayBGM ("DeckBuild", SoundController.BGM_FADE_SPEED_RATE_HIGH);
-    	SoundController.Instance.ChangeVolume (0.2F,0.2F);
+        SoundController.Instance.PlayBGM("DeckBuild", SoundController.BGM_FADE_SPEED_RATE_HIGH);
+        SoundController.Instance.ChangeVolume(0.2F, 0.2F);
 
 
         //createDeckItem(新規デッキ作成ボタン)をprefab化してsecneと紐付ける
@@ -104,10 +111,29 @@ public class DeckBuilderScene : BaseScene
         //「0ページ目のカードを読み込む」だが、実態は初期化処理。
         //ページに何枚表示するか、全てのカードの総数、カード種別の一覧を読み込んでいる
         LoadCards(0);
-        //CeilToIntは小数点切り上げ＆整数化
-        //ページ数の算出。カードの数をCardPlaceholderの数(8)で割る
-        //8はCountプロパティで取得
-        numPages = Mathf.CeilToInt(GameManager.Instance.config.GetNumCards() / (float)cardPositions.Count);
+
+        //初期化
+        var gameConfig = GameManager.Instance.config;
+
+        //表示するカード
+        List<Card> viewCardSet = new List<Card>();
+
+        if (selectTeam != (int)SelectTeamScene.Team.all) {
+            List<Card> selectTeamCardSet = gameConfig.cardSets[selectTeam].cards;
+            List<Card> neutralCardSet = gameConfig.cardSets[(int)SelectTeamScene.Team.neutral].cards;
+
+            var sumTeamNumCard = selectTeamCardSet.Count + neutralCardSet.Count;
+            numPages = Mathf.CeilToInt(sumTeamNumCard / (float)cardPositions.Count);
+        }
+        else {
+            //CeilToIntは小数点切り上げ＆整数化
+            //ページ数の算出。カードの数をCardPlaceholderの数(8)で割る
+            //8はCountプロパティで取得
+            numPages = Mathf.CeilToInt(GameManager.Instance.config.GetNumCards() / (float)cardPositions.Count);
+
+        }
+
+
         pageText.text = "Page " + (currentPage + 1) + "/" + numPages;
 
         //List(playerDecks)(プレイヤーが既に構築しているデッキ)の要素全てを対象に処理する
@@ -124,17 +150,36 @@ public class DeckBuilderScene : BaseScene
             go.GetComponent<DeckButton>().SetDeck(deck);
         }
         //ゲームオブジェクト(DeckButton型deckListContentオブジェクト(デッキ一覧の+のとこ))の参照
-        var firstDeckButton = deckListContent.GetComponentInChildren<DeckButton>();
-        if (firstDeckButton != null)
+        //var firstDeckButton = deckListContent.GetComponentInChildren<DeckButton>();
+        var deckButtonList = deckListContent.GetComponentsInChildren<DeckButton>();
+
+        if(selectTeam != (int)SelectTeamScene.Team.all)
         {
-            SetActiveDeck(firstDeckButton);
+            SetActiveDeck(deckButtonList[deckButtonList.Length - 1]);
         }
+
+        //SelectTeamSceneから戻ってきたときはtfFlagがtrue(selectTeamが更新されている)だからCreateNewDeckを呼ぶ
+        if (SelectTeamScene.tfFlag == true)
+        {
+            CreateNewDeck();
+            SelectTeamScene.tfFlag = false;
+        }
+
+        //このシーンに初めて来たときはDeckを選択しておきたくない
+        /*
+               if (firstDeckButton != null)
+               {
+                   SetActiveDeck(firstDeckButton);
+               }
+       */
     }
     /// <summary>
     /// 
     /// </summary>
     public void OnBackButtonPressed()
     {
+        //ホームに戻るときは選択していたDeckを解除する
+        selectTeam = (int)SelectTeamScene.Team.all;
         SceneManager.LoadScene("Home");
     }
     /// <summary>
@@ -142,7 +187,6 @@ public class DeckBuilderScene : BaseScene
     /// </summary>
     public void OnCreateDeckButtonPressed()
     {
-        CreateNewDeck();
         SceneManager.LoadScene("SelectTeam");
     }
     /// <summary>
@@ -160,6 +204,7 @@ public class DeckBuilderScene : BaseScene
         var deck = new Deck();
         GameManager.Instance.playerDecks.Add(deck);
         deckButton.SetDeck(deck);
+        deck.team = SelectTeamScene.selectTeam;
         SetActiveDeck(deckButton);
     }
     /// <summary>
@@ -221,6 +266,7 @@ public class DeckBuilderScene : BaseScene
         }
         //カードの枚数を表示
         UpdateNumCardsText();
+        LoadCards(0);
     }
     /// <summary>
     /// 前のページに戻る
@@ -259,8 +305,36 @@ public class DeckBuilderScene : BaseScene
         //ページ数✕カードポジションを取得する
         //→現在のページの1枚目のカードを読み込み
         var startIndex = page * cardPositions.Count;
+
+        //編集するDeckが選ばれているのであれば、そのDeckに応じたカードしか表示しないようにする
+        if (currentDeckButton != null)
+        {
+            selectTeam = currentDeckButton.deck.team;
+        }
+
+        //表示するカード
+        List<Card> viewCardSet = new List<Card>();
+
+        //陣営カード+中立カード表示部分
+        if (selectTeam != (int)SelectTeamScene.Team.all)
+        {
+            List<Card> selectTeamCardSet = gameConfig.cardSets[selectTeam].cards;
+            List<Card> neutralCardSet = gameConfig.cardSets[(int)SelectTeamScene.Team.neutral].cards;
+            if (viewCardSet.Count < selectTeamCardSet.Count + neutralCardSet.Count)
+            {
+                viewCardSet.AddRange(selectTeamCardSet);
+                viewCardSet.AddRange(neutralCardSet);
+            }
+
+        }
+        else
+        {
+            viewCardSet = gameConfig.cards;
+        }
+
         //2つ以上の値(現在のページの一枚目のカードのIDの数に表示されるべきカードの枚数を足したものか、カードの総数か)から最小値を返す
-        var endIndex = Mathf.Min(startIndex + cardPositions.Count, gameConfig.GetNumCards());
+        var endIndex = Mathf.Min(startIndex + cardPositions.Count, viewCardSet.Count);
+
 
         foreach (var card in FindObjectsOfType<CardView>())
         {
@@ -269,7 +343,8 @@ public class DeckBuilderScene : BaseScene
 
         for (var i = startIndex; i < endIndex; i++)
         {
-            var card = gameConfig.cards[i];
+            var card = viewCardSet[i];
+            //var cardNeutral = gameConfig.cardSets[4].cards[i];
             var cardType = gameConfig.cardTypes.Find(x => x.id == card.cardTypeId);
             GameObject go = null;
             if (cardType.name == "Creature")
@@ -364,6 +439,7 @@ public class DeckBuilderScene : BaseScene
         }
 
         var existingCards = currentDeckButton.deck.cards.Find(x => x.id == card.id);
+
         var maxCopies = card.GetIntProperty("MaxCopies");
         if (existingCards != null && existingCards.amount == maxCopies)
         {
@@ -409,20 +485,21 @@ public class DeckBuilderScene : BaseScene
         var currentDeck = currentDeckButton.deck;
 
 
-            var numCards = currentDeck.GetNumCards();
-            if (numCards == maxDeckSize)
+        var numCards = currentDeck.GetNumCards();
+        if (numCards == maxDeckSize)
+        {
+            OpenPopup<PopupOneButton>("PopupOneButton", popup =>
             {
-                OpenPopup<PopupOneButton>("PopupOneButton", popup =>
-                {
-                    popup.text.text = "デッキを構築するカードの総数が30枚を超えています";
-                    popup.buttonText.text = "閉じる";
-                    popup.button.onClickEvent.AddListener(() => { popup.Close(); });
-                });
-                return;
-            }
-            else {
-                 currentDeckButton.deck.AddCard(card);
-                 currentDeckButton.UpdateDeckInfo();
+                popup.text.text = "デッキを構築するカードの総数が30枚を超えています";
+                popup.buttonText.text = "閉じる";
+                popup.button.onClickEvent.AddListener(() => { popup.Close(); });
+            });
+            return;
+        }
+        else
+        {
+            currentDeckButton.deck.AddCard(card);
+            currentDeckButton.UpdateDeckInfo();
         }
 
 
@@ -501,7 +578,7 @@ public class DeckBuilderScene : BaseScene
         }
 
         var decksPath = Application.persistentDataPath + "/decks.json";
-//        Debug.Log(decksPath);
+        //        Debug.Log(decksPath);
         fsData serializedData;
         serializer.TrySerialize(GameManager.Instance.playerDecks, out serializedData).AssertSuccessWithoutWarnings();
         var file = new StreamWriter(decksPath);

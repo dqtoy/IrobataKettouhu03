@@ -34,11 +34,23 @@ public class GameScene : BaseScene
         //        SelectHeroScene shc = new SelectHeroScene();
         //        bool rFlag = shc.GetRenkoNameFlag();
 
+        /*
+
         //BGM再生。AUDIO.BGM_BATTLEがBGMのファイル名
         SoundController.setloopDefine=18.181f;
         SoundController.setendDefine=90.909f;        
         SoundController.Instance.PlayBGM ("PB-premaster",SoundController.BGM_FADE_SPEED_RATE_HIGH);
     	SoundController.Instance.ChangeVolume (0.2F,0.2F);
+
+        */
+
+        //BGM再生。AUDIO.BGM_BATTLEがBGMのファイル名
+        SoundController.setloopDefine = 16.025f;
+        SoundController.setendDefine = 120.005f;
+        SoundController.Instance.PlayBGM("OldAdams_Prepro", SoundController.BGM_FADE_SPEED_RATE_HIGH);
+        SoundController.Instance.ChangeVolume(0.2F, 0.2F);
+
+
 
         //ゲーム画面の生成
         gameUI = GameObject.Find("GameUI").GetComponent<GameUI>();
@@ -66,7 +78,7 @@ public class GameScene : BaseScene
 
         if (GameNetworkManager.Instance.isSinglePlayer)
         {
-            //Invoke(文字列)で文字列名のメソッドを呼び出す
+            //Invoke(文字列)で文字列名のメソッドをスブスレッドから呼び出す
             //AddBotメソッドを1.5秒後呼び出す
             Invoke("AddBot", 1.5f);
         }
@@ -154,5 +166,17 @@ public class GameScene : BaseScene
     public void OnChatButtonPressed()
     {
         chatPopup.Show();
+    }
+
+    //終了ボタンを押す
+    public void OnConfirmButtonPressed()
+    {
+        //newでインスタンス作るのと一緒
+        FadeScript fadeout = GameObject.Find("fadein_out_panel").GetComponent<FadeScript>();
+        fadeout.InitOut();
+        //        var task = Task.WaitAll();
+
+
+        SceneManager.LoadScene("DeckBuilder");
     }
 }

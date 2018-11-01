@@ -21,10 +21,7 @@ public class CreateDeckButton : MonoBehaviour
  /// </summary>
     public void OnButtonPressed()
     {
-
-        scene.CreateNewDeck();
-        //陣営わけのため追加
+        //陣営選択が終わったらデッキ＋の欄を増やす。このボタンは＋を押したときの処理
         SceneManager.LoadScene("SelectTeam");
-
     }
 }

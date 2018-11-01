@@ -38,44 +38,15 @@ namespace CCGKit
         /// <summary>
         /// トークンのゲッターセッター
         /// </summary>
-        public Token Token { get; private set; }
-
-        /// <summary>
-        /// Returns the number of cards of the specified type in this deck.
-        /// このデッキ内の指定されたタイプのカードの数を返します。
-        /// </summary>
-        /// <param name="config">The game's configuration.</param>
-        /// ゲームの設定
-        /// <param name="cardTypeId">The card type.</param>
-        /// カードの属性
-        /// <returns>The number of cards of the specified type in this deck.</returns>
-        /// このデッキの指定されたタイプのカードの数。
-/*
-        public int GetNumCards(GameConfiguration config, int tokenTypeId)
-        {
-            var total = 0;
-            foreach (var token in tokens)
-            {
-                foreach (var set in config.tokenSets)
-                {
-                    var libraryToken = set.tokens.Find(x => x.id == token.id);
-                    if (libraryToken != null && libraryToken.tokenTypeId == tokenTypeId)
-                    {
-                        total += token.amount;
-                        break;
-                    }
-                }
-            }
-            return total;
-        }
-*/
+        public Card Token { get; private set; }
+        
         /// <summary>
         /// Adds the specified card to this deck.
-        /// 指定されたカードをこのデッキに追加します。
+        /// 指定されたカードをトークンプールに追加します。
         /// </summary>
         /// <param name="card">The card to add to this deck.</param>
         /// このデッキに追加するカード。
-        public void AddCard(Card token)
+        public void AddToken(Card token)
         {
             var existingToken = tokens.Find(x => x.id == token.id);
             if (existingToken != null)
@@ -88,18 +59,5 @@ namespace CCGKit
             }
         }
 
-        /// <summary>
-        /// Removes this card from this deck.
-        /// このカードをこのデッキから取り外す。
-        /// </summary>
-        /// <param name="card">The card to remove from this deck.</param>
-        public void RemoveCards(Card token)
-        {
-            var existingToken = tokens.Find(x => x.id == token.id);
-            if (existingToken != null)
-            {
-                tokens.Remove(existingToken);
-            }
-        }
     }
 }

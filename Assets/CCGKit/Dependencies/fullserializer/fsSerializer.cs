@@ -717,6 +717,7 @@ namespace FullSerializer {
         /// シリアライズされた状態から値を逆シリアライズしようとします。
         /// *シリアライズとは、stringとかbyte[](テキストかバイナリ形式)みたいな形にしてテキスト保存出来る状態にすること。
         /// </summary>
+        /// 保存されているファイル(デッキデータとか)をLOADする時に使う
         public fsResult TryDeserialize(fsData data, Type storageType, ref object result) {
             return TryDeserialize(data, storageType, null, ref result);
         }

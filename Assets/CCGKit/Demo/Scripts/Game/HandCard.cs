@@ -3,6 +3,8 @@ using UnityEngine;
 /// <summary>
 /// 手札の描画
 /// </summary>
+
+//RequireComponentでCardViewが持ってるコンポーネントをHandCardクラスの依存関係に加えてる
 [RequireComponent(typeof(CardView))]
 public class HandCard : MonoBehaviour
 {
@@ -14,6 +16,7 @@ public class HandCard : MonoBehaviour
     protected bool startedDrag;
     protected Vector3 initialPos;
 
+    //RequireComponent使ったらAwakeで初期化が必要
     private void Awake()
     {
         cardView = GetComponent<CardView>();
@@ -63,8 +66,10 @@ public class HandCard : MonoBehaviour
         startedDrag = false;
         ownerPlayer.isCardSelected = false;
 
+        //positionが四角の中に含まれていれば
         if (boardZone.GetComponent<BoxCollider2D>().bounds.Contains(transform.position))
         {
+
             ownerPlayer.PlayCard(cardView);
             cardView.SetHighlightingEnabled(false);
         }

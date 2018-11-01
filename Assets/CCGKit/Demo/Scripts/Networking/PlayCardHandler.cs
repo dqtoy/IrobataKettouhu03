@@ -10,6 +10,7 @@ using CCGKit;
 
 /// <summary>
 /// This server handler is responsible for managing client requests for playing new cards.
+/// このサーバーハンドラは、新しいカードを再生するためのクライアント要求を管理します。
 /// </summary>
 public class PlayCardHandler : ServerHandler
 {

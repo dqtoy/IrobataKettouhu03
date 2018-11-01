@@ -4,6 +4,7 @@
         "name": "\u30c8\u30fc\u30af\u30f3",
         "cards": [
             {
+                "groupId": 0,
                 "cardTypeId": 0,
                 "name": "\u87f2",
                 "costs": [
@@ -60,6 +61,7 @@
                 "id": 327
             },
             {
+                "groupId": 0,
                 "cardTypeId": 0,
                 "name": "\u514e",
                 "costs": [],

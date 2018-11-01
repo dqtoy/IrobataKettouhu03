@@ -180,9 +180,9 @@ namespace CCGKit
 
             ///各陣営分けはここで設定する？
             var cardLibraryPath = path + "/card_library.json";
-                        var KoumaCardLibraryPath = path + "/Kcard_library.json";
-                        var HakugyokuCardLibraryPath = path + "/Hcard_library.json";
-                        var EienCardLibraryPath = path + "/Ecard_library.json";
+            var KoumaCardLibraryPath = path + "/Kcard_library.json";
+            var HakugyokuCardLibraryPath = path + "/Hcard_library.json";
+            var EienCardLibraryPath = path + "/Ecard_library.json";
             var tokenLibraryPath = path + "/token_library.json";
             //カードの一覧をIDで取得、Listにして返す
             var cardLibrary = LoadJSONFile<List<CardSet>>(cardLibraryPath);
@@ -242,6 +242,24 @@ namespace CCGKit
                 
             }
              */
+
+            var tokensPath = path + "/token_library.json";
+
+            // トークンデータが存在する場合、GameManager.Instance.playerDecksにデッキデータを代入する処理
+            if (File.Exists(tokensPath))
+            {
+                //外部データ(デッキファイル)の読み込み
+                var file = new StreamReader(tokensPath);
+                var fileContents = file.ReadToEnd();
+                //fsJsonParserはJSONの単純な再帰的降下パーサー。
+                //トークンデータの解析をする
+                var data = fsJsonParser.Parse(fileContents);
+                object deserialized = null;
+                //トークンデータをマシン上で使える形に変換してる
+                serializer.TryDeserialize(data, typeof(List<Deck>), ref deserialized).AssertSuccessWithoutWarnings();
+                file.Close();
+                GameManager.Instance.allPlayerTokens = deserialized as List<TokenPool>;
+            }
 
             ///トークン
 /*
@@ -377,9 +395,7 @@ namespace CCGKit
                     {
                         tokens.Add(token);
 //                        Debug.Log(tokens[0]);
-//                       currentTokenPool.AddCard(token);
-
-
+//                       currentTokenPool.AddToken(token);
                     }
                 }
             }
@@ -482,6 +498,7 @@ namespace CCGKit
         /// <param name="path">The path where to save the data.</param>
         /// <param name="data">The data to save.</param>
         /// 要検討unicodeで保存する方法
+        /// →DependenciesのfsJsonPrinterクラスで保存してる
         private void SaveJSONFile<T>(string path, T data) where T : class
         {
             fsData serializedData;
@@ -504,9 +521,20 @@ namespace CCGKit
             return libraryCard;
         }
 
-        
-          
-          
+        /// <summary>
+        /// Returns the card with the specified identifier.
+        /// 渡された文字列の名前を持つカードを返します。
+        /// </summary>
+        /// <param name="name">JSONから引っ張ってきたunicode</param>
+        /// <returns>The card with the specified identifier.</returns>
+        public Card GetCardFromName(string name)
+        {
+            var libraryCard = cards.Find(x => x.name == name);
+            return libraryCard;
+        }
+
+
+
         /// <summary>
         /// 指定された識別子を持つヒロパを返す。
         /// </summary>
@@ -535,6 +563,11 @@ namespace CCGKit
         public int GetNumCards()
         {
             return cards.Count;
+        }
+
+        public int GetNumTeamCards(List<Card> card)
+        {
+            return card.Count;
         }
     }
 }

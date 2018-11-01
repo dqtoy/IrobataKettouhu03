@@ -16,31 +16,43 @@ public class SelectTeamScene : BaseScene {
     [SerializeField]
     private GameObject SelectTeamGroup;
 
+    /*
 	[SerializeField]
     public static bool koumaFlag = false;
 	 [SerializeField]
     public static bool hakugyokuFlag = false;
 		 [SerializeField]
     public static bool eienFlag = false;
-	[SerializeField]
+    */
+
+    public enum Team : int { kouma = 0, hakugyoku, eien, neutral, all = 100, };
+
+    [SerializeField]
     public static bool tfFlag = false;
 
-	[SerializeField]
+
+    //選ばれていないときは全て選択
+    [SerializeField]
+    public static int selectTeam = (int)Team.all;
+
+
+    [SerializeField]
 	public static string flag;
 
     [SerializeField]
     public static int BGMflag;
 
-    Button kButton;
-	Button hButton;
-	Button eButton;
+    public Button kButton;
+	public Button hButton;
+	public Button eButton;
 
     // Use this for initialization
     private void Start () {
 
         BGMflag = 0;
 
-
+        //選択したヒーローの情報を保持しておきたいので、このオブジェクトは消さない
+        DontDestroyOnLoad(this);
 
         //フェードインから開始
         FadeScript fadeout = GameObject.Find("fadein_out_panel").GetComponent<FadeScript>();
@@ -74,47 +86,26 @@ public class SelectTeamScene : BaseScene {
     
     public void OnKoumaButtonPressed()
     {
-		bool FlagCheck = checkFlag();
-		if(FlagCheck){
-			koumaFlag=true;
-			hakugyokuFlag=false;
-			eienFlag=false;
-		}
-	}
+        selectTeam = (int)Team.kouma;
+        //ボタンが押されたのでデッキビルドに行けるようにする
+        tfFlag = true;
+    }
 
 	    public void OnhakugyokuButtonPressed()
     {
-		bool FlagCheck = checkFlag();
-		if(FlagCheck){
-			koumaFlag=false;
-			hakugyokuFlag=true;
-			eienFlag=false;
-		}
-	}
+        selectTeam = (int)Team.hakugyoku;
+        //ボタンが押されたのでデッキビルドに行けるようにする
+        tfFlag = true;
+    }
 
 	public void OneienButtonPressed()
     {
-		bool FlagCheck = checkFlag();
-		if(FlagCheck){
-			koumaFlag=false;
-			hakugyokuFlag=false;
-			eienFlag=true;
-		}
-	}
+        selectTeam = (int)Team.eien;
+        //ボタンが押されたのでデッキビルドに行けるようにする
+        tfFlag = true;
+    }
 	
-	[SerializeField]
-	public bool checkFlag(){
-
-		if(koumaFlag||hakugyokuFlag||eienFlag){
-			tfFlag=true;
-		}else{
-			tfFlag=false;			
-		}
-
-		return tfFlag;
-
-	}
-
+    /*
     public void OnGoSelectClassButtonPressed()
     {
 		if(koumaFlag==false){
@@ -128,22 +119,18 @@ public class SelectTeamScene : BaseScene {
         SceneManager.LoadScene("EienDeckBuildScene");
 		}
 	}
+    */
 
 	[SerializeField]
-	static public string GetTeamFlag(){
-		if(koumaFlag){
-			flag="kouma";
-		}else if(hakugyokuFlag){
-			flag="hakugyoku";
-		}else if(eienFlag){
-			flag="eien";
-		}
-		return flag;
+	static public int GetTeamFlag()
+    {
+        return selectTeam;
 	}
 
 	    public void OnBackButtonPressed()
     {
         SceneManager.LoadScene("DeckBuilder");
+        tfFlag = false;
     }
 	    public void OnNextButtonPressed()
     {

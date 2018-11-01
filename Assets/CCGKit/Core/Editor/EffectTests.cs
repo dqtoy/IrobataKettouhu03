@@ -138,7 +138,7 @@ public class EffectTests
         Assert.AreEqual(card.stats[0].effectiveValue, 2);
     }
     /// <summary>
-    /// バフテスト
+    /// カードスタッツバフテスト
     /// </summary>
     [Test]
     public void TestIncreaseCardStatEffect()
@@ -158,7 +158,7 @@ public class EffectTests
     }
 
     /// <summary>
-    /// デバフテスト
+    /// カードスタッツデバフテスト
     /// </summary>
     [Test]
     public void TestDecreaseCardStatEffect()

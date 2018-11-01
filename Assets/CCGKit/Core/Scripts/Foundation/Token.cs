@@ -14,7 +14,7 @@ namespace CCGKit
         /// The current resource identifier.
         /// 現在のリソース識別子(カードのユニークID)
         /// </summary>
-        public static int currentId;
+        public new static int currentId;
 
         /// <summary>
         /// The type of this Token.
@@ -26,37 +26,37 @@ namespace CCGKit
         /// The name of this Token.
         /// このカードの名前。
         /// </summary>
-        public string name;
+        public new string name;
 
         /// <summary>
         /// The costs of this Token.
         /// このカードのコスト。
         /// </summary>
-        public List<Cost> costs = new List<Cost>();
+        public new List<Cost> costs = new List<Cost>();
 
         /// <summary>
         /// The properties of this Token.
         /// このカードの特性。
         /// </summary>
-        public List<Property> properties = new List<Property>();
+        public new List<Property> properties = new List<Property>();
 
         /// <summary>
         /// The stats of this Token.
         /// このカードの統計情報。
         /// </summary>
-        public List<Stat> stats = new List<Stat>();
+        public new List<Stat> stats = new List<Stat>();
 
         /// <summary>
         /// The keywords of this Token.
         /// このカードのキーワード。
         /// </summary>
-        public List<RuntimeKeyword> keywords = new List<RuntimeKeyword>();
+        public new List<RuntimeKeyword> keywords = new List<RuntimeKeyword>();
 
         /// <summary>
         /// The abilities of this Token.
         /// このカードの能力。
         /// </summary>
-        public List<Ability> abilities = new List<Ability>();
+        public new List<Ability> abilities = new List<Ability>();
 
         private int v;
 
@@ -78,7 +78,7 @@ namespace CCGKit
         /// </summary>
         /// <param name="name">The name of the property.</param>
         /// <returns>The value of the property.</returns>
-        public int GetIntProperty(string name)
+        public new int GetIntProperty(string name)
         {
             var property = properties.Find(x => x.name == name && x is IntProperty);
             Assert.IsNotNull(property);
@@ -91,7 +91,7 @@ namespace CCGKit
         /// </summary>
         /// <param name="name">The name of the property.</param>
         /// <returns>The value of the property.</returns>
-        public string GetStringProperty(string name)
+        public new string GetStringProperty(string name)
         {
             var property = properties.Find(x => x.name == name && x is StringProperty);
             Assert.IsNotNull(property);
