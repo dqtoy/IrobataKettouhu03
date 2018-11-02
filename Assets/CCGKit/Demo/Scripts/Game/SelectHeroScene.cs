@@ -14,14 +14,14 @@ public class SelectHeroScene : BaseScene {
 
 
     [SerializeField]
-    private GameObject SelectHeloGroup;
+    private GameObject SelectHeroGroup;
     [SerializeField]
     public static bool renkoFlag = false;
 	 [SerializeField]
     public static bool merryFlag = false;
 
-	Button rButton;
-	Button mButton;
+	public Button rButton;
+	public Button mButton;
 
 
 /*

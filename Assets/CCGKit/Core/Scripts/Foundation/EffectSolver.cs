@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using UnityEngine;
 using UnityEngine.Networking;
+
+using Random = System.Random;
 
 namespace CCGKit
 {
@@ -178,6 +181,49 @@ namespace CCGKit
                     //ここではMoveCards関数を使用しません。なぜなら、（無限再帰を引き起こす）エフェクトをトリガーしたくないからです。
                     player.namedZones[destinationZone].RemoveCard(card);
                     player.namedZones[finalDestinationZone.name].AddCard(card);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Draws the specified number of cards from the deck into the hand.
+        /// </summary>
+        /// <param name="playerNetId">The network identifier of the card's owner player.</param>
+        /// <param name="numCards">The number of cards to draw.</param>
+        /// <param name="targetInfo">The optional target information.</param>
+        public void DrawCards(NetworkInstanceId playerNetId, int numCards, List<int> targetInfo = null)
+        {
+            var player = gameState.players.Find(x => x.netId == playerNetId);
+            if (player != null)
+            {
+                var deck = player.namedZones["Deck"];
+                if (deck.cards.Count > 0)
+                {
+                    var cards = deck.cards.GetRange(0, numCards);
+                    deck.RemoveCards(numCards);
+                    player.namedZones["Hand"].cards.AddRange(cards);
+
+                    var serverGo = GameObject.Find("Server");
+                    if (serverGo != null && serverGo.activeSelf)
+                    {
+                        var server = serverGo.GetComponent<Server>();
+                        var msg = new PlayerDrewCardsMessage();
+                        msg.playerNetId = player.netId;
+                        var netCards = new List<NetCard>();
+                        foreach (var card in cards)
+                        {
+                            var netCard = NetworkingUtils.GetNetCard(card);
+                            netCards.Add(netCard);
+                        }
+                        msg.cards = netCards.ToArray();
+                        server.SafeSendToClient(player, NetworkProtocol.PlayerDrewCards, msg);
+
+                        var opponent = gameState.players.Find(x => x != player);
+                        var oppMsg = new OpponentDrewCardsMessage();
+                        oppMsg.playerNetId = opponent.netId;
+                        oppMsg.numCards = cards.Count;
+                        server.SafeSendToClient(opponent, NetworkProtocol.OpponentDrewCards, oppMsg);
+                    }
                 }
             }
         }

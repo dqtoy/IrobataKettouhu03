@@ -30,6 +30,9 @@ namespace CCGKit
 
         public static short SendChatTextMessage = 1015;
         public static short BroadcastChatTextMessage = 1016;
+
+        public static short PlayerDrewCards = 1017;
+        public static short OpponentDrewCards = 1018;
     }
 
     // Every network message has a corresponding message class that carries the information needed
@@ -179,5 +182,16 @@ namespace CCGKit
         public int zoneId;
         public int cardInstanceId;
         public int abilityIndex;
+    }
+    public class PlayerDrewCardsMessage : MessageBase
+    {
+        public NetworkInstanceId playerNetId;
+        public NetCard[] cards;
+    }
+
+    public class OpponentDrewCardsMessage : MessageBase
+    {
+        public NetworkInstanceId playerNetId;
+        public int numCards;
     }
 }

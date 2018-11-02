@@ -152,7 +152,7 @@ public class DemoHumanPlayer : DemoPlayer
 
     }
     /// <summary>
-    /// 
+    /// デッキからカードを引いた時、ハンドからカードを出した時などに動く
     /// </summary>
     public override void OnStartLocalPlayer()
     {
@@ -218,6 +218,7 @@ public class DemoHumanPlayer : DemoPlayer
         deckZone.onZoneChanged += numCards =>
         {
             gameUI.SetPlayerDeckCards(numCards);
+            Debug.Log("Deck_numCards==" + numCards);
         };
 
         //追加
@@ -241,25 +242,45 @@ public class DemoHumanPlayer : DemoPlayer
           handZone.onZoneChanged += lambda(handZone.onZoneChanged)
          *
          */
+
+         //numCardsはハンドの枚数
         handZone.onZoneChanged += numCards =>
         {
             gameUI.SetPlayerHandCards(numCards);
-//            Debug.Log("handZone.onZoneChanged==" + handZone.onZoneChanged);
+            Debug.Log("Hand_numCards==" + numCards);
         };
+
         //マリガンゾーンにカードを追加
+        //後手の場合こいつをもう一巡回せばいい？
         handZone.onCardAdded += card =>
         {
             AddCardToHand(card);
             RearrangeMulliganZone();
-//            Debug.Log("handZone.onCardAdded==" + handZone.onCardAdded);
+            //            Debug.Log("handZone.onCardAdded==" + handZone.onCardAdded);
 
         };
 
         //後手の場合デッキからもう一枚カードを引き、コインを手札に追加
         if (SenteGoteFlag)
         {
+            
+        }
+        else
+        {
+            //マリガンゾーンにカードを追加
+            //後手の場合こいつをもう一巡回せばいい？
+            handZone.onCardAdded += card =>
+            {
+                AddCardToHand(card);
+                RearrangeMulliganZone();
+                //            Debug.Log("handZone.onCardAdded==" + handZone.onCardAdded);
+
+            };
+            SenteGoteFlag = true;
 
         }
+
+
 
 
         //ボタンを追加
@@ -421,6 +442,7 @@ public class DemoHumanPlayer : DemoPlayer
         GameObject.Find("Opponent/Avatar").GetComponent<PlayerAvatar>().playerInfo = opponentInfo;
 
         //自分が後手だったら相手のカード3枚
+        /*
         if (SenteGoteFlag == false) {
             opponentHandZone.numCards = 3;
         }
@@ -428,6 +450,7 @@ public class DemoHumanPlayer : DemoPlayer
         {
             opponentHandZone.numCards = 4;
         }
+        */
 
 
         for (var i = 0; i < opponentHandZone.numCards; i++)
@@ -455,8 +478,8 @@ public class DemoHumanPlayer : DemoPlayer
         //プレイヤーのニックネームをUIで設定します。
 
         
-        SelectHeroScene shc = new SelectHeroScene();
-        bool rFlag = shc.GetRenkoNameFlag();
+        SelectHeroScene shs = new SelectHeroScene();
+        bool rFlag = shs.GetRenkoNameFlag();
         if(rFlag){
                 gameUI.SetPlayerName("宇佐見蓮子");
                 gameUI.SetOpponentName("マエリベリー・ハーン");
@@ -481,6 +504,9 @@ public class DemoHumanPlayer : DemoPlayer
             }
         }
 
+
+        //なにしてんの？謎。多分不要。
+        //蓮メリの画像設定？
         float rnd;
         rnd = UnityEngine.Random.value;
         var gameScene = GameObject.Find("GameScene");
@@ -533,6 +559,8 @@ public class DemoHumanPlayer : DemoPlayer
     }
     /// <summary>
     /// ターン開始時の処理
+    /// 対戦相手のカード情報を一度削除し、再構築する。
+    /// 各カードを使うマナに達しているか、攻撃できるかをそれぞれ表示
     /// </summary>
     /// <param name="msg"></param>
     public override void OnStartTurn(StartTurnMessage msg)
@@ -560,6 +588,7 @@ public class DemoHumanPlayer : DemoPlayer
         }
         RearrangeOpponentHand();
 
+        //Recipient：受信者
         if (msg.isRecipientTheActivePlayer)
         {
             UpdateHandCardsHighlight();

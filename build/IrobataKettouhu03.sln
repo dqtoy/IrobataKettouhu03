@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IrobataKettouhu03", "Assembly-CSharp.csproj", "{79319553-9FDE-BC0F-FAEF-0A728293F11B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IrobataKettouhu03", "Assembly-CSharp-Editor.csproj", "{F8B6B50B-7F03-B83B-666C-1FB2953C0B94}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{79319553-9FDE-BC0F-FAEF-0A728293F11B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79319553-9FDE-BC0F-FAEF-0A728293F11B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79319553-9FDE-BC0F-FAEF-0A728293F11B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79319553-9FDE-BC0F-FAEF-0A728293F11B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8B6B50B-7F03-B83B-666C-1FB2953C0B94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8B6B50B-7F03-B83B-666C-1FB2953C0B94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8B6B50B-7F03-B83B-666C-1FB2953C0B94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8B6B50B-7F03-B83B-666C-1FB2953C0B94}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
