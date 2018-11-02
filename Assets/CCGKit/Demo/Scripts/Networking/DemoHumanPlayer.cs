@@ -36,6 +36,7 @@ public class DemoHumanPlayer : DemoPlayer
     //マリガン用
     [SerializeField]
     private GameObject MulliganCardPrefab;
+    //マリガン中かどうか判定
     private bool mulliganFlag = false;
 
 
@@ -79,7 +80,7 @@ public class DemoHumanPlayer : DemoPlayer
     protected Stat opponentLifeStat { get; set; }
     protected Stat opponentManaStat { get; set; }
 
-    private bool FirstSecondMove;
+    private bool SenteGoteFlag;
 
     public RuntimeZone tokenZone;
     public RuntimeZone deckZone;
@@ -128,20 +129,22 @@ public class DemoHumanPlayer : DemoPlayer
         //        chatPopup = GameObject.Find("PopupChat").GetComponent<PopupChat>();
         Debug.Log("Start開始");
 
+
+
         // Random クラスの新しいインスタンスを生成する
         System.Random cRandom = new System.Random();
         // 0.0 以上 1.0 以下の乱数を取得する
         double dRandom = cRandom.NextDouble();
         //先手後手フラグ
-        if (0 < dRandom && dRandom <= 0.5)
+        if (0 <= dRandom && dRandom < 0.5)
         {
             Debug.Log("先手");
-            FirstSecondMove = true;
+            SenteGoteFlag = true;
         }
         else
         {
             Debug.Log("後手");
-            FirstSecondMove = false;
+            SenteGoteFlag = false;
         }
 
 
@@ -251,6 +254,12 @@ public class DemoHumanPlayer : DemoPlayer
 //            Debug.Log("handZone.onCardAdded==" + handZone.onCardAdded);
 
         };
+
+        //後手の場合デッキからもう一枚カードを引き、コインを手札に追加
+        if (SenteGoteFlag)
+        {
+
+        }
 
 
         //ボタンを追加
@@ -412,8 +421,12 @@ public class DemoHumanPlayer : DemoPlayer
         GameObject.Find("Opponent/Avatar").GetComponent<PlayerAvatar>().playerInfo = opponentInfo;
 
         //自分が後手だったら相手のカード3枚
-        if (FirstSecondMove == false) {
+        if (SenteGoteFlag == false) {
             opponentHandZone.numCards = 3;
+        }
+        else
+        {
+            opponentHandZone.numCards = 4;
         }
 
 
